@@ -307,6 +307,7 @@ enum
    LANG_ALLC = 0x017f,
    LANG_ALL  = 0x0fff,
 
+   FLAG_HDR  = 0x4000,     /*<< Header file for C family languages */
    FLAG_PP   = 0x8000,     /*<< only appears in a preprocessor */
 };
 
