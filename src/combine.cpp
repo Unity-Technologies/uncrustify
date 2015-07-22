@@ -5164,11 +5164,6 @@ static void handle_oc_message_send(chunk_t *os)
       set_chunk_parent(tmp, CT_OC_MSG);
    }
 
-   set_chunk_parent(os, CT_OC_MSG);
-   os->flags |= PCF_IN_OC_MSG;
-   set_chunk_parent(cs, CT_OC_MSG);
-   cs->flags |= PCF_IN_OC_MSG;
-
    /* expect a word first thing or [...] */
    tmp = chunk_get_next_ncnl(os);
    if ((tmp->type == CT_SQUARE_OPEN) || (tmp->type == CT_PAREN_OPEN))
@@ -5195,6 +5190,11 @@ static void handle_oc_message_send(chunk_t *os)
          set_chunk_type(tmp, CT_OC_MSG_CLASS);
       }
    }
+
+   set_chunk_parent(os, CT_OC_MSG);
+   os->flags |= PCF_IN_OC_MSG;
+   set_chunk_parent(cs, CT_OC_MSG);
+   cs->flags |= PCF_IN_OC_MSG;
 
    /* handle '< protocol >' */
    tmp = chunk_get_next_ncnl(tmp);
