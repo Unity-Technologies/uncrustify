@@ -325,6 +325,7 @@ enum uncrustify_options
    UO_sp_inside_braces_empty,   // space inside '{' and '}' - "{ }"
    UO_sp_inside_braces_enum,    // space inside enum '{' and '}' - "{ a, b, c }"
    UO_sp_inside_braces_struct,  // space inside struct/union '{' and '}'
+   UO_sp_inside_braces_oc_dict, // space inside OC boxed dictionary @'{' and '}'
 
    UO_sp_macro,                 // space between macro and value, ie '#define a 6'
    UO_sp_macro_func,            // space between macro and value, ie '#define a 6'

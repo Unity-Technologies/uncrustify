@@ -358,6 +358,8 @@ void register_options(void)
                   "Add or remove space inside enum '{' and '}'");
    unc_add_option("sp_inside_braces_struct", UO_sp_inside_braces_struct, AT_IARF,
                   "Add or remove space inside struct/union '{' and '}'");
+   unc_add_option("sp_inside_braces_oc_dict", UO_sp_inside_braces_oc_dict, AT_IARF,
+                  "Add or remove space inside OC boxed dictionary @'{' and '}'");
    unc_add_option("sp_inside_braces", UO_sp_inside_braces, AT_IARF,
                   "Add or remove space inside '{' and '}'");
    unc_add_option("sp_inside_braces_empty", UO_sp_inside_braces_empty, AT_IARF,
