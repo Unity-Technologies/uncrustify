@@ -300,3 +300,5 @@
 
 09594 ben.cfg                   c/sf594.c
 09588 ben.cfg                   c/sf588.c
+
+09600 aet.cfg                   c/negative_value.c
