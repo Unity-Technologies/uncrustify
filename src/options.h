@@ -289,6 +289,8 @@ enum uncrustify_options
    UO_sp_func_call_paren,       // space between 'func' and '(' - "foo (" vs "foo("
    UO_sp_func_call_paren_empty,
    UO_sp_func_call_user_paren,
+   UO_sp_func_call_user_inside_fparen,
+   UO_sp_func_call_user_paren_paren,
    UO_sp_func_proto_paren,      // space between 'func' and '(' - "foo (" vs "foo("
    UO_sp_func_class_paren,      // space between ctor/dtor and '('
 

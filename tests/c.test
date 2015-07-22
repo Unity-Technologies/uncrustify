@@ -303,3 +303,4 @@
 
 09600 aet.cfg                   c/negative_value.c
 09601 aet.cfg                   c/extern-c-attribute.c
+09602 aet-func_call_user.cfg    c/func_call_user2.c
