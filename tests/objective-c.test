@@ -98,3 +98,4 @@
 50609  aet.cfg                                      oc/oc_msg_in_pp.m
 50610  aet.cfg                                      oc/boxed_receiver.m
 50611  aet-func_def.cfg                             oc/func_def.mm
+50612  aet.cfg                                      oc/cast.m
