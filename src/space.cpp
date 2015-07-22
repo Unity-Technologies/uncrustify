@@ -727,6 +727,7 @@ static argval_t do_space(chunk_t *first, chunk_t *second, int& min_sp, bool comp
       }
       if ((second->type != CT_BYREF) &&
           (second->type != CT_PTR_TYPE) &&
+          (second->type != CT_BRACE_OPEN) &&
           (second->type != CT_PAREN_CLOSE))
       {
          log_rule("sp_after_angle");

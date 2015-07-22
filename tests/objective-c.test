@@ -99,3 +99,4 @@
 50610  aet.cfg                                      oc/boxed_receiver.m
 50611  aet-func_def.cfg                             oc/func_def.mm
 50612  aet.cfg                                      oc/cast.m
+50613  aet.cfg                                      oc/sp_after_angle.m
