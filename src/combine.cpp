@@ -5192,8 +5192,19 @@ static void handle_oc_message_send(chunk_t *os)
 
    /* expect a word first thing or [...] */
    tmp = chunk_get_next_ncnl(os);
-   if ((tmp->type == CT_SQUARE_OPEN) || (tmp->type == CT_PAREN_OPEN))
+   if ((tmp->type == CT_SQUARE_OPEN) || (tmp->type == CT_PAREN_OPEN) ||
+       ((tmp->type == CT_OC_AT) && (tmp->flags & PCF_OC_BOXED)))
    {
+      chunk_t *tt = chunk_get_next_ncnl(tmp);
+      if ((tmp->type == CT_OC_AT) && tt)
+      {
+         if ((tt->type == CT_PAREN_OPEN) ||
+             (tt->type == CT_BRACE_OPEN) ||
+             (tt->type == CT_SQUARE_OPEN))
+         {
+            tmp = tt;
+         }
+      }
       tmp = chunk_skip_to_match(tmp);
    }
    else if ((tmp->type != CT_WORD) && (tmp->type != CT_TYPE) && (tmp->type != CT_STRING))
@@ -5242,6 +5253,12 @@ static void handle_oc_message_send(chunk_t *os)
          }
       }
       tmp = chunk_get_next_ncnl(ac);
+   }
+
+   // [(self.foo.bar) method]
+   if (chunk_is_paren_open(tmp))
+   {
+      tmp = chunk_get_next_ncnl(chunk_skip_to_match(tmp));
    }
 
    if (tmp && ((tmp->type == CT_WORD) || (tmp->type == CT_TYPE)))
