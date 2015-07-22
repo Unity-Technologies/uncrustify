@@ -193,6 +193,7 @@ static bool chunk_ends_type(chunk_t *start)
    chunk_t *pc       = start;
    bool    ret       = false;
    int     cnt       = 0;
+   bool    last_expr = false;
    bool    last_lval = false;
 
    for (/* nada */; pc != NULL; pc = chunk_get_prev_ncnl(pc))
@@ -211,6 +212,7 @@ static bool chunk_ends_type(chunk_t *start)
           ((cpd.lang_flags & LANG_CS) && (pc->type == CT_MEMBER)))
       {
          cnt++;
+         last_expr = (((pc->flags & PCF_EXPR_START) != 0) && ((pc->flags & PCF_IN_FCN_CALL) == 0));
          last_lval = (pc->flags & PCF_LVALUE) != 0;
          continue;
       }
@@ -223,6 +225,7 @@ static bool chunk_ends_type(chunk_t *start)
           (pc->type == CT_FPAREN_CLOSE) ||
           chunk_is_forin(pc) ||
           (pc->type == CT_MACRO) ||
+          (((pc->type == CT_COMMA) && ((pc->flags & PCF_IN_FCN_CALL) == 0)) && last_expr) ||
           ((pc->type == CT_SPAREN_OPEN) && last_lval))
       {
          ret = cnt > 0;
@@ -711,7 +714,7 @@ void do_symbol_check(chunk_t *prev, chunk_t *pc, chunk_t *next)
    }
    else
    {
-      if ((pc->type == CT_FUNCTION) &&
+      if (((pc->type == CT_FUNCTION) || (pc->type == CT_FUNC_DEF)) &&
           ((pc->parent_type == CT_OC_BLOCK_EXPR) || !is_oc_block(pc)))
       {
          mark_function(pc);
