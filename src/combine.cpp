@@ -2324,7 +2324,7 @@ void combine_labels(void)
          question_counts.pop();
       }
 
-      if (next->type == CT_QUESTION)
+      if ((next->type == CT_QUESTION) && ((next->flags & PCF_IN_TEMPLATE) == 0))
       {
          ++question_counts.top();
       }
