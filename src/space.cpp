@@ -1396,7 +1396,8 @@ static argval_t do_space(chunk_t *first, chunk_t *second, int& min_sp, bool comp
 
    /* "(int)a" vs "(int) a" or "cast(int)a" vs "cast(int) a" */
    if ((first->parent_type == CT_C_CAST) ||
-       (first->parent_type == CT_D_CAST))
+       (first->parent_type == CT_D_CAST) ||
+       (first->parent_type == CT_TYPE_CAST))
    {
       log_rule("sp_after_cast");
       return(cpd.settings[UO_sp_after_cast].a);
