@@ -244,6 +244,8 @@ int main(int argc, char *argv[])
    int        idx;
    const char *p_arg;
 
+   init_keywords();
+
    /* If ran without options... check keyword sort and show the usage info */
    if (argc == 1)
    {

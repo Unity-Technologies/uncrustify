@@ -200,6 +200,7 @@ void brace_cleanup(void);
  *  keywords.cpp
  */
 
+void init_keywords(void);
 int load_keyword_file(const char *filename);
 c_token_t find_keyword_type(const char *word, int len);
 void add_keyword(const char *tag, c_token_t type);
