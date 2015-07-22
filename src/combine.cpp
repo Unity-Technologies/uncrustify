@@ -862,7 +862,8 @@ void do_symbol_check(chunk_t *prev, chunk_t *pc, chunk_t *next)
 
 
    /* Check for stuff that can only occur at the start of an expression */
-   if ((pc->flags & PCF_EXPR_START) != 0)
+   if (((pc->flags & PCF_EXPR_START) != 0) ||
+       (((prev->flags & PCF_EXPR_START) != 0) && (pc->parent_type == CT_OC_AT)))
    {
       /* Change STAR, MINUS, and PLUS in the easy cases */
       if (pc->type == CT_STAR)
