@@ -4992,6 +4992,7 @@ static void handle_oc_message_decl(chunk_t *pc)
    int       arg_cnt   = 0;
    c_token_t pt;
    bool      did_it;
+   bool      semicolon_workaround;
 
    /* Figure out if this is a spec or decl */
    tmp = pc;
@@ -5005,6 +5006,21 @@ static void handle_oc_message_decl(chunk_t *pc)
       if ((tmp->type == CT_SEMICOLON) ||
           (tmp->type == CT_BRACE_OPEN))
       {
+         // Occasionally there will be user errors where someone will
+         // copy the interface method declaration to implementation
+         // and leaves the semicolon
+         semicolon_workaround = false;
+         if (tmp->type == CT_SEMICOLON)
+         {
+            chunk_t *brace_check = chunk_get_next_nnl(tmp);
+
+            if (brace_check != NULL && brace_check->type == CT_BRACE_OPEN)
+            {
+               semicolon_workaround = true;
+               tmp = brace_check;
+               break;
+            }
+         }
          break;
       }
    }
@@ -5051,7 +5067,8 @@ static void handle_oc_message_decl(chunk_t *pc)
       while (true)
       {
          /* skip optional label */
-         if (chunk_is_token(pc, CT_WORD) || chunk_is_token(pc, pt))
+         if (chunk_is_token(pc, CT_WORD) || chunk_is_token(pc, pt) ||
+             (semicolon_workaround && chunk_is_token(pc, CT_SEMICOLON)))
          {
             set_chunk_parent(pc, pt);
             pc = chunk_get_next_ncnl(pc);
