@@ -30,6 +30,8 @@
     TestCaseSessionInstance *session = ((TestClassVideoEditorView *) self.parentComponentsView.superview).session;
 
     [(TestClassVideoEditorView *) (self.parentComponentsView.superview) closeEditor];
+
+    [menubutton.badge setBadgeText:[@(count + 1) stringValue]];
 }
 
 @end
