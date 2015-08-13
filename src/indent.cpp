@@ -448,6 +448,13 @@ static chunk_t *oc_msg_block_indent(chunk_t *pc, bool from_brace,
    {
       return tmp;
    }
+
+   tmp = chunk_first_on_line(tmp);
+   if (tmp && tmp->type == CT_SQUARE_OPEN)
+   {
+      return tmp;
+   }
+
    return NULL;
 }
 
