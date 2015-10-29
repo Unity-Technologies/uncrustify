@@ -177,6 +177,7 @@ static void usage_exit(const char *msg, const char *argv0, int code)
            " --universalindent        : Output a config file for Universal Indent GUI\n"
            " --detect                 : detects the config from a source file. Use with '-f FILE'\n"
            "                            Detection is fairly limited.\n"
+           " --override-config <option>=<value>       : Overrides a config option with a new value\n"
            "\n"
            "Debug Options:\n"
            " -p FILE      : dump debug info to a file\n"
@@ -476,6 +477,36 @@ int main(int argc, char *argv[])
       if (load_option_file(cpd.filename) < 0)
       {
          usage_exit("Unable to load the config file", argv[0], 56);
+      }
+   }
+
+   // Override config
+   idx = 0;
+   while ((p_arg = arg.Params("--override-config", idx)) != NULL)
+   {
+      char buffer[256];
+      strcpy(buffer, p_arg);
+
+      char *ptr;
+      if ((ptr = strchr(buffer, '=')) != NULL)
+      {
+         // tokenize the string using the null character and move to second token
+         *ptr++ = '\0';
+
+         if (*ptr == NULL)
+         {
+            usage_exit("Error while parsing --override-config", argv[0], 23);
+         }
+
+         if (set_option_value(buffer, ptr) == -1)
+         {
+            fprintf(stderr, "Unknown option '%s' to override.\n", buffer);
+            return EXIT_FAILURE;
+         }
+      }
+      else
+      {
+         usage_exit("Error while parsing --override-config", argv[0], 23);
       }
    }
 
