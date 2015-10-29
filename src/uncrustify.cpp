@@ -493,7 +493,7 @@ int main(int argc, char *argv[])
          // tokenize the string using the null character and move to second token
          *ptr++ = '\0';
 
-         if (*ptr == NULL)
+         if (*ptr == '\0')
          {
             usage_exit("Error while parsing --override-config", argv[0], 23);
          }
