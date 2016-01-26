@@ -360,6 +360,8 @@ void register_options(void)
                   "Add or remove space inside enum '{' and '}'");
    unc_add_option("sp_inside_braces_struct", UO_sp_inside_braces_struct, AT_IARF,
                   "Add or remove space inside struct/union '{' and '}'");
+   unc_add_option("sp_inside_braces_oc_dict", UO_sp_inside_braces_oc_dict, AT_IARF,
+                  "Add or remove space inside OC boxed dictionary @'{' and '}'");
    unc_add_option("sp_inside_braces", UO_sp_inside_braces, AT_IARF,
                   "Add or remove space inside '{' and '}'");
    unc_add_option("sp_inside_braces_empty", UO_sp_inside_braces_empty, AT_IARF,
@@ -392,6 +394,12 @@ void register_options(void)
                   "If set to 'ignore' (the default), sp_func_call_paren is used.");
    unc_add_option("sp_func_call_user_paren", UO_sp_func_call_user_paren, AT_IARF,
                   "Add or remove space between the user function name and '(' on function calls\n"
+                  "You need to set a keyword to be a user function, like this: 'set func_call_user _' in the config file.");
+   unc_add_option("sp_func_call_user_inside_fparen", UO_sp_func_call_user_inside_fparen, AT_IARF,
+                  "Add or remove space inside user function '(' and ')'\n"
+                  "You need to set a keyword to be a user function, like this: 'set func_call_user _' in the config file.");
+   unc_add_option("sp_func_call_user_paren_paren", UO_sp_func_call_user_paren_paren, AT_IARF,
+                  "Add or remove space between nested parens with user functions: '((' vs ') )'"
                   "You need to set a keyword to be a user function, like this: 'set func_call_user _' in the config file.");
    unc_add_option("sp_func_class_paren", UO_sp_func_class_paren, AT_IARF,
                   "Add or remove space between a constructor/destructor and the open paren");

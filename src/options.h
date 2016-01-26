@@ -291,6 +291,8 @@ enum uncrustify_options
    UO_sp_func_call_paren,       // space between 'func' and '(' - "foo (" vs "foo("
    UO_sp_func_call_paren_empty,
    UO_sp_func_call_user_paren,
+   UO_sp_func_call_user_inside_fparen,
+   UO_sp_func_call_user_paren_paren,
    UO_sp_func_proto_paren,      // space between 'func' and '(' - "foo (" vs "foo("
    UO_sp_func_class_paren,      // space between ctor/dtor and '('
 
@@ -327,6 +329,7 @@ enum uncrustify_options
    UO_sp_inside_braces_empty,   // space inside '{' and '}' - "{ }"
    UO_sp_inside_braces_enum,    // space inside enum '{' and '}' - "{ a, b, c }"
    UO_sp_inside_braces_struct,  // space inside struct/union '{' and '}'
+   UO_sp_inside_braces_oc_dict, // space inside OC boxed dictionary @'{' and '}'
 
    UO_sp_macro,                 // space between macro and value, ie '#define a 6'
    UO_sp_macro_func,            // space between macro and value, ie '#define a 6'

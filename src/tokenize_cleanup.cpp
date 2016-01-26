@@ -719,7 +719,7 @@ void tokenize_cleanup(void)
       }
 
       /* Add minimal support for C++0x rvalue references */
-      if ((pc->type == CT_BOOL) && chunk_is_str(pc, "&&", 2))
+      if ((pc->type == CT_BOOL) && (cpd.lang_flags & LANG_CPP) && chunk_is_str(pc, "&&", 2))
       {
          if (prev->type == CT_TYPE)
          {
@@ -821,6 +821,7 @@ static void check_template(chunk_t *start)
       if ((prev->type != CT_WORD) &&
           (prev->type != CT_TYPE) &&
           (prev->type != CT_COMMA) &&
+          (prev->type != CT_QUALIFIER) &&
           (prev->type != CT_OPERATOR_VAL) &&
           (prev->parent_type != CT_OPERATOR))
       {
@@ -870,7 +871,8 @@ static void check_template(chunk_t *start)
 
          if ((tokens[num_tokens - 1] == CT_ANGLE_OPEN) &&
              (pc->str[0] == '>') && (pc->len() > 1) &&
-             (cpd.settings[UO_tok_split_gte].b || chunk_is_str(pc, ">>", 2)))
+             (cpd.settings[UO_tok_split_gte].b ||
+              chunk_is_str(pc, ">>", 2) || chunk_is_str(pc, ">>>", 3)))
          {
             LOG_FMT(LTEMPL, " {split '%s' at %d:%d}",
                     pc->str.c_str(), pc->orig_line, pc->orig_col);

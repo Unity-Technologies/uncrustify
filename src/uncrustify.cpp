@@ -245,6 +245,8 @@ int main(int argc, char *argv[])
    int        idx;
    const char *p_arg;
 
+   init_keywords();
+
    /* If ran without options... check keyword sort and show the usage info */
    if (argc == 1)
    {
@@ -1896,6 +1898,7 @@ static lang_name_t language_names[] =
    { "OC+",  LANG_OC | LANG_CPP },
    { "CS+",  LANG_CS | LANG_CPP },
    { "ECMA", LANG_ECMA          },
+   { "C-Header", LANG_OC | LANG_CPP | FLAG_HDR },
 };
 
 
@@ -1964,7 +1967,7 @@ struct lang_ext_t language_exts[] =
    { ".p",    "PAWN" },
    { ".sma",  "PAWN" },
    { ".inl",  "PAWN" },
-   { ".h",    "CPP"  },
+   { ".h",    "C-Header" },
    { ".cxx",  "CPP"  },
    { ".hpp",  "CPP"  },
    { ".hxx",  "CPP"  },
