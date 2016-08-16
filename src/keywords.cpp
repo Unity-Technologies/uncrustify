@@ -104,9 +104,8 @@ static chunk_tag_t keywords[] =
    { "__try",            CT_TRY,          LANG_C                                                                      },
    { "__typeof__",       CT_SIZEOF,       LANG_C                                                                      },
    { "__unsafe_unretained",CT_QUALIFIER,  LANG_C                                                                      },
-   { "__volatile__",     CT_QUALIFIER,    LANG_C                                                                      },
    { "__vectorcall",     CT_VECTORCALL,   LANG_C | LANG_CPP                                                           }, // guy 2016-01-31
-   { "__volatile__",     CT_QUALIFIER,    LANG_C | LANG_CPP                                                           },
+   { "__volatile__",     CT_QUALIFIER,    LANG_C                                                                      },
    { "__weak",           CT_QUALIFIER,    LANG_C                                                                      },
    { "__word__",         CT_WORD_,        LANG_C | LANG_CPP                                                           }, // guy 2016-03-11
    { "abstract",         CT_QUALIFIER,    LANG_CS | LANG_D | LANG_JAVA | LANG_VALA | LANG_ECMA                        },
