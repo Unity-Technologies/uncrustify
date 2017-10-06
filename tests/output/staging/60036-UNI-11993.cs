@@ -9,4 +9,3 @@ namespace Namespace
         #endif
     }
 }
-

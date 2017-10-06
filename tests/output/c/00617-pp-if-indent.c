@@ -105,7 +105,6 @@ void COMINL_vidInit(void)
       }
    #endif /* COMINL_coTX_MESSAGE_VAR == COMINL_coENABLE */
 }
-
 #endif
 
 
@@ -122,6 +121,7 @@ void myfunction(void)
    #endif
    int k;
 }
+
 
 #endif /* COMSTACK_TYPES_H */
 
