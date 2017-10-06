@@ -4100,19 +4100,28 @@ void do_blank_lines(void)
          }
          else
          {
+            // Don't change the number of blank lines between '}' and (#else or #elif or #endif).
+            // To fix issue 1292
+            bool flag = !(next != nullptr && (next->parent_type == CT_PP_ELSE || next->parent_type == CT_PP_ENDIF));
             if (  (prev->flags & PCF_IN_CLASS)
                && (cpd.settings[UO_nl_after_func_body_class].u > 0))
             {
-               if (cpd.settings[UO_nl_after_func_body_class].u != pc->nl_count)
+               if (flag)
                {
-                  blank_line_set(pc, UO_nl_after_func_body_class);
+                  if (cpd.settings[UO_nl_after_func_body_class].u != pc->nl_count)
+                  {
+                     blank_line_set(pc, UO_nl_after_func_body_class);
+                  }
                }
             }
             else if (cpd.settings[UO_nl_after_func_body].u > 0)
             {
-               if (cpd.settings[UO_nl_after_func_body].u != pc->nl_count)
+               if (flag)
                {
-                  blank_line_set(pc, UO_nl_after_func_body);
+                  if (cpd.settings[UO_nl_after_func_body].u != pc->nl_count)
+                  {
+                     blank_line_set(pc, UO_nl_after_func_body);
+                  }
                }
             }
          }
