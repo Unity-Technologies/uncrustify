@@ -920,7 +920,8 @@ void register_options(void)
    unc_add_option("indent_single_after_return", UO_indent_single_after_return, AT_BOOL,
                   "If true, the tokens after return are indented with regular single indentation."
                   "By default (false) the indentation is after the return token.");
-
+   unc_add_option("indent_ignore_asm_block", UO_indent_ignore_asm_block, AT_BOOL,
+                  "If true, ignore indent and align for asm blocks as they have their own indentation.");
    unc_begin_group(UG_newline, "Newline adding and removing options");
    unc_add_option("nl_collapse_empty_body", UO_nl_collapse_empty_body, AT_BOOL,
                   "Whether to collapse empty blocks between '{' and '}'.");

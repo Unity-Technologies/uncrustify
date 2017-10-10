@@ -430,6 +430,7 @@ enum uncrustify_options
    UO_indent_ternary_operator,              // indent continuation of ternary operator
    UO_indent_off_after_return_new,          // indent 'return new' construct to the indentation of the token before the return
    UO_indent_single_after_return,           // indent return to a single indentation rather than after the return token (default)
+   UO_indent_ignore_asm_block,              // ignore indent and align for asm blocks as they have their own indentation
    // UO_indent_brace_struct,      TODO: spaces to indent brace after struct/enum/union def
    // UO_indent_paren,             TODO: indent for open paren on next line (1)
    // UO_indent,                   TODO: 0=don't change indentation, 1=change indentation
