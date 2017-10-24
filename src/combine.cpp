@@ -1621,6 +1621,9 @@ void do_symbol_check(chunk_t *prev, chunk_t *pc, chunk_t *next)
          {
             set_chunk_type(pc, CT_PTR_TYPE);
          }
+         else if (pc->parent_type == CT_FUNC_DEF || pc->parent_type == CT_FUNC_PROTO) {
+            set_chunk_type(pc, CT_DEREF);
+         }
          else
          {
             set_chunk_type(pc,
