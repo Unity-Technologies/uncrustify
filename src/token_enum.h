@@ -217,6 +217,7 @@ enum c_token_t
    CT_FUNC_TYPE,        // function type - foo in "typedef void (*foo)(void)"
    CT_FUNC_VAR,         // foo and parent type of first parens in "void (*foo)(void)"
    CT_FUNC_PROTO,       // function prototype
+   CT_FUNC_START,       // global DC member for functions(void ::func())
    CT_FUNC_CLASS_DEF,   // ctor or dtor for a class
    CT_FUNC_CLASS_PROTO, // ctor or dtor for a class
    CT_FUNC_CTOR_VAR,    // variable or class initialization
@@ -360,7 +361,6 @@ enum c_token_t
 
    // Token to ignore the content of a block
    CT_IGNORE_CONTENT,
-
    CT_TOKEN_COUNT_  // NOTE: Keep this the last entry because it's used as a counter.
 };
 
