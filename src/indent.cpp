@@ -1801,7 +1801,7 @@ void indent_text(void)
 
          else if (pc->type == CT_PAREN_OPEN
             && !chunk_is_newline(next)
-            && !cpd.settings[UO_indent_align_paran].b)
+            && !cpd.settings[UO_indent_align_paren].b)
          {
             size_t sub = 1;
             if ((frm.pse[frm.pse_tos - 1].type == CT_ASSIGN)
