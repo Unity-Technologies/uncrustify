@@ -1799,12 +1799,12 @@ void indent_text(void)
             frm.pse[frm.pse_tos].indent_tab = frm.pse[frm.pse_tos].indent;
          }
 
-         else if (pc->type == CT_PAREN_OPEN
-            && !chunk_is_newline(next)
-            && !cpd.settings[UO_indent_align_paren].b)
+         else if (  pc->type == CT_PAREN_OPEN
+                 && !chunk_is_newline(next)
+                 && !cpd.settings[UO_indent_align_paren].b)
          {
             size_t sub = 1;
-            if ((frm.pse[frm.pse_tos - 1].type == CT_ASSIGN)
+            if (  (frm.pse[frm.pse_tos - 1].type == CT_ASSIGN)
                || (frm.pse[frm.pse_tos - 1].type == CT_RETURN))
             {
                sub = 2;
@@ -1812,7 +1812,7 @@ void indent_text(void)
             frm.pse[frm.pse_tos].indent = frm.pse[frm.pse_tos - sub].indent + indent_size;
             log_indent();
             frm.pse[frm.pse_tos].indent_tab = frm.pse[frm.pse_tos].indent;
-            skipped = true;
+            skipped                         = true;
          }
          else if (  (  chunk_is_str(pc, "(", 1)
                     && !cpd.settings[UO_indent_paren_nl].b)
