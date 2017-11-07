@@ -1,4 +1,4 @@
-// Regression 1
+// Regression 1.
 const FOO_MACRO(bar, baz::qux) & Foo() const
 {
     return m_Bar;
