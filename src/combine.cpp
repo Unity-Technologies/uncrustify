@@ -3260,7 +3260,8 @@ void combine_labels(void)
                   // Fix for #1242
                   // For MIDL_INTERFACE classes class name is tokenized as Label.
                   // Corrected the identification of Label in c style languages.
-                  if (cpd.lang_flags & (LANG_C | LANG_CPP | LANG_CS))
+                  if (  (cpd.lang_flags & (LANG_C | LANG_CPP | LANG_CS))
+                     && (!(cpd.lang_flags & LANG_OC)))
                   {
                      chunk_t *labelPrev = prev;
                      if (labelPrev->type == CT_NEWLINE)
