@@ -3267,10 +3267,7 @@ void combine_labels(void)
                      {
                         labelPrev = chunk_get_prev_ncnl(prev);
                      }
-                     if (  labelPrev->type == CT_SEMICOLON
-                        || labelPrev->type == CT_BRACE_CLOSE
-                        || labelPrev->type == CT_BRACE_OPEN
-                        || labelPrev->type == CT_CASE_COLON)
+                     if (labelPrev->type != CT_FPAREN_CLOSE)
                      {
                         set_chunk_type(cur, CT_LABEL);
                         set_chunk_type(next, CT_LABEL_COLON);
