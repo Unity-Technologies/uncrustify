@@ -4,7 +4,7 @@
 EXTERN_C const IID IID_IFileDialogEvents;
 
 MIDL_INTERFACE("973510db-7d7f-452b-8975-74a85828d354")
-IFileDialogEvents : public IUnknown
+IFileDialogEvents: public IUnknown
 {
 public:
 	virtual HRESULT STDMETHODCALLTYPE OnStuff(
