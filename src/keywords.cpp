@@ -47,13 +47,29 @@ static int kw_compare(const void *p1, const void *p2);
 static const chunk_tag_t *kw_static_first(const chunk_tag_t *tag);
 
 
-static const chunk_tag_t *kw_static_match(const chunk_tag_t *tag);
+static const chunk_tag_t *kw_static_match(const chunk_tag_t *tag, int lang_flags);
 
 /**
  * interesting static keywords - keep sorted.
  * Table includes the Name, Type, and Language flags.
+ *
+ * Let's make some "good enough" assumptions here
+ *
+ * Assume LANG_OC and LANG_CPP are always a superset of LANG_C
+ * when it comes to maintaining the basic set of known keywords
+ *
+ * For potential special cases, it's still possible to override
+ * the type inheritance for both LANG_OC and LANG_CPP separately,
+ * where as with LANG_ALLC you don't have a choice for override
+ *
+ * Certain keywords with LANG_C are obviously not really a part
+ * of C, but since they have been previously defined for LANG_C,
+ * let's not break existing behaviour
+ *
+ * Type inheritance is implemented at init_keywords()
+ *
  */
-static const chunk_tag_t keywords[] =
+static chunk_tag_t keywords[] =
 {
    // TODO: it might be useful if users could add there custom keywords to this list
    { "@catch",             CT_CATCH,            LANG_OC                                                                     },
@@ -65,7 +81,9 @@ static const chunk_tag_t keywords[] =
    { "@interface",         CT_CLASS,            LANG_JAVA                                                                   },
    { "@private",           CT_PRIVATE,          LANG_OC                                                                     },
    { "@property",          CT_OC_PROPERTY,      LANG_OC                                                                     },
+   { "@protected",         CT_PRIVATE,          LANG_OC                                                                     },
    { "@protocol",          CT_OC_PROTOCOL,      LANG_OC                                                                     },
+   { "@public",            CT_PRIVATE,          LANG_OC                                                                     },
    { "@selector",          CT_OC_SEL,           LANG_OC                                                                     },
    { "@synthesize",        CT_OC_DYNAMIC,       LANG_OC                                                                     },
    { "@throw",             CT_THROW,            LANG_OC                                                                     },
@@ -78,38 +96,46 @@ static const chunk_tag_t keywords[] =
    { "Q_FOREVER",          CT_Q_FOREVER,        LANG_CPP                                                                    }, // guy 2015-10-18
    { "Q_GADGET",           CT_Q_GADGET,         LANG_CPP                                                                    }, // guy 2016-05-04
    { "Q_OBJECT",           CT_COMMENT_EMBED,    LANG_CPP                                                                    },
-   { "_Bool",              CT_TYPE,             LANG_C | LANG_OC                                                            },
-   { "_Complex",           CT_TYPE,             LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "_Imaginary",         CT_TYPE,             LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "_Bool",              CT_TYPE,             LANG_C                                                                      },
+   { "_Complex",           CT_TYPE,             LANG_C                                                                      },
+   { "_Imaginary",         CT_TYPE,             LANG_C                                                                      },
    { "_Nonnull",           CT_QUALIFIER,        LANG_OC                                                                     },
    { "_Null_unspecified",  CT_QUALIFIER,        LANG_OC                                                                     },
    { "_Nullable",          CT_QUALIFIER,        LANG_OC                                                                     },
-   { "__DI__",             CT_DI,               LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__HI__",             CT_HI,               LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__QI__",             CT_QI,               LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__SI__",             CT_SI,               LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__asm__",            CT_ASM,              LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__attribute__",      CT_ATTRIBUTE,        LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "__DI__",             CT_DI,               LANG_C                                                                      },
+   { "__HI__",             CT_HI,               LANG_C                                                                      },
+   { "__QI__",             CT_QI,               LANG_C                                                                      },
+   { "__SI__",             CT_SI,               LANG_C                                                                      },
+   { "__asm__",            CT_ASM,              LANG_C                                                                      },
+   { "__attribute__",      CT_ATTRIBUTE,        LANG_C                                                                      },
+   { "__autoreleasing",    CT_QUALIFIER,        LANG_C                                                                      },
    { "__block",            CT_QUALIFIER,        LANG_OC                                                                     },
-   { "__const__",          CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__declspec",         CT_DECLSPEC,         LANG_C | LANG_CPP                                                           },
-   { "__except",           CT_CATCH,            LANG_C | LANG_CPP                                                           },
-   { "__finally",          CT_FINALLY,          LANG_C | LANG_CPP                                                           },
-   { "__has_include",      CT_CNG_HASINC,       LANG_C | LANG_CPP | FLAG_PP                                                 }, // clang
-   { "__has_include_next", CT_CNG_HASINCN,      LANG_C | LANG_CPP | FLAG_PP                                                 }, // clang
-   { "__inline__",         CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "__bridge",           CT_QUALIFIER,        LANG_C                                                                      },
+   { "__bridge_retained",  CT_QUALIFIER,        LANG_C                                                                      },
+   { "__bridge_transfer",  CT_QUALIFIER,        LANG_C                                                                      },
+   { "__const__",          CT_QUALIFIER,        LANG_C                                                                      },
+   { "__declspec",         CT_DECLSPEC,         LANG_C                                                                      },
+   { "__except",           CT_CATCH,            LANG_C                                                                      },
+   { "__finally",          CT_FINALLY,          LANG_C                                                                      },
+   { "__has_include",      CT_CNG_HASINC,       LANG_C | FLAG_PP                                                            }, // clang
+   { "__has_include_next", CT_CNG_HASINCN,      LANG_C | FLAG_PP                                                            }, // clang
+   { "__inline__",         CT_QUALIFIER,        LANG_C                                                                      },
    { "__nonnull",          CT_QUALIFIER,        LANG_OC                                                                     },
-   { "__nothrow__",        CT_NOTHROW,          LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "__nothrow__",        CT_NOTHROW,          LANG_C                                                                      },
    { "__null_unspecified", CT_QUALIFIER,        LANG_OC                                                                     },
    { "__nullable",         CT_QUALIFIER,        LANG_OC                                                                     },
-   { "__restrict",         CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__signed__",         CT_TYPE,             LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__thread",           CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "__restrict",         CT_QUALIFIER,        LANG_C                                                                      },
+   { "__signed__",         CT_TYPE,             LANG_C                                                                      },
+   { "__strong",           CT_QUALIFIER,        LANG_C                                                                      },
+   { "__thread",           CT_QUALIFIER,        LANG_C                                                                      },
    { "__traits",           CT_QUALIFIER,        LANG_D                                                                      },
-   { "__try",              CT_TRY,              LANG_C | LANG_CPP                                                           },
-   { "__typeof__",         CT_SIZEOF,           LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__volatile__",       CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "__word__",           CT_WORD_,            LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "__try",              CT_TRY,              LANG_C                                                                      },
+   { "__typeof",           CT_SIZEOF,           LANG_C                                                                      },
+   { "__typeof__",         CT_SIZEOF,           LANG_C                                                                      },
+   { "__unsafe_unretained",CT_QUALIFIER,        LANG_C                                                                      },
+   { "__volatile__",       CT_QUALIFIER,        LANG_C                                                                      },
+   { "__weak",             CT_QUALIFIER,        LANG_C                                                                      },
+   { "__word__",           CT_WORD_,            LANG_C                                                                      },
    { "abstract",           CT_QUALIFIER,        LANG_CS | LANG_D | LANG_JAVA | LANG_VALA | LANG_ECMA                        },
    { "add",                CT_GETSET,           LANG_CS                                                                     },
    { "alias",              CT_QUALIFIER,        LANG_D                                                                      },
@@ -118,18 +144,18 @@ static const chunk_tag_t keywords[] =
    { "and",                CT_SBOOL,            LANG_CPP                                                                    },
    { "and_eq",             CT_SASSIGN,          LANG_CPP                                                                    },
    { "as",                 CT_AS,               LANG_CS | LANG_VALA                                                         },
-   { "asm",                CT_ASM,              LANG_C | LANG_CPP | LANG_OC | LANG_D                                        },
+   { "asm",                CT_ASM,              LANG_C | LANG_D                                                             },
    { "asm",                CT_PP_ASM,           LANG_ALL | FLAG_PP                                                          },
    { "assert",             CT_ASSERT,           LANG_JAVA                                                                   },
    { "assert",             CT_FUNCTION,         LANG_D | LANG_PAWN                                                          }, // PAWN
    { "assert",             CT_PP_ASSERT,        LANG_PAWN | FLAG_PP                                                         }, // PAWN
-   { "auto",               CT_TYPE,             LANG_C | LANG_CPP | LANG_OC | LANG_D                                        },
+   { "auto",               CT_TYPE,             LANG_C | LANG_D                                                             },
    { "base",               CT_BASE,             LANG_CS | LANG_VALA                                                         },
    { "bit",                CT_TYPE,             LANG_D                                                                      },
-   { "bitand",             CT_ARITH,            LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "bitor",              CT_ARITH,            LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "bitand",             CT_ARITH,            LANG_C                                                                      },
+   { "bitor",              CT_ARITH,            LANG_C                                                                      },
    { "body",               CT_BODY,             LANG_D                                                                      },
-   { "bool",               CT_TYPE,             LANG_C | LANG_CPP | LANG_OC | LANG_CS | LANG_VALA                           },
+   { "bool",               CT_TYPE,             LANG_C | LANG_CS | LANG_VALA                                                },
    { "boolean",            CT_TYPE,             LANG_JAVA | LANG_ECMA                                                       },
    { "break",              CT_BREAK,            LANG_ALL                                                                    }, // PAWN
    { "byte",               CT_TYPE,             LANG_CS | LANG_D | LANG_JAVA | LANG_ECMA                                    },
@@ -181,7 +207,7 @@ static const chunk_tag_t keywords[] =
    { "explicit",           CT_TYPE,             LANG_CPP | LANG_CS                                                          },
    { "export",             CT_EXPORT,           LANG_CPP | LANG_D | LANG_ECMA                                               },
    { "extends",            CT_QUALIFIER,        LANG_JAVA | LANG_ECMA                                                       },
-   { "extern",             CT_EXTERN,           LANG_C | LANG_CPP | LANG_OC | LANG_CS | LANG_D | LANG_VALA                  },
+   { "extern",             CT_EXTERN,           LANG_C | LANG_CS | LANG_D | LANG_VALA                                       },
    { "false",              CT_WORD,             LANG_ALL                                                                    },
    { "file",               CT_PP_FILE,          LANG_PAWN | FLAG_PP                                                         }, // PAWN
    { "final",              CT_QUALIFIER,        LANG_CPP | LANG_D | LANG_ECMA                                               },
@@ -207,8 +233,8 @@ static const chunk_tag_t keywords[] =
    { "import",             CT_IMPORT,           LANG_D | LANG_JAVA | LANG_ECMA                                              }, // fudged to get indenting
    { "import",             CT_PP_INCLUDE,       LANG_OC | FLAG_PP                                                           }, // ObjectiveC version of include
    { "in",                 CT_IN,               LANG_D | LANG_CS | LANG_VALA | LANG_ECMA | LANG_OC                          },
-   { "include",            CT_PP_INCLUDE,       LANG_C | LANG_CPP | LANG_OC | LANG_PAWN | FLAG_PP                           }, // PAWN
-   { "inline",             CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "include",            CT_PP_INCLUDE,       LANG_C | LANG_PAWN | FLAG_PP                                                }, // PAWN
+   { "inline",             CT_QUALIFIER,        LANG_C                                                                      },
    { "inout",              CT_QUALIFIER,        LANG_D                                                                      },
    { "instanceof",         CT_SIZEOF,           LANG_JAVA | LANG_ECMA                                                       },
    { "int",                CT_TYPE,             LANG_ALLC                                                                   },
@@ -255,21 +281,22 @@ static const chunk_tag_t keywords[] =
    { "real",               CT_TYPE,             LANG_D                                                                      },
    { "ref",                CT_QUALIFIER,        LANG_CS | LANG_VALA                                                         },
    { "region",             CT_PP_REGION,        LANG_ALL | FLAG_PP                                                          },
-   { "register",           CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "register",           CT_QUALIFIER,        LANG_C                                                                      },
    { "reinterpret_cast",   CT_TYPE_CAST,        LANG_CPP                                                                    },
    { "remove",             CT_GETSET,           LANG_CS                                                                     },
-   { "restrict",           CT_QUALIFIER,        LANG_C | LANG_OC                                                            },
+   { "restrict",           CT_QUALIFIER,        LANG_C                                                                      },
    { "return",             CT_RETURN,           LANG_ALL                                                                    }, // PAWN
    { "sbyte",              CT_TYPE,             LANG_CS                                                                     },
    { "scope",              CT_D_SCOPE,          LANG_D                                                                      },
    { "sealed",             CT_QUALIFIER,        LANG_CS                                                                     },
    { "section",            CT_PP_SECTION,       LANG_PAWN | FLAG_PP                                                         }, // PAWN
+   { "self",               CT_THIS,             LANG_OC                                                                     },
    { "set",                CT_GETSET,           LANG_CS | LANG_VALA                                                         },
    { "short",              CT_TYPE,             LANG_ALLC                                                                   },
    { "signal",             CT_PRIVATE,          LANG_VALA                                                                   },
    { "signals",            CT_PRIVATE,          LANG_CPP                                                                    },
-   { "signed",             CT_TYPE,             LANG_C | LANG_CPP | LANG_OC                                                 },
-   { "sizeof",             CT_SIZEOF,           LANG_C | LANG_CPP | LANG_OC | LANG_CS | LANG_VALA | LANG_PAWN               }, // PAWN
+   { "signed",             CT_TYPE,             LANG_C                                                                      },
+   { "sizeof",             CT_SIZEOF,           LANG_C | LANG_CS | LANG_VALA | LANG_PAWN                                    }, // PAWN
    { "sleep",              CT_SIZEOF,           LANG_PAWN                                                                   }, // PAWN
    { "stackalloc",         CT_NEW,              LANG_CS                                                                     },
    { "state",              CT_STATE,            LANG_PAWN                                                                   }, // PAWN
@@ -278,7 +305,7 @@ static const chunk_tag_t keywords[] =
    { "stock",              CT_STOCK,            LANG_PAWN                                                                   }, // PAWN
    { "strictfp",           CT_QUALIFIER,        LANG_JAVA                                                                   },
    { "string",             CT_TYPE,             LANG_CS | LANG_VALA                                                         },
-   { "struct",             CT_STRUCT,           LANG_C | LANG_CPP | LANG_OC | LANG_CS | LANG_D | LANG_VALA                  },
+   { "struct",             CT_STRUCT,           LANG_C | LANG_CS | LANG_D | LANG_VALA                                       },
    { "super",              CT_SUPER,            LANG_D | LANG_JAVA | LANG_ECMA                                              },
    { "switch",             CT_SWITCH,           LANG_ALL                                                                    }, // PAWN
    { "synchronized",       CT_QUALIFIER,        LANG_D | LANG_ECMA                                                          },
@@ -292,30 +319,30 @@ static const chunk_tag_t keywords[] =
    { "true",               CT_WORD,             LANG_ALL                                                                    },
    { "try",                CT_TRY,              LANG_CPP | LANG_CS | LANG_D | LANG_JAVA | LANG_ECMA | LANG_VALA             },
    { "tryinclude",         CT_PP_INCLUDE,       LANG_PAWN | FLAG_PP                                                         }, // PAWN
-   { "typedef",            CT_TYPEDEF,          LANG_C | LANG_CPP | LANG_D | LANG_OC                                        },
+   { "typedef",            CT_TYPEDEF,          LANG_C | LANG_D                                                             },
    { "typeid",             CT_SIZEOF,           LANG_CPP | LANG_D                                                           },
    { "typename",           CT_TYPENAME,         LANG_CPP                                                                    },
-   { "typeof",             CT_SIZEOF,           LANG_C | LANG_CPP | LANG_OC | LANG_CS | LANG_D | LANG_VALA | LANG_ECMA      },
+   { "typeof",             CT_SIZEOF,           LANG_C | LANG_CS | LANG_D | LANG_VALA | LANG_ECMA                           },
    { "ubyte",              CT_TYPE,             LANG_D                                                                      },
    { "ucent",              CT_TYPE,             LANG_D                                                                      },
    { "uint",               CT_TYPE,             LANG_CS | LANG_VALA | LANG_D                                                },
    { "ulong",              CT_TYPE,             LANG_CS | LANG_VALA | LANG_D                                                },
    { "unchecked",          CT_QUALIFIER,        LANG_CS                                                                     },
    { "undef",              CT_PP_UNDEF,         LANG_ALL | FLAG_PP                                                          }, // PAWN
-   { "union",              CT_UNION,            LANG_C | LANG_CPP | LANG_OC | LANG_D                                        },
+   { "union",              CT_UNION,            LANG_C | LANG_D                                                             },
    { "unittest",           CT_UNITTEST,         LANG_D                                                                      },
    { "unsafe",             CT_UNSAFE,           LANG_CS                                                                     },
-   { "unsigned",           CT_TYPE,             LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "unsigned",           CT_TYPE,             LANG_C                                                                      },
    { "ushort",             CT_TYPE,             LANG_CS | LANG_VALA | LANG_D                                                },
    { "using",              CT_USING,            LANG_CPP | LANG_CS | LANG_VALA                                              },
    { "var",                CT_TYPE,             LANG_VALA | LANG_ECMA                                                       },
    { "version",            CT_D_VERSION,        LANG_D                                                                      },
    { "virtual",            CT_QUALIFIER,        LANG_CPP | LANG_CS | LANG_VALA                                              },
    { "void",               CT_TYPE,             LANG_ALLC                                                                   },
-   { "volatile",           CT_QUALIFIER,        LANG_C | LANG_CPP | LANG_OC | LANG_CS | LANG_JAVA | LANG_ECMA               },
+   { "volatile",           CT_QUALIFIER,        LANG_C | LANG_CS | LANG_JAVA | LANG_ECMA                                    },
    { "volatile",           CT_VOLATILE,         LANG_D                                                                      },
    { "wchar",              CT_TYPE,             LANG_D                                                                      },
-   { "wchar_t",            CT_TYPE,             LANG_C | LANG_CPP | LANG_OC                                                 },
+   { "wchar_t",            CT_TYPE,             LANG_C                                                                      },
    { "weak",               CT_QUALIFIER,        LANG_VALA                                                                   },
    { "when",               CT_WHEN,             LANG_CS                                                                     },
    { "where",              CT_WHERE,            LANG_CS                                                                     },
@@ -328,6 +355,34 @@ static const chunk_tag_t keywords[] =
 
 void init_keywords()
 {
+   /* Please read comments above keywords array */
+
+   for (int idx = 1; idx < (int)ARRAY_SIZE(keywords); idx++)
+   {
+      chunk_tag_t *tag = &keywords[idx];
+
+      if ((tag->lang_flags == LANG_ALL) || (tag->lang_flags == LANG_ALLC))
+      {
+         continue;
+      }
+
+      if ((tag->lang_flags & LANG_C) != 0)
+      {
+         int lang_flags = LANG_OC;
+         const chunk_tag_t *probe = kw_static_match(tag, lang_flags);
+         if (probe == NULL)
+         {
+            tag->lang_flags |= lang_flags;
+         }
+
+         lang_flags = LANG_CPP;
+         probe = kw_static_match(tag, lang_flags);
+         if (probe == NULL)
+         {
+            tag->lang_flags |= lang_flags;
+         }
+      }
+   }
 }
 
 
@@ -414,7 +469,7 @@ static const chunk_tag_t *kw_static_first(const chunk_tag_t *tag)
 }
 
 
-static const chunk_tag_t *kw_static_match(const chunk_tag_t *tag)
+static const chunk_tag_t *kw_static_match(const chunk_tag_t *tag, int lang_flags)
 {
    bool in_pp = (  cpd.in_preproc != CT_NONE
                 && cpd.in_preproc != CT_PP_DEFINE);
@@ -425,7 +480,7 @@ static const chunk_tag_t *kw_static_match(const chunk_tag_t *tag)
    {
       bool pp_iter = (iter->lang_flags & FLAG_PP) != 0; // forcing value to bool
       if (  (strcmp(iter->tag, tag->tag) == 0)
-         && (cpd.lang_flags & iter->lang_flags)
+         && (lang_flags & iter->lang_flags)
          && in_pp == pp_iter)
       {
          return(iter);
@@ -463,7 +518,7 @@ c_token_t find_keyword_type(const char *word, size_t len, bool enableDynamicSubs
 
    if (p_ret != nullptr)
    {
-      p_ret = kw_static_match(p_ret);
+      p_ret = kw_static_match(p_ret, cpd.lang_flags);
    }
    return((p_ret != nullptr) ? p_ret->type : CT_WORD);
 }
