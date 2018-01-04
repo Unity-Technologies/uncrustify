@@ -5,7 +5,7 @@
 
 @implementation TestClass
 
-- (void) {
+- (void)method1 {
     [session mergeCommonMovieItems:^(NSURL *exportURL, NSError *exportError) {
         NSDictionary *settings = [self getSettings];
 
@@ -67,6 +67,23 @@
     __block void *testMethodForSelectorBlock = TestFunction(encoderTest, testMethodForSelectorSel, ^id (__typeof(encoderTest) self, SEL aSelector) {
         NSLog(@"OK");
     });
+}
+
+- (void)method2 {
+    [TestClassRequest performMethod:TestClassRequestMethodPOST
+                    responseHandler:^(NSURLResponse *response, NSData *responseData, NSError *error) {
+                        [self checkPermissions:connection withCallback:^(NSError *error, id data) {
+                            [self bar];
+                        }];
+                    }];
+}
+
+- (void)method3 {
+    [TestClassRequest performMethod:TestClassRequestMethodPOST responseHandler:^(NSURLResponse *response, NSData *responseData, NSError *error) {
+        [self checkPermissions:connection withCallback:^(NSError *error, id data) {
+            [self bar];
+        }];
+    }];
 }
 
 @end
