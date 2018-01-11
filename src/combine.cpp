@@ -2553,7 +2553,7 @@ static void fix_casts(chunk_t *start)
    {
       LOG_FMT(LCASTS, " [%s]", get_token_name(pc->type));
 
-      if (pc->type == CT_WORD)
+      if (pc->type == CT_WORD || (last && last->type == CT_ANGLE_CLOSE && pc->type == CT_DC_MEMBER))
       {
          word_count++;
       }
