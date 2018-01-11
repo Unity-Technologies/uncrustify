@@ -2030,6 +2030,12 @@ static argval_t do_space(chunk_t *first, chunk_t *second, int &min_sp, bool comp
 
    if (first->parent_type == CT_TYPE_CAST)
    {
+      if (first->flags & PCF_IN_OC_MSG)
+      {
+         log_rule("FORCE");
+         return(AV_FORCE);
+      }
+
       log_rule("sp_after_cast");
       return(cpd.settings[UO_sp_after_cast].a);
    }
