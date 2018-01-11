@@ -1544,7 +1544,9 @@ static argval_t do_space(chunk_t *first, chunk_t *second, int &min_sp, bool comp
 
    if (first->type == CT_CLASS_COLON)
    {
-      if (first->parent_type == CT_OC_CLASS && !chunk_get_prev_type(first, CT_OC_INTF, first->level, scope_e::ALL))
+      if (  first->parent_type == CT_OC_CLASS
+         && (  !chunk_get_prev_type(first, CT_OC_INTF, first->level, scope_e::ALL)
+            && !chunk_get_prev_type(first, CT_OC_IMPL, first->level, scope_e::ALL)))
       {
          if (cpd.settings[UO_sp_after_oc_colon].a != AV_IGNORE)
          {
@@ -1561,12 +1563,17 @@ static argval_t do_space(chunk_t *first, chunk_t *second, int &min_sp, bool comp
    }
    if (second->type == CT_CLASS_COLON)
    {
-      if (second->parent_type == CT_OC_CLASS && !chunk_get_prev_type(second, CT_OC_INTF, second->level, scope_e::ALL))
+      if (  second->parent_type == CT_OC_CLASS
+         && (  !chunk_get_prev_type(second, CT_OC_INTF, second->level, scope_e::ALL)
+            && !chunk_get_prev_type(second, CT_OC_IMPL, second->level, scope_e::ALL)))
       {
-         if (cpd.settings[UO_sp_before_oc_colon].a != AV_IGNORE)
+         if (second->parent_type == CT_OC_CLASS && !chunk_get_prev_type(second, CT_OC_INTF, second->level, scope_e::ALL))
          {
-            log_rule("sp_before_oc_colon");
-            return(cpd.settings[UO_sp_before_oc_colon].a);
+            if (cpd.settings[UO_sp_before_oc_colon].a != AV_IGNORE)
+            {
+               log_rule("sp_before_oc_colon");
+               return(cpd.settings[UO_sp_before_oc_colon].a);
+            }
          }
       }
 
