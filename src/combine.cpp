@@ -545,6 +545,33 @@ void flag_series(chunk_t *start, chunk_t *end, UINT64 set_flags, UINT64 clr_flag
    }
 }
 
+static bool check_inside_preprocessor_if(chunk_t *po)
+{
+   chunk_t *poParent = po->prev;
+
+   bool endif_found = false;
+   bool if_found = false;
+
+   while (poParent != nullptr)
+   {
+      endif_found = poParent->type == CT_PP_ENDIF;
+      if_found = poParent->type == CT_PP_IF || poParent->type == CT_PP_ELSE;
+
+      if (endif_found)
+      {
+         return false;
+      }
+
+      if (if_found)
+      {
+         return true;
+      }
+
+      poParent = poParent->prev;
+   }
+
+   return false;
+}
 
 static chunk_t *flag_parens(chunk_t *po, UINT64 flags, c_token_t opentype,
                             c_token_t parenttype, bool parent_all)
@@ -555,10 +582,19 @@ static chunk_t *flag_parens(chunk_t *po, UINT64 flags, c_token_t opentype,
    paren_close = chunk_skip_to_match(po, scope_e::PREPROC);
    if (paren_close == nullptr)
    {
-      LOG_FMT(LERR, "%s(%d): no match for '%s' at [%zu:%zu]",
-              __func__, __LINE__, po->text(), po->orig_line, po->orig_col);
-      log_func_stack_inline(LERR);
-      cpd.error_count++;
+      //If the matching of a parenthesis fails while we're in a #ifdef/#elif pre-processor,
+      //treat it as not an error since uncrustify does not evaulate
+      //if a #ifdef has a true/false value to match
+      bool mute_error = cpd.settings[UO_pp_ignore_matching_braces_in_ifdef].b && check_inside_preprocessor_if(po);
+
+      if (!mute_error)
+      {
+         LOG_FMT(LERR, "%s(%d): no match for '%s' at [%zu:%zu]",
+            __func__, __LINE__, po->text(), po->orig_line, po->orig_col);
+         log_func_stack_inline(LERR);
+         cpd.error_count++;
+      }
+
       return(nullptr);
    }
 

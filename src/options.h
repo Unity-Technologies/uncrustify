@@ -873,6 +873,8 @@ enum uncrustify_options
                              // Only applies to the indent of the preprocesser that the extern block is directly inside of
    UO_pp_indent_brace,       // Whether to indent braces directly inside #if, #else, and #endif
                              // Only applies to the indent of the preprocesser that the braces are directly inside of
+   UO_pp_ignore_matching_braces_in_ifdef, //Since #ifdef's are not evaluated, we can't know if a brace will match. 
+                                          //This option mutes errors with regard to unmatching braces inside an #ifdef
 
    // group: UG_sort_includes, "Sort includes options"                                              11
    UO_include_category_0,  //

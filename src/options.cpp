@@ -1742,6 +1742,9 @@ void register_options(void)
    unc_add_option("pp_indent_brace", UO_pp_indent_brace, AT_BOOL,
                   "Whether to indent braces directly inside #if, #else, and #endif.\n"
                   "Only applies to the indent of the preprocesser that the braces are directly inside of.");
+   unc_add_option("pp_ignore_matching_braces_in_ifdef", UO_pp_ignore_matching_braces_in_ifdef, AT_BOOL,
+                  "Since #ifdef's are not evaluated for code formatting, we can't know if a brace will match.\n"
+                  "Only applies to brace matching inside #ifdef/#elif blocks");
 
    unc_begin_group(UG_sort_includes, "Sort includes options");
    unc_add_option("include_category_0", UO_include_category_0, AT_STRING,
