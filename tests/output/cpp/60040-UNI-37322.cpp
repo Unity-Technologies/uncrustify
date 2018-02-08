@@ -6,12 +6,19 @@ namespace b
 #endif
 
 void c();
+{
+    if (a > b)
+    {
+        a++;
+    }
+}
 
 #ifdef __cplusplus
 }
 }
 #endif
 
+//Try with nested ifdefs
 #ifdef FOO2
 namespace aa
 {
@@ -28,19 +35,17 @@ void cc();
 }
 #endif
 
+//try with extern
 #ifdef __cplusplus
-namespace a
+namespace aaa
 {
-extern  "C"
-{
+    extern  "C"
+    {
 #endif
 
-void c();
+void ccc();
 
 #ifdef __cplusplus
 }
 }
 #endif
-
-
-
