@@ -2,7 +2,7 @@
 # This is a wrapper cmake script to run one uncrustify test because cmake add_test
 # can't launch multiple processes and so it doesn't allow a complex test scenario.
 #
-set(CTEST_OUTPUT_ON_FAILURE 1)
+
 cmake_minimum_required(VERSION 2.8)
 if(NOT TEST_PROGRAM)
   message(FATAL_ERROR "Variable TEST_PROGRAM not defined")
@@ -45,7 +45,7 @@ set(STDERR_PASS_2 ERR-2-${test_uuid}.txt)
 
 # first pass
 execute_process(
-  COMMAND ${TEST_PROGRAM} -l ${TEST_LANG} -c ${TEST_CONFIG} -f ${TEST_INPUT} "-o${TEST_RESULT}" "--tokentok_${TEST_RESULT}" "--parentptok_${TEST_RESULT} -F"
+  COMMAND ${TEST_PROGRAM} -l ${TEST_LANG} -c ${TEST_CONFIG} -f ${TEST_INPUT} "-o${TEST_RESULT}" "--tokentok_${TEST_RESULT}" "--parentptok_${TEST_RESULT}"
     WORKING_DIRECTORY ${TEST_DIR}
     RESULT_VARIABLE uncrustify_error_code
     OUTPUT_QUIET
