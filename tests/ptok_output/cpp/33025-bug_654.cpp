@@ -1,0 +1,80 @@
+Line [Parent]            Text
+1    [NONE]              A
+1    [FUNC_CALL]         (
+1    [NONE]              b
+1    [NONE]              ,
+1    [NONE]              c
+1    [NONE]              ,
+1    [NONE]              d
+1    [FUNC_CALL]         )
+1    [NONE]              ;
+1    [NONE]              
+2    [NONE]              connect
+2    [FUNC_CALL]         (
+2    [NONE]              &
+2    [NONE]              mapper
+2    [NONE]              ,
+2    [NONE]              SIGNAL
+2    [FUNC_CALL]         (
+2    [NONE]              mapped
+2    [FUNC_CALL]         (
+2    [NONE]              Q1
+2    [NONE]              &
+2    [FUNC_CALL]         )
+2    [FUNC_CALL]         )
+2    [NONE]              ,
+2    [NONE]              this
+2    [NONE]              ,
+2    [NONE]              SLOT
+2    [FUNC_CALL]         (
+2    [NONE]              onSomeEvent
+2    [FUNC_CALL]         (
+2    [NONE]              const
+2    [NONE]              Q2
+2    [NONE]              &
+2    [FUNC_CALL]         )
+2    [FUNC_CALL]         )
+2    [FUNC_CALL]         )
+2    [NONE]              ;
+2    [NONE]              
+3    [NONE]              connect
+3    [FUNC_CALL]         (
+3    [NONE]              &
+3    [NONE]              mapper
+3    [NONE]              ,
+3    [NONE]              
+4    [NONE]              SIGNAL
+4    [FUNC_CALL]         (
+4    [NONE]              mapped
+4    [FUNC_CALL]         (
+4    [NONE]              Q1
+4    [NONE]              &
+4    [FUNC_CALL]         )
+4    [FUNC_CALL]         )
+4    [NONE]              ,
+4    [NONE]              
+5    [NONE]              this
+5    [NONE]              ,
+5    [NONE]              
+6    [NONE]              SLOT
+6    [FUNC_CALL]         (
+6    [NONE]              onSomeEvent
+6    [FUNC_CALL]         (
+6    [NONE]              const
+6    [NONE]              Q2
+6    [NONE]              &
+6    [FUNC_CALL]         )
+6    [FUNC_CALL]         )
+6    [FUNC_CALL]         )
+6    [NONE]              ;
+6    [NONE]              
+7    [NONE]              A
+7    [FUNC_CALL]         (
+7    [NONE]              b
+7    [NONE]              ,
+7    [NONE]              c
+7    [NONE]              ,
+7    [NONE]              d
+7    [FUNC_CALL]         )
+7    [NONE]              ;
+7    [NONE]              

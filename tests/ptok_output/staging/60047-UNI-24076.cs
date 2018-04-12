@@ -1,0 +1,20 @@
+Line [Parent]            Text
+1    [FUNC_DEF]          inline
+1    [FUNC_DEF]          double
+1    [NONE]              GetAudioBitrateForQuality
+1    [FUNC_DEF]          (
+1    [NONE]              double
+1    [NONE]              f
+1    [FUNC_DEF]          )
+1    [FUNC_DEF]          {
+1    [NONE]              return
+1    [NONE]              56000
+1    [NONE]              +
+1    [NONE]              200000
+1    [NONE]              *
+1    [NONE]              (
+1    [NONE]              f
+1    [NONE]              )
+1    [NONE]              ;
+1    [FUNC_DEF]          }
+1    [NONE]              

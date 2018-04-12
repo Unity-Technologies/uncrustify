@@ -1,0 +1,29 @@
+Line [Parent]            Text
+1    [PP_IF]             #
+1    [NONE]              if
+1    [NONE]              AMXX_VERSION_NUM
+1    [NONE]              <
+1    [NONE]              183
+1    [NONE]              
+2    [NONE]              public
+2    [NONE]              client_disconnect
+2    [FUNC_DEF]          (
+2    [NONE]              player_id
+2    [FUNC_DEF]          )
+2    [NONE]              
+3    [PP_ELSE]           #
+3    [NONE]              else
+3    [NONE]              
+4    [NONE]              public
+4    [NONE]              client_disconnected
+4    [FUNC_DEF]          (
+4    [NONE]              player_id
+4    [FUNC_DEF]          )
+4    [NONE]              
+5    [PP_ENDIF]          #
+5    [NONE]              endif
+5    [NONE]              
+6    [FUNC_DEF]          {
+6    [NONE]              
+8    [FUNC_DEF]          }
+8    [NONE]              

@@ -1,0 +1,20 @@
+Line [Parent]            Text
+1    [NONE]              boost
+1    [NONE]              ::
+1    [NONE]              iostreams
+1    [NONE]              ::
+1    [NONE]              mapped_file_source
+1    [NONE]              pdf
+1    [FUNC_CTOR_VAR]     (
+1    [C_CAST]            (
+1    [C_CAST]            LPSTR
+1    [C_CAST]            )
+1    [NONE]              ATL
+1    [NONE]              ::
+1    [NONE]              CW2A
+1    [FUNC_CALL]         (
+1    [NONE]              sTemp
+1    [FUNC_CALL]         )
+1    [FUNC_CTOR_VAR]     )
+1    [FUNC_CTOR_VAR]     ;
+1    [NONE]              

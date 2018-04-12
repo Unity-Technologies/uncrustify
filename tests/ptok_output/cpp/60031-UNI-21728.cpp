@@ -1,0 +1,22 @@
+Line [Parent]            Text
+1    [NONE]              friend
+1    [FUNC_PROTO]        std
+1    [FUNC_PROTO]        ::
+1    [FUNC_PROTO]        ostream
+1    [FUNC_PROTO]        &
+1    [FUNC_PROTO]        operator
+1    [OPERATOR]          <<
+1    [FUNC_PROTO]        (
+1    [NONE]              std
+1    [NONE]              ::
+1    [NONE]              ostream
+1    [NONE]              &
+1    [NONE]              os
+1    [NONE]              ,
+1    [NONE]              const
+1    [NONE]              ScriptingObjectPtr
+1    [NONE]              &
+1    [NONE]              o
+1    [FUNC_PROTO]        )
+1    [FUNC_PROTO]        ;
+1    [NONE]              

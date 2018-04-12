@@ -1,0 +1,24 @@
+Line [Token]             Text
+1    [TYPE]              auto
+1    [WORD]              p
+1    [ASSIGN]            =
+1    [TYPE]              std
+1    [DC_MEMBER]         ::
+1    [FUNC_CALL]         make_pair
+1    [FPAREN_OPEN]       (
+1    [WORD]              r
+1    [ARITH]             *
+1    [FUNC_CALL]         cos
+1    [FPAREN_OPEN]       (
+1    [WORD]              a
+1    [FPAREN_CLOSE]      )
+1    [COMMA]             ,
+1    [WORD]              r
+1    [ARITH]             *
+1    [FUNC_CALL]         sin
+1    [FPAREN_OPEN]       (
+1    [WORD]              a
+1    [FPAREN_CLOSE]      )
+1    [FPAREN_CLOSE]      )
+1    [SEMICOLON]         ;
+1    [NEWLINE]           

@@ -1,0 +1,41 @@
+Line [Token]             Text
+1    [SQUARE_OPEN]       [
+1    [OC_MSG_CLASS]      obj
+1    [OC_MSG_FUNC]       doSomething
+1    [OC_COLON]          :
+1    [NUMBER]            0
+1    [OC_MSG_NAME]       withArgs
+1    [OC_COLON]          :
+1    [STRING]            @""
+1    [SQUARE_CLOSE]      ]
+1    [SEMICOLON]         ;
+1    [NEWLINE]           
+2    [SQUARE_OPEN]       [
+2    [OC_MSG_CLASS]      @""
+2    [OC_MSG_FUNC]       doSomething
+2    [OC_COLON]          :
+2    [NUMBER]            0
+2    [OC_MSG_NAME]       withArgs
+2    [OC_COLON]          :
+2    [STRING]            @""
+2    [SQUARE_CLOSE]      ]
+2    [SEMICOLON]         ;
+2    [NEWLINE]           
+3    [TYPE]              NSString
+3    [PTR_TYPE]          *
+3    [WORD]              result
+3    [ASSIGN]            =
+3    [PAREN_OPEN]        (
+3    [TYPE]              id
+3    [PAREN_CLOSE]       )
+3    [SQUARE_OPEN]       [
+3    [OC_MSG_CLASS]      obj
+3    [OC_MSG_FUNC]       arg
+3    [OC_COLON]          :
+3    [TYPE]              param
+3    [OC_MSG_NAME]       value
+3    [OC_COLON]          :
+3    [NUMBER]            3
+3    [SQUARE_CLOSE]      ]
+3    [SEMICOLON]         ;
+3    [NEWLINE]           

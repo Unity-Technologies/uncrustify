@@ -1,0 +1,20 @@
+Line [Parent]            Text
+1    [NONE]              CGFloat
+1    [NONE]              fontSize
+1    [NONE]              =
+1    [NONE]              floorf
+1    [FUNC_CALL]         (
+1    [OC_MSG]            [
+1    [NONE]              font
+1    [NONE]              pointSize
+1    [OC_MSG]            ]
+1    [NONE]              *
+1    [OC_MSG]            [
+1    [NONE]              self
+1    [NONE]              tileContentScale
+1    [OC_MSG]            ]
+1    [NONE]              +
+1    [NONE]              0.5
+1    [FUNC_CALL]         )
+1    [NONE]              ;
+1    [NONE]              

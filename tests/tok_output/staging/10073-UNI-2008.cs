@@ -1,0 +1,31 @@
+Line [Token]             Text
+1    [TYPE]              Utils
+1    [MEMBER]            .
+1    [TYPE]              Curve
+1    [WORD]              attribute
+1    [ASSIGN]            =
+1    [PAREN_OPEN]        (
+1    [WORD]              Utils
+1    [MEMBER]            .
+1    [WORD]              Curve
+1    [PAREN_CLOSE]       )
+1    [WORD]              base
+1    [MEMBER]            .
+1    [WORD]              attribute
+1    [SEMICOLON]         ;
+1    [NEWLINE]           
+2    [TYPE]              Utils
+2    [MEMBER]            .
+2    [TYPE]              Curve
+2    [WORD]              attribute
+2    [ASSIGN]            =
+2    [PAREN_OPEN]        (
+2    [WORD]              Utils
+2    [MEMBER]            .
+2    [WORD]              Curve
+2    [PAREN_CLOSE]       )
+2    [WORD]              base
+2    [MEMBER]            .
+2    [WORD]              attribute
+2    [SEMICOLON]         ;
+2    [NEWLINE]           

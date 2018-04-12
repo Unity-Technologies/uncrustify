@@ -1,0 +1,80 @@
+Line [Token]             Text
+1    [FUNC_CALL]         A
+1    [FPAREN_OPEN]       (
+1    [WORD]              b
+1    [COMMA]             ,
+1    [WORD]              c
+1    [COMMA]             ,
+1    [WORD]              d
+1    [FPAREN_CLOSE]      )
+1    [SEMICOLON]         ;
+1    [NEWLINE]           
+2    [FUNC_CALL]         connect
+2    [FPAREN_OPEN]       (
+2    [ADDR]              &
+2    [WORD]              mapper
+2    [COMMA]             ,
+2    [FUNC_CALL]         SIGNAL
+2    [FPAREN_OPEN]       (
+2    [FUNC_CALL]         mapped
+2    [FPAREN_OPEN]       (
+2    [WORD]              Q1
+2    [BYREF]             &
+2    [FPAREN_CLOSE]      )
+2    [FPAREN_CLOSE]      )
+2    [COMMA]             ,
+2    [THIS]              this
+2    [COMMA]             ,
+2    [FUNC_CALL]         SLOT
+2    [FPAREN_OPEN]       (
+2    [FUNC_CALL]         onSomeEvent
+2    [FPAREN_OPEN]       (
+2    [QUALIFIER]         const
+2    [WORD]              Q2
+2    [BYREF]             &
+2    [FPAREN_CLOSE]      )
+2    [FPAREN_CLOSE]      )
+2    [FPAREN_CLOSE]      )
+2    [SEMICOLON]         ;
+2    [NEWLINE]           
+3    [FUNC_CALL]         connect
+3    [FPAREN_OPEN]       (
+3    [ADDR]              &
+3    [WORD]              mapper
+3    [COMMA]             ,
+3    [NEWLINE]           
+4    [FUNC_CALL]         SIGNAL
+4    [FPAREN_OPEN]       (
+4    [FUNC_CALL]         mapped
+4    [FPAREN_OPEN]       (
+4    [WORD]              Q1
+4    [BYREF]             &
+4    [FPAREN_CLOSE]      )
+4    [FPAREN_CLOSE]      )
+4    [COMMA]             ,
+4    [NEWLINE]           
+5    [THIS]              this
+5    [COMMA]             ,
+5    [NEWLINE]           
+6    [FUNC_CALL]         SLOT
+6    [FPAREN_OPEN]       (
+6    [FUNC_CALL]         onSomeEvent
+6    [FPAREN_OPEN]       (
+6    [QUALIFIER]         const
+6    [WORD]              Q2
+6    [BYREF]             &
+6    [FPAREN_CLOSE]      )
+6    [FPAREN_CLOSE]      )
+6    [FPAREN_CLOSE]      )
+6    [SEMICOLON]         ;
+6    [NEWLINE]           
+7    [FUNC_CALL]         A
+7    [FPAREN_OPEN]       (
+7    [WORD]              b
+7    [COMMA]             ,
+7    [WORD]              c
+7    [COMMA]             ,
+7    [WORD]              d
+7    [FPAREN_CLOSE]      )
+7    [SEMICOLON]         ;
+7    [NEWLINE]           

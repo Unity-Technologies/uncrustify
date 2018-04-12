@@ -15,6 +15,11 @@
 //! This renders the chunk list to a file.
 void output_parsed(FILE *pfile);
 
+//! This renders the token list to a file.
+void token_output_parsed(FILE *pfile);
+
+//! This renders the parent token list to a file.
+void parent_token_output_parsed(FILE *pfile);
 
 //! This renders the chunk list to a file.
 void output_text(FILE *pfile);

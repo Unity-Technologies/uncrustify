@@ -1,0 +1,29 @@
+Line [Token]             Text
+1    [PREPROC]           #
+1    [PP_IF]             if
+1    [WORD]              AMXX_VERSION_NUM
+1    [COMPARE]           <
+1    [NUMBER]            183
+1    [NEWLINE]           
+2    [QUALIFIER]         public
+2    [FUNC_DEF]          client_disconnect
+2    [FPAREN_OPEN]       (
+2    [WORD]              player_id
+2    [FPAREN_CLOSE]      )
+2    [NEWLINE]           
+3    [PREPROC]           #
+3    [PP_ELSE]           else
+3    [NEWLINE]           
+4    [QUALIFIER]         public
+4    [FUNC_DEF]          client_disconnected
+4    [FPAREN_OPEN]       (
+4    [WORD]              player_id
+4    [FPAREN_CLOSE]      )
+4    [NEWLINE]           
+5    [PREPROC]           #
+5    [PP_ENDIF]          endif
+5    [NEWLINE]           
+6    [BRACE_OPEN]        {
+6    [NEWLINE]           
+8    [BRACE_CLOSE]       }
+8    [NEWLINE]           

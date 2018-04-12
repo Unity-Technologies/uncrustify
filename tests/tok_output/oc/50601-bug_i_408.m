@@ -1,0 +1,20 @@
+Line [Token]             Text
+1    [TYPE]              CGFloat
+1    [WORD]              fontSize
+1    [ASSIGN]            =
+1    [FUNC_CALL]         floorf
+1    [FPAREN_OPEN]       (
+1    [SQUARE_OPEN]       [
+1    [OC_MSG_CLASS]      font
+1    [OC_MSG_FUNC]       pointSize
+1    [SQUARE_CLOSE]      ]
+1    [ARITH]             *
+1    [SQUARE_OPEN]       [
+1    [OC_MSG_CLASS]      self
+1    [OC_MSG_FUNC]       tileContentScale
+1    [SQUARE_CLOSE]      ]
+1    [ARITH]             +
+1    [NUMBER_FP]         0.5
+1    [FPAREN_CLOSE]      )
+1    [SEMICOLON]         ;
+1    [NEWLINE]           

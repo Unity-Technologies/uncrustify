@@ -104,7 +104,7 @@ static bool ends_with(const char *filename, const char *tag, bool case_sensitive
  * @param no_backup    don't create a backup, if filename_out == filename_in
  * @param keep_mtime   don't change the mtime (dangerous)
  */
-static void do_source_file(const char *filename_in, const char *filename_out, const char *parsed_file, bool no_backup, bool keep_mtime);
+static void do_source_file(const char *filename_in, const char *filename_out, const char *parsed_file, const char *token_output_file, const char *ptoken_output_file, bool no_backup, bool keep_mtime);
 
 
 static void add_file_header();
@@ -159,6 +159,9 @@ static int load_mem_file_config(const char *filename, file_mem &fm);
 
 //! print uncrustify version number and terminate
 static void version_exit(void);
+
+
+static void make_folders(const string &filename);
 
 
 const char *path_basename(const char *path)
@@ -232,6 +235,8 @@ void usage_exit(const char *msg, const char *argv0, int code)
            " -f FILE      : Process the single file FILE (output to stdout, use with -o).\n"
            " -o FILE      : Redirect stdout to FILE.\n"
            " -F FILE      : Read files to process from FILE, one filename per line (- is stdin).\n"
+           " --token FILE : Redirect tokens to FILE.\n"
+           " --parent FILE: Redirect parent tokens to FILE.\n"
            " --check      : Do not output the new text, instead verify that nothing changes when\n"
            "                the file(s) are processed.\n"
            "                The status of every file is printed to stderr.\n"
@@ -485,6 +490,20 @@ int main(int argc, char *argv[])
       LOG_FMT(LNOTE, "Will export parsed data to: %s\n", parsed_file);
    }
 
+   // Get the token file name
+   const char *token_output_file = arg.Param("--token");
+   if (token_output_file != nullptr)
+   {
+      make_folders(token_output_file);
+      LOG_FMT(LNOTE, "Will export token data to: %s\n", token_output_file);
+   }
+   // Get the token file name
+   const char *ptoken_output_file = arg.Param("--parent");
+   if (ptoken_output_file != nullptr)
+   {
+      make_folders(ptoken_output_file);
+      LOG_FMT(LNOTE, "Will export parent token data to: %s\n", ptoken_output_file);
+   }
    // Enable log severities
    if (arg.Present("-s") || arg.Present("--show"))
    {
@@ -826,12 +845,12 @@ int main(int argc, char *argv[])
               (int)fm.raw.size(), (int)fm.data.size(),
               language_name_from_flags(cpd.lang_flags));
 
-      uncrustify_file(fm, stdout, parsed_file);
+      uncrustify_file(fm, stdout, parsed_file, token_output_file, ptoken_output_file);
    }
    else if (source_file != nullptr)
    {
       // Doing a single file
-      do_source_file(source_file, output_file, parsed_file, no_backup, keep_mtime);
+      do_source_file(source_file, output_file, parsed_file, token_output_file, ptoken_output_file, no_backup, keep_mtime);
    }
    else
    {
@@ -852,7 +871,7 @@ int main(int argc, char *argv[])
          char outbuf[1024];
          do_source_file(p_arg,
                         make_output_filename(outbuf, sizeof(outbuf), p_arg, prefix, suffix),
-                        nullptr, no_backup, keep_mtime);
+                        nullptr, nullptr, nullptr, no_backup, keep_mtime);
       }
 
       if (source_list != nullptr)
@@ -925,7 +944,7 @@ static void process_source_list(const char *source_list,
          char outbuf[1024];
          do_source_file(fname,
                         make_output_filename(outbuf, sizeof(outbuf), fname, prefix, suffix),
-                        nullptr, no_backup, keep_mtime);
+                        nullptr, nullptr, nullptr, no_backup, keep_mtime);
       }
    }
 
@@ -1276,6 +1295,8 @@ static bool bout_content_matches(const file_mem &fm, bool report_status)
 static void do_source_file(const char *filename_in,
                            const char *filename_out,
                            const char *parsed_file,
+                           const char *token_output_file,
+                           const char *ptoken_output_file,
                            bool       no_backup,
                            bool       keep_mtime)
 {
@@ -1318,7 +1339,7 @@ static void do_source_file(const char *filename_in,
        * Cleanup is deferred because we need 'bout' preserved long enough
        * to write it to a file (if it changed).
        */
-      uncrustify_file(fm, nullptr, parsed_file, true);
+      uncrustify_file(fm, nullptr, parsed_file, token_output_file, ptoken_output_file, true);
       if (bout_content_matches(fm, false))
       {
          uncrustify_end();
@@ -1378,7 +1399,7 @@ static void do_source_file(const char *filename_in,
    }
    else
    {
-      uncrustify_file(fm, pfout, parsed_file);
+      uncrustify_file(fm, pfout, parsed_file, token_output_file, ptoken_output_file);
    }
 
    if (did_open)
@@ -1733,7 +1754,8 @@ static void uncrustify_start(const deque<int> &data)
 
 
 void uncrustify_file(const file_mem &fm, FILE *pfout,
-                     const char *parsed_file, bool defer_uncrustify_end)
+                     const char *parsed_file,
+                     const char *token_output_file, const char *ptoken_output_file, bool defer_uncrustify_end)
 {
    const deque<int> &data = fm.data;
 
@@ -1998,6 +2020,40 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
       if (p_file != nullptr)
       {
          output_parsed(p_file);
+         fclose(p_file);
+      }
+      else
+      {
+         LOG_FMT(LERR, "%s: Failed to open '%s' for write: %s (%d)\n",
+                 __func__, parsed_file, strerror(errno), errno);
+         cpd.error_count++;
+      }
+   }
+
+   // Special hook for dumping token data
+   if (token_output_file != nullptr)
+   {
+      FILE *p_file = fopen(token_output_file, "w");
+      if (p_file != nullptr)
+      {
+         token_output_parsed(p_file);
+         fclose(p_file);
+      }
+      else
+      {
+         LOG_FMT(LERR, "%s: Failed to open '%s' for write: %s (%d)\n",
+                 __func__, parsed_file, strerror(errno), errno);
+         cpd.error_count++;
+      }
+   }
+
+   // Special hook for dumping parent token data
+   if (ptoken_output_file != nullptr)
+   {
+      FILE *p_file = fopen(ptoken_output_file, "w");
+      if (p_file != nullptr)
+      {
+         parent_token_output_parsed(p_file);
          fclose(p_file);
       }
       else

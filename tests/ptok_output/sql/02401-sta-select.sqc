@@ -1,0 +1,228 @@
+Line [Parent]            Text
+1    [COMMENT_WHOLE]     /*******************************************************␤**␤** A sample program that demonstrates the use of Static embedded SQL.␤** Before compiling this program, be sure you have created a table␤** called video and inserted some tuples in it. ␤**␤********************************************************/
+7    [NONE]              
+8    [PP_INCLUDE]        #
+8    [NONE]              include
+8    [NONE]              <stdio.h>
+8    [NONE]              
+10   [COMMENT_WHOLE]     /* sqlca: is the sql communications area. All error codes␤   are returned from db2 in that structure which is filled␤   each time an interaction with db2 takes place.␤*/
+13   [NONE]              
+15   [NONE]              EXEC
+15   [SQL_EXEC]          SQL
+15   [SQL_EXEC]          INCLUDE
+15   [SQL_EXEC]          SQLCA
+15   [SQL_EXEC]          ;
+15   [COMMENT_END]       /* SQL communication area structure */
+15   [NONE]              
+17   [NONE]              EXEC
+17   [SQL_BEGIN]         SQL
+17   [SQL_BEGIN]         BEGIN
+17   [SQL_BEGIN]         DECLARE
+17   [SQL_BEGIN]         SECTION
+17   [SQL_BEGIN]         ;
+17   [COMMENT_END]       /* declare host variables    */
+17   [NONE]              
+18   [NONE]              char
+18   [NONE]              db_name
+18   [NONE]              [
+18   [NONE]              8
+18   [NONE]              ]
+18   [NONE]              ;
+18   [COMMENT_END]       /* database name             */
+18   [NONE]              
+19   [NONE]              char
+19   [NONE]              video_title
+19   [NONE]              [
+19   [NONE]              30
+19   [NONE]              ]
+19   [NONE]              ;
+19   [COMMENT_END]       /* title of the video        */
+19   [NONE]              
+20   [NONE]              short
+20   [NONE]              video_id
+20   [NONE]              ;
+20   [COMMENT_END]       /* serial number             */
+20   [NONE]              
+21   [NONE]              char
+21   [NONE]              director
+21   [NONE]              [
+21   [NONE]              20
+21   [NONE]              ]
+21   [NONE]              ;
+21   [COMMENT_END]       /* director name             */
+21   [NONE]              
+22   [NONE]              EXEC
+22   [SQL_END]           SQL
+22   [SQL_END]           END
+22   [SQL_END]           DECLARE
+22   [SQL_END]           SECTION
+22   [SQL_END]           ;
+22   [NONE]              
+24   [COMMENT_WHOLE]     /* These lines are redundant here because the default␤   action is to continue. They just show the kind of␤   errors that could arise and one way to control them.␤*/
+27   [NONE]              
+29   [NONE]              EXEC
+29   [SQL_EXEC]          SQL
+29   [SQL_EXEC]          WHENEVER
+29   [SQL_EXEC]          SQLWARNING
+29   [SQL_EXEC]          CONTINUE
+29   [SQL_EXEC]          ;
+29   [COMMENT_END]       /* sqlca.sqlcode > 0    */
+29   [NONE]              
+30   [NONE]              EXEC
+30   [SQL_EXEC]          SQL
+30   [SQL_EXEC]          WHENEVER
+30   [SQL_EXEC]          SQLERROR
+30   [SQL_EXEC]          CONTINUE
+30   [SQL_EXEC]          ;
+30   [COMMENT_END]       /* sqlca.sqlcode < 0    */
+30   [NONE]              
+31   [NONE]              EXEC
+31   [SQL_EXEC]          SQL
+31   [SQL_EXEC]          WHENEVER
+31   [SQL_EXEC]          NOT
+31   [SQL_EXEC]          FOUND
+31   [SQL_EXEC]          CONTINUE
+31   [SQL_EXEC]          ;
+31   [COMMENT_END]       /* sqlca.sqlcode = 100  */
+31   [NONE]              
+32   [COMMENT_WHOLE]     /* sqlca.sqlcode = 0 (no error) */
+32   [NONE]              
+34   [FUNC_DEF]          void
+34   [NONE]              main
+34   [FUNC_DEF]          (
+34   [FUNC_DEF]          )
+34   [NONE]              
+34   [FUNC_DEF]          {
+34   [NONE]              
+36   [NONE]              strcpy
+36   [FUNC_CALL]         (
+36   [NONE]              db_name
+36   [NONE]              ,
+36   [NONE]              "csc343h"
+36   [FUNC_CALL]         )
+36   [NONE]              ;
+36   [NONE]              
+38   [COMMENT_WHOLE]     /* C variables are preceded by a colon when they are passed to DB2 */
+38   [NONE]              
+40   [NONE]              EXEC
+40   [SQL_EXEC]          SQL
+40   [SQL_EXEC]          CONNECT
+40   [SQL_EXEC]          TO
+40   [SQL_EXEC]          :
+40   [SQL_EXEC]          db_name
+40   [SQL_EXEC]          ;
+40   [NONE]              
+42   [NONE]              if
+42   [IF]                (
+42   [NONE]              sqlca
+42   [NONE]              .
+42   [NONE]              sqlcode
+42   [NONE]              !=
+42   [NONE]              0
+42   [IF]                )
+42   [NONE]              
+42   [IF]                {
+42   [NONE]              
+43   [NONE]              printf
+43   [FUNC_CALL]         (
+43   [NONE]              "Connect failed!: reason %ld\n"
+43   [NONE]              ,
+43   [NONE]              sqlca
+43   [NONE]              .
+43   [NONE]              sqlcode
+43   [FUNC_CALL]         )
+43   [NONE]              ;
+43   [NONE]              
+44   [NONE]              exit
+44   [FUNC_CALL]         (
+44   [NONE]              1
+44   [FUNC_CALL]         )
+44   [NONE]              ;
+44   [NONE]              
+45   [IF]                }
+45   [NONE]              
+47   [COMMENT_WHOLE]     /* cursor delcaration. Have to declare a cursor each time you␤   want tuples back from db2␤*/
+49   [NONE]              
+51   [NONE]              EXEC
+51   [SQL_EXEC]          SQL
+51   [SQL_EXEC]          DECLARE
+51   [SQL_EXEC]          c1
+51   [SQL_EXEC]          CURSOR
+51   [SQL_EXEC]          FOR
+51   [SQL_EXEC]          
+52   [SQL_EXEC]          SELECT
+52   [SQL_EXEC]          video_title
+52   [SQL_EXEC]          
+53   [SQL_EXEC]          FROM
+53   [SQL_EXEC]          video
+53   [SQL_EXEC]          ;
+53   [NONE]              
+55   [COMMENT_WHOLE]     /* you have to open the cursor in order to get tuples back */
+55   [NONE]              
+57   [NONE]              EXEC
+57   [SQL_EXEC]          SQL
+57   [SQL_EXEC]          OPEN
+57   [SQL_EXEC]          c1
+57   [SQL_EXEC]          ;
+57   [NONE]              
+59   [NONE]              do
+59   [NONE]              
+59   [DO]                {
+59   [NONE]              
+61   [COMMENT_WHOLE]     /* fetch tuples from the cursor. This will execute the statement␤     the cursor implements and will return the results */
+62   [NONE]              
+64   [NONE]              EXEC
+64   [SQL_EXEC]          SQL
+64   [SQL_EXEC]          FETCH
+64   [SQL_EXEC]          c1
+64   [SQL_EXEC]          into
+64   [SQL_EXEC]          :
+64   [SQL_EXEC]          video_title
+64   [SQL_EXEC]          ;
+64   [NONE]              
+65   [NONE]              if
+65   [IF]                (
+65   [NONE]              SQLCODE
+65   [NONE]              !=
+65   [NONE]              0
+65   [IF]                )
+65   [NONE]              
+65   [IF]                {
+65   [NONE]              
+65   [NONE]              break
+65   [NONE]              ;
+65   [COMMENT_END]       /* SQLCODE refers to sqlca.sqlcode */
+65   [NONE]              
+65   [IF]                }
+65   [NONE]              
+67   [COMMENT_WHOLE]     /* host variables should have ':' prefix when they are used in DB2 commands */
+67   [NONE]              
+69   [NONE]              printf
+69   [FUNC_CALL]         (
+69   [NONE]              "%s\n"
+69   [NONE]              ,
+69   [NONE]              video_title
+69   [FUNC_CALL]         )
+69   [NONE]              ;
+69   [NONE]              
+71   [DO]                }
+71   [NONE]              while
+71   [WHILE_OF_DO]       (
+71   [NONE]              1
+71   [WHILE_OF_DO]       )
+71   [WHILE_OF_DO]       ;
+71   [NONE]              
+72   [NONE]              EXEC
+72   [SQL_EXEC]          SQL
+72   [SQL_EXEC]          CLOSE
+72   [SQL_EXEC]          c1
+72   [SQL_EXEC]          ;
+72   [NONE]              
+73   [NONE]              EXEC
+73   [SQL_EXEC]          SQL
+73   [SQL_EXEC]          CONNECT
+73   [SQL_EXEC]          RESET
+73   [SQL_EXEC]          ;
+73   [NONE]              
+74   [FUNC_DEF]          }
+74   [NONE]              

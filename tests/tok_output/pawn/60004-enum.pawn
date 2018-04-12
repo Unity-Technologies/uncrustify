@@ -1,0 +1,479 @@
+Line [Token]             Text
+1    [NEWLINE]           
+2    [ENUM]              enum
+2    [TYPE]              rect
+2    [BRACE_OPEN]        {
+2    [WORD]              left
+2    [COMMA]             ,
+2    [WORD]              top
+2    [COMMA]             ,
+2    [WORD]              right
+2    [COMMA]             ,
+2    [WORD]              bottom
+2    [BRACE_CLOSE]       }
+2    [NEWLINE]           
+4    [ENUM]              enum
+4    [TYPE]              boot
+4    [PAREN_OPEN]        (
+4    [ASSIGN]            <<=
+4    [NUMBER]            1
+4    [PAREN_CLOSE]       )
+4    [BRACE_OPEN]        {
+4    [WORD]              a
+4    [ASSIGN]            =
+4    [NUMBER]            1
+4    [COMMA]             ,
+4    [WORD]              b
+4    [COMMA]             ,
+4    [WORD]              c
+4    [COMMA]             ,
+4    [WORD]              d
+4    [BRACE_CLOSE]       }
+4    [NEWLINE]           
+6    [ENUM]              enum
+6    [TYPE]              booty
+6    [PAREN_OPEN]        (
+6    [ASSIGN]            <<=
+6    [NUMBER]            1
+6    [PAREN_CLOSE]       )
+6    [NEWLINE]           
+7    [BRACE_OPEN]        {
+7    [NEWLINE]           
+8    [WORD]              a
+8    [ASSIGN]            =
+8    [NUMBER]            1
+8    [COMMA]             ,
+8    [WORD]              b
+8    [COMMA]             ,
+8    [WORD]              c
+8    [COMMA]             ,
+8    [WORD]              d
+8    [NEWLINE]           
+9    [BRACE_CLOSE]       }
+9    [NEWLINE]           
+11   [FORWARD]           forward
+11   [FUNC_PROTO]        addvector
+11   [FPAREN_OPEN]       (
+11   [WORD]              a
+11   [TSQUARE]           []
+11   [COMMA]             ,
+11   [QUALIFIER]         const
+11   [WORD]              b
+11   [TSQUARE]           []
+11   [COMMA]             ,
+11   [WORD]              size
+11   [FPAREN_CLOSE]      )
+11   [VSEMICOLON]        ;
+11   [NEWLINE]           
+13   [ENUM]              enum
+13   [TYPE]              message
+13   [BRACE_OPEN]        {
+13   [NEWLINE]           
+14   [WORD]              text
+14   [SQUARE_OPEN]       [
+14   [NUMBER]            40
+14   [CHAR]              char
+14   [SQUARE_CLOSE]      ]
+14   [COMMA]             ,
+14   [NEWLINE]           
+15   [WORD]              priority
+15   [NEWLINE]           
+16   [BRACE_CLOSE]       }
+16   [NEWLINE]           
+18   [ENUM]              enum
+18   [TYPE]              token
+18   [NEWLINE]           
+19   [BRACE_OPEN]        {
+19   [NEWLINE]           
+20   [WORD]              t_type
+20   [COMMA]             ,
+20   [NEWLINE]           
+21   [TAG]               Rational
+21   [TAG_COLON]         :
+21   [WORD]              t_value
+21   [COMMA]             ,
+21   [NEWLINE]           
+22   [WORD]              t_word
+22   [SQUARE_OPEN]       [
+22   [NUMBER]            20
+22   [SQUARE_CLOSE]      ]
+22   [COMMA]             ,
+22   [NEWLINE]           
+23   [BRACE_CLOSE]       }
+23   [NEWLINE]           
+25   [NEW]               new
+25   [TAG]               bool
+25   [TAG_COLON]         :
+25   [WORD]              flag
+25   [ASSIGN]            =
+25   [TYPE]              true
+25   [VSEMICOLON]        ;
+25   [NEWLINE]           
+27   [FUNC_DEF]          increment
+27   [FPAREN_OPEN]       (
+27   [ADDR]              &
+27   [WORD]              value
+27   [COMMA]             ,
+27   [WORD]              incr
+27   [ASSIGN]            =
+27   [NUMBER]            1
+27   [FPAREN_CLOSE]      )
+27   [NEWLINE]           
+27   [BRACE_OPEN]        {
+27   [NEWLINE]           
+27   [WORD]              value
+27   [ASSIGN]            +=
+27   [WORD]              incr
+27   [VSEMICOLON]        ;
+27   [NEWLINE]           
+27   [BRACE_CLOSE]       }
+27   [NEWLINE]           
+29   [NEW]               new
+29   [WORD]              msg
+29   [SQUARE_OPEN]       [
+29   [WORD]              message
+29   [SQUARE_CLOSE]      ]
+29   [ASSIGN]            =
+29   [BRACE_OPEN]        {
+29   [STRING]            !"My Text"
+29   [COMMA]             ,
+29   [NUMBER]            1
+29   [BRACE_CLOSE]       }
+29   [VSEMICOLON]        ;
+29   [NEWLINE]           
+30   [FUNC_DEF]          main
+30   [FPAREN_OPEN]       (
+30   [FPAREN_CLOSE]      )
+30   [NEWLINE]           
+30   [BRACE_OPEN]        {
+30   [NEWLINE]           
+31   [NEW]               new
+31   [WORD]              my_rect
+31   [SQUARE_OPEN]       [
+31   [WORD]              rect
+31   [SQUARE_CLOSE]      ]
+31   [VSEMICOLON]        ;
+31   [NEWLINE]           
+33   [WORD]              my_rect
+33   [SQUARE_OPEN]       [
+33   [WORD]              left
+33   [SQUARE_CLOSE]      ]
+33   [ASSIGN]            =
+33   [NUMBER]            10
+33   [VSEMICOLON]        ;
+33   [NEWLINE]           
+34   [WORD]              my_rect
+34   [SQUARE_OPEN]       [
+34   [WORD]              right
+34   [SQUARE_CLOSE]      ]
+34   [ASSIGN]            =
+34   [NUMBER]            100
+34   [VSEMICOLON]        ;
+34   [NEWLINE]           
+35   [WORD]              my_rect
+35   [SQUARE_OPEN]       [
+35   [WORD]              top
+35   [SQUARE_CLOSE]      ]
+35   [ASSIGN]            =
+35   [NUMBER]            10
+35   [VSEMICOLON]        ;
+35   [NEWLINE]           
+36   [WORD]              my_rect
+36   [SQUARE_OPEN]       [
+36   [WORD]              bottom
+36   [SQUARE_CLOSE]      ]
+36   [ASSIGN]            =
+36   [NUMBER]            100
+36   [VSEMICOLON]        ;
+36   [NEWLINE]           
+38   [FOR]               for
+38   [SPAREN_OPEN]       (
+38   [NEW]               new
+38   [WORD]              i
+38   [ASSIGN]            =
+38   [NUMBER]            0
+38   [SEMICOLON]         ;
+38   [TAG]               rect
+38   [TAG_COLON]         :
+38   [WORD]              i
+38   [COMPARE]           <
+38   [WORD]              rect
+38   [SEMICOLON]         ;
+38   [WORD]              i
+38   [INCDEC_AFTER]      ++
+38   [SPAREN_CLOSE]      )
+38   [BRACE_OPEN]        {
+38   [NEWLINE]           
+39   [WORD]              my_rect
+39   [SQUARE_OPEN]       [
+39   [TAG]               rect
+39   [TAG_COLON]         :
+39   [WORD]              i
+39   [SQUARE_CLOSE]      ]
+39   [ASSIGN]            *=
+39   [NUMBER]            2
+39   [VSEMICOLON]        ;
+39   [NEWLINE]           
+39   [BRACE_CLOSE]       }
+39   [NEWLINE]           
+41   [NEW]               new
+41   [WORD]              vect
+41   [SQUARE_OPEN]       [
+41   [NUMBER]            3
+41   [SQUARE_CLOSE]      ]
+41   [ASSIGN]            =
+41   [BRACE_OPEN]        {
+41   [NUMBER]            1
+41   [COMMA]             ,
+41   [NUMBER]            2
+41   [COMMA]             ,
+41   [NUMBER]            3
+41   [BRACE_CLOSE]       }
+41   [VSEMICOLON]        ;
+41   [NEWLINE]           
+42   [FUNC_CALL]         addvector
+42   [FPAREN_OPEN]       (
+42   [WORD]              vect
+42   [COMMA]             ,
+42   [BRACE_OPEN]        {
+42   [NUMBER]            5
+42   [COMMA]             ,
+42   [NUMBER]            5
+42   [COMMA]             ,
+42   [NUMBER]            5
+42   [BRACE_CLOSE]       }
+42   [COMMA]             ,
+42   [NUMBER]            3
+42   [FPAREN_CLOSE]      )
+42   [VSEMICOLON]        ;
+42   [NEWLINE]           
+44   [NEW]               new
+44   [TAG]               Float
+44   [TAG_COLON]         :
+44   [WORD]              xpos
+44   [VSEMICOLON]        ;
+44   [NEWLINE]           
+45   [NEW]               new
+45   [TAG]               Float
+45   [TAG_COLON]         :
+45   [WORD]              ypos
+45   [VSEMICOLON]        ;
+45   [NEWLINE]           
+47   [NEW]               new
+47   [WORD]              a
+47   [ASSIGN]            =
+47   [NUMBER]            5
+47   [VSEMICOLON]        ;
+47   [NEWLINE]           
+48   [FUNC_CALL]         increment
+48   [FPAREN_OPEN]       (
+48   [WORD]              a
+48   [FPAREN_CLOSE]      )
+48   [VSEMICOLON]        ;
+48   [NEWLINE]           
+49   [FUNC_CALL]         increment
+49   [FPAREN_OPEN]       (
+49   [WORD]              a
+49   [COMMA]             ,
+49   [WORD]              _
+49   [FPAREN_CLOSE]      )
+49   [VSEMICOLON]        ;
+49   [NEWLINE]           
+50   [FUNC_CALL]         increment
+50   [FPAREN_OPEN]       (
+50   [WORD]              a
+50   [COMMA]             ,
+50   [NUMBER]            1
+50   [FPAREN_CLOSE]      )
+50   [VSEMICOLON]        ;
+50   [NEWLINE]           
+51   [BRACE_CLOSE]       }
+51   [NEWLINE]           
+53   [FUNC_DEF]          sum
+53   [FPAREN_OPEN]       (
+53   [WORD]              a
+53   [COMMA]             ,
+53   [WORD]              b
+53   [FPAREN_CLOSE]      )
+53   [NEWLINE]           
+54   [BRACE_OPEN]        {
+54   [NEWLINE]           
+54   [RETURN]            return
+54   [WORD]              a
+54   [ARITH]             +
+54   [TYPE]              b
+54   [VSEMICOLON]        ;
+54   [NEWLINE]           
+54   [BRACE_CLOSE]       }
+54   [NEWLINE]           
+56   [FUNC_DEF]          power
+56   [FPAREN_OPEN]       (
+56   [WORD]              x
+56   [COMMA]             ,
+56   [WORD]              y
+56   [FPAREN_CLOSE]      )
+56   [NEWLINE]           
+57   [BRACE_OPEN]        {
+57   [NEWLINE]           
+58   [COMMENT]           /* returns x raised to the power of y */
+58   [NEWLINE]           
+59   [FUNC_CALL]         assert
+59   [WORD]              y
+59   [COMPARE]           >=
+59   [NUMBER]            0
+59   [VSEMICOLON]        ;
+59   [NEWLINE]           
+60   [NEW]               new
+60   [WORD]              r
+60   [ASSIGN]            =
+60   [NUMBER]            1
+60   [VSEMICOLON]        ;
+60   [NEWLINE]           
+61   [FOR]               for
+61   [SPAREN_OPEN]       (
+61   [NEW]               new
+61   [WORD]              i
+61   [ASSIGN]            =
+61   [NUMBER]            0
+61   [SEMICOLON]         ;
+61   [WORD]              i
+61   [COMPARE]           <
+61   [WORD]              y
+61   [SEMICOLON]         ;
+61   [WORD]              i
+61   [INCDEC_AFTER]      ++
+61   [SPAREN_CLOSE]      )
+61   [BRACE_OPEN]        {
+61   [NEWLINE]           
+62   [WORD]              r
+62   [ASSIGN]            *=
+62   [WORD]              x
+62   [VSEMICOLON]        ;
+62   [NEWLINE]           
+62   [BRACE_CLOSE]       }
+62   [NEWLINE]           
+63   [RETURN]            return
+63   [WORD]              r
+63   [VSEMICOLON]        ;
+63   [NEWLINE]           
+64   [BRACE_CLOSE]       }
+64   [NEWLINE]           
+66   [FUNC_DEF]          addvector
+66   [FPAREN_OPEN]       (
+66   [WORD]              a
+66   [TSQUARE]           []
+66   [COMMA]             ,
+66   [QUALIFIER]         const
+66   [WORD]              b
+66   [TSQUARE]           []
+66   [COMMA]             ,
+66   [WORD]              size
+66   [FPAREN_CLOSE]      )
+66   [NEWLINE]           
+67   [BRACE_OPEN]        {
+67   [NEWLINE]           
+68   [FOR]               for
+68   [SPAREN_OPEN]       (
+68   [NEW]               new
+68   [WORD]              i
+68   [ASSIGN]            =
+68   [NUMBER]            0
+68   [SEMICOLON]         ;
+68   [WORD]              i
+68   [COMPARE]           <
+68   [WORD]              size
+68   [SEMICOLON]         ;
+68   [WORD]              i
+68   [INCDEC_AFTER]      ++
+68   [SPAREN_CLOSE]      )
+68   [BRACE_OPEN]        {
+68   [NEWLINE]           
+69   [WORD]              a
+69   [SQUARE_OPEN]       [
+69   [WORD]              i
+69   [SQUARE_CLOSE]      ]
+69   [ASSIGN]            +=
+69   [WORD]              b
+69   [SQUARE_OPEN]       [
+69   [WORD]              i
+69   [SQUARE_CLOSE]      ]
+69   [VSEMICOLON]        ;
+69   [NEWLINE]           
+69   [BRACE_CLOSE]       }
+69   [NEWLINE]           
+70   [BRACE_CLOSE]       }
+70   [NEWLINE]           
+72   [STOCK]             stock
+72   [FUNC_DEF]          remove_filepath
+72   [FPAREN_OPEN]       (
+72   [WORD]              szFilePath
+72   [TSQUARE]           []
+72   [COMMA]             ,
+72   [WORD]              szFile
+72   [TSQUARE]           []
+72   [COMMA]             ,
+72   [WORD]              pMax
+72   [FPAREN_CLOSE]      )
+72   [NEWLINE]           
+73   [BRACE_OPEN]        {
+73   [NEWLINE]           
+74   [NEW]               new
+74   [WORD]              len
+74   [ASSIGN]            =
+74   [FUNC_CALL]         strlen
+74   [FPAREN_OPEN]       (
+74   [WORD]              szFilePath
+74   [FPAREN_CLOSE]      )
+74   [SEMICOLON]         ;
+74   [NEWLINE]           
+76   [WHILE]             while
+76   [SPAREN_OPEN]       (
+76   [PAREN_OPEN]        (
+76   [INCDEC_BEFORE]     --
+76   [WORD]              len
+76   [COMPARE]           >=
+76   [NUMBER]            0
+76   [PAREN_CLOSE]       )
+76   [BOOL]              &&
+76   [PAREN_OPEN]        (
+76   [WORD]              szFilePath
+76   [SQUARE_OPEN]       [
+76   [WORD]              len
+76   [SQUARE_CLOSE]      ]
+76   [COMPARE]           !=
+76   [STRING]            '/'
+76   [PAREN_CLOSE]       )
+76   [BOOL]              &&
+76   [NEWLINE]           
+77   [PAREN_OPEN]        (
+77   [WORD]              szFilePath
+77   [SQUARE_OPEN]       [
+77   [WORD]              len
+77   [SQUARE_CLOSE]      ]
+77   [COMPARE]           !=
+77   [STRING]            '\''
+77   [PAREN_CLOSE]       )
+77   [SPAREN_CLOSE]      )
+77   [BRACE_OPEN]        {
+77   [BRACE_CLOSE]       }
+77   [NEWLINE]           
+79   [FUNC_CALL]         copy
+79   [FPAREN_OPEN]       (
+79   [WORD]              szFile
+79   [COMMA]             ,
+79   [WORD]              pMax
+79   [COMMA]             ,
+79   [WORD]              szFilePath
+79   [SQUARE_OPEN]       [
+79   [WORD]              len
+79   [ARITH]             +
+79   [NUMBER]            1
+79   [SQUARE_CLOSE]      ]
+79   [FPAREN_CLOSE]      )
+79   [SEMICOLON]         ;
+79   [NEWLINE]           
+81   [RETURN]            return
+81   [SEMICOLON]         ;
+81   [NEWLINE]           
+82   [BRACE_CLOSE]       }
+82   [NEWLINE]           

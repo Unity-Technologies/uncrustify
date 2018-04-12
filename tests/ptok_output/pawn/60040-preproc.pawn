@@ -1,0 +1,43 @@
+Line [Parent]            Text
+1    [PP_DEFINE]         #
+1    [NONE]              define
+1    [NONE]              SetTeleType(%1,%2)
+1    [NONE]              set_pev
+1    [FUNC_CALL]         (
+1    [NONE]              %1
+1    [NONE]              ,
+1    [NONE]              pev_iuser1
+1    [NONE]              ,
+1    [NONE]              %2
+1    [FUNC_CALL]         )
+1    [NONE]              
+2    [PP_DEFINE]         #
+2    [NONE]              define
+2    [NONE]              SetTeleMate(%1,%2)
+2    [NONE]              set_pev
+2    [FUNC_CALL]         (
+2    [NONE]              %1
+2    [NONE]              ,
+2    [NONE]              pev_iuser2
+2    [NONE]              ,
+2    [NONE]              %2
+2    [NONE]              *
+2    [NONE]              7
+2    [FUNC_CALL]         )
+2    [NONE]              
+4    [PP_DEFINE]         #
+4    [NONE]              define
+4    [NONE]              x(%0,%1)
+4    [NONE]              \
+5    [NONE]              y
+5    [FUNC_CALL]         (
+5    [NONE]              %1
+5    [NONE]              ,
+5    [NONE]              %0
+5    [FUNC_CALL]         )
+5    [NONE]              
+7    [PP_EMIT]           #
+7    [NONE]              emit
+7    [NONE]              CONST.pri
+7    [NONE]              1911
+7    [NONE]              

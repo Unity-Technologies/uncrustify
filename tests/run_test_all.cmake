@@ -1,0 +1,161 @@
+#
+# This is a wrapper cmake script to run one uncrustify test because cmake add_test
+# can't launch multiple processes and so it doesn't allow a complex test scenario.
+#
+set(CTEST_OUTPUT_ON_FAILURE 1)
+cmake_minimum_required(VERSION 2.8)
+if(NOT TEST_PROGRAM)
+  message(FATAL_ERROR "Variable TEST_PROGRAM not defined")
+endif()
+if(NOT TEST_LANG)
+  message(FATAL_ERROR "Variable TEST_LANG not defined")
+endif()
+if(NOT TEST_CONFIG)
+  message(FATAL_ERROR "Variable TEST_CONFIG not defined")
+endif()
+if(NOT TEST_RERUN_CONFIG)
+  message(FATAL_ERROR "Variable TEST_RERUN_CONFIG not defined")
+endif()
+if(NOT TEST_INPUT)
+  message(FATAL_ERROR "Variable TEST_INPUT not defined")
+endif()
+if(NOT TEST_OUTPUT)
+  message(FATAL_ERROR "Variable TEST_OUTPUT not defined")
+endif()
+if(NOT TEST_RESULT)
+  message(FATAL_ERROR "Variable TEST_RESULT not defined")
+endif()
+if(NOT TEST_RESULT_2)
+  message(FATAL_ERROR "Variable TEST_RESULT_2 not defined")
+endif()
+if(NOT TEST_TYPE)
+  message(FATAL_ERROR "Variable TEST_TYPE not defined")
+endif()
+if(NOT TEST_DIR)
+  message(FATAL_ERROR "Variable TEST_DIR not defined")
+endif()
+if(NOT TEST_RERUN_OUTPUT)
+  message(FATAL_ERROR "Variable TEST_RERUN_OUTPUT not defined")
+endif()
+
+
+string(MD5 test_uuid ${TEST_DIR}${TEST_INPUT}${TEST_RESULT})
+set(STDERR_PASS_1 ERR-1-${test_uuid}.txt)
+set(STDERR_PASS_2 ERR-2-${test_uuid}.txt)
+
+# first pass
+execute_process(
+  COMMAND ${TEST_PROGRAM} -l ${TEST_LANG} -c ${TEST_CONFIG} -f ${TEST_INPUT} "-o${TEST_RESULT}" "--tokentok_${TEST_RESULT}" "--parentptok_${TEST_RESULT} -F"
+    WORKING_DIRECTORY ${TEST_DIR}
+    RESULT_VARIABLE uncrustify_error_code
+    OUTPUT_QUIET
+    ERROR_VARIABLE uncrustify_error
+    ERROR_FILE ${TEST_DIR}/${STDERR_PASS_1}
+)
+
+if(uncrustify_error_code)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E echo "Uncrustify error: " ${uncrustify_error_code} "  The ${STDERR_PASS_1} file is:"
+  )
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E copy ${TEST_DIR}/${STDERR_PASS_1} /dev/stderr
+  )
+  message(SEND_ERROR "Uncrustify error_code (Pass 1)")
+else(uncrustify_error_code)
+  # Unfortunately I had to pull cmake out of the previous execute_process due to instability issues.
+  if("${TEST_TYPE}" MATCHES "-o")
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E compare_files ${TEST_DIR}/${TEST_RESULT} ${TEST_DIR}/${TEST_OUTPUT}
+      RESULT_VARIABLE files_are_different
+	  OUTPUT_QUIET
+  )
+  endif()
+  if(files_are_different)
+    message(WARNING "MISSMATCH (Pass 1): ${TEST_RESULT} does not match ${TEST_OUTPUT}")
+    message(WARNING satish"${files_are_different}")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E echo "the result file:"
+    )
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy ${TEST_DIR}/${TEST_RESULT} /dev/stderr
+    )
+    message(SEND_ERROR "Uncrustify output MISSMATCH (Pass 1)")
+  endif()
+
+  if("${TEST_TYPE}" MATCHES "--token")
+ execute_process(
+    COMMAND ${CMAKE_COMMAND} -E compare_files ${TEST_DIR}/tok_${TEST_RESULT} ${TEST_DIR}/tok_${TEST_OUTPUT}
+      RESULT_VARIABLE files_are_different_tok
+	  OUTPUT_QUIET
+  )
+  endif()
+  if(files_are_different_tok)
+    message(WARNING "Token MISSMATCH: ${TEST_RESULT} does not match ${TEST_OUTPUT}")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E echo "the result file:"
+    )  
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy ${TEST_DIR}/${TEST_RESULT} /dev/stderr
+    )
+    message(SEND_ERROR "Uncrustify Token MISSMATCH")
+  endif()
+
+  if("${TEST_TYPE}" MATCHES "--parent")
+ execute_process(
+    COMMAND ${CMAKE_COMMAND} -E compare_files ${TEST_DIR}/ptok_${TEST_RESULT} ${TEST_DIR}/ptok_${TEST_OUTPUT}
+      RESULT_VARIABLE files_are_different_ptok
+	  OUTPUT_QUIET
+  )
+  endif()
+  if(files_are_different_ptok)
+    message(WARNING "Parent Token MISSMATCH: ${TEST_RESULT} does not match ${TEST_OUTPUT}")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E echo "the result file:"
+    )  
+	execute_process(
+ 	  COMMAND ${CMAKE_COMMAND} -E copy ${TEST_DIR}/${TEST_RESULT} /dev/stderr
+ 	)
+ 	message(SEND_ERROR "Uncrustify Parent Token MISSMATCH")
+  endif()
+endif(uncrustify_error_code)  
+file(REMOVE ${TEST_DIR}/${STDERR_PASS_1})
+
+
+# Re-run with the output file as the input to check stability.
+# Not stability check required for tokens and parent tokens, adding the check
+if(${TEST_TYPE} MATCHES "-o")
+execute_process(
+  COMMAND ${TEST_PROGRAM} -l ${TEST_LANG} -c ${TEST_RERUN_CONFIG} -f ${TEST_RERUN_OUTPUT} -o ${TEST_RESULT_2}
+    WORKING_DIRECTORY ${TEST_DIR}
+    RESULT_VARIABLE uncrustify_error_code
+    OUTPUT_QUIET
+    ERROR_VARIABLE uncrustify_error
+    ERROR_FILE ${TEST_DIR}/${STDERR_PASS_2}
+)
+
+if(uncrustify_error_code)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E echo "Uncrustify error: " ${uncrustify_error_code} "  The ${STDERR_PASS_2} file is:"
+  )
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E copy ${TEST_DIR}/${STDERR_PASS_2} /dev/stderr
+  )
+  message(SEND_ERROR "Uncrustify error_code (Pass 2)")
+else(uncrustify_error_code)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E compare_files ${TEST_DIR}/${TEST_RESULT_2} ${TEST_DIR}/${TEST_RERUN_OUTPUT}
+      RESULT_VARIABLE files_are_different
+  )
+  if(files_are_different)
+    message(WARNING "UNSTABLE (Pass 2): ${TEST_RESULT_2} does not match ${TEST_RERUN_OUTPUT}")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E echo "the result file:"
+    )
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy ${TEST_DIR}/${TEST_RESULT_2} /dev/stderr
+    )
+    message(SEND_ERROR "Uncrustify UNSTABLE (Pass 2)")
+  endif()
+endif()
+file(REMOVE ${TEST_DIR}/${STDERR_PASS_2})
+endif()

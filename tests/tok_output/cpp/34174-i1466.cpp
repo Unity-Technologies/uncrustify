@@ -1,0 +1,15 @@
+Line [Token]             Text
+1    [TYPE]              A
+1    [WORD]              a
+1    [ASSIGN]            =
+1    [BRACE_OPEN]        {
+1    [THIS]              this
+1    [MEMBER]            ->
+1    [WORD]              r
+1    [ARITH]             *
+1    [FUNC_CALL]         cos
+1    [FPAREN_OPEN]       (
+1    [WORD]              b
+1    [FPAREN_CLOSE]      )
+1    [BRACE_CLOSE]       }
+1    [SEMICOLON]         ;

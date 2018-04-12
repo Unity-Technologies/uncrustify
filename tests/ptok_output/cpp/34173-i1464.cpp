@@ -1,0 +1,24 @@
+Line [Parent]            Text
+1    [NONE]              auto
+1    [NONE]              p
+1    [NONE]              =
+1    [NONE]              std
+1    [NONE]              ::
+1    [NONE]              make_pair
+1    [FUNC_CALL]         (
+1    [NONE]              r
+1    [NONE]              *
+1    [NONE]              cos
+1    [FUNC_CALL]         (
+1    [NONE]              a
+1    [FUNC_CALL]         )
+1    [NONE]              ,
+1    [NONE]              r
+1    [NONE]              *
+1    [NONE]              sin
+1    [FUNC_CALL]         (
+1    [NONE]              a
+1    [FUNC_CALL]         )
+1    [FUNC_CALL]         )
+1    [NONE]              ;
+1    [NONE]              

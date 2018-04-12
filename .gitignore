@@ -7,6 +7,8 @@ src/uncrustify_version.h
 results/
 tests/results/
 tests/results_2/
+tests/ptok_results/
+tests/tok_results/
 tests/usage.txt
 tests/pclint/
 *.sh.trs

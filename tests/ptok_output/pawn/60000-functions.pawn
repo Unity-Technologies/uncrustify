@@ -1,0 +1,131 @@
+Line [Parent]            Text
+1    [NONE]              
+2    [COMMENT_WHOLE]     // prototypes
+2    [NONE]              
+3    [NONE]              forward
+3    [NONE]              bar
+3    [FUNC_PROTO]        (
+3    [FUNC_PROTO]        )
+3    [NONE]              ;
+3    [NONE]              
+4    [NONE]              native
+4    [NONE]              baz
+4    [FUNC_PROTO]        (
+4    [FUNC_PROTO]        )
+4    [NONE]              ;
+4    [NONE]              
+5    [NONE]              foo
+5    [FUNC_PROTO]        (
+5    [FUNC_PROTO]        )
+5    [FUNC_PROTO]        ;
+5    [NONE]              
+7    [NONE]              enum
+7    [ENUM]              rect
+7    [ENUM]              {
+7    [NONE]              left
+7    [NONE]              ,
+7    [NONE]              top
+7    [NONE]              ,
+7    [NONE]              right
+7    [NONE]              ,
+7    [NONE]              bottom
+7    [ENUM]              }
+7    [NONE]              
+8    [NONE]              native
+8    [NONE]              intersect
+8    [FUNC_PROTO]        [
+8    [NONE]              rect
+8    [FUNC_PROTO]        ]
+8    [FUNC_PROTO]        (
+8    [NONE]              src1
+8    [NONE]              [
+8    [NONE]              rect
+8    [NONE]              ]
+8    [NONE]              ,
+8    [NONE]              src2
+8    [NONE]              [
+8    [NONE]              rect
+8    [NONE]              ]
+8    [FUNC_PROTO]        )
+8    [NONE]              ;
+8    [NONE]              
+10   [NONE]              native
+10   [NONE]              getparam
+10   [FUNC_PROTO]        (
+10   [NONE]              a
+10   [NONE]              []
+10   [NONE]              ,
+10   [NONE]              b
+10   [NONE]              []
+10   [NONE]              ,
+10   [NONE]              size
+10   [FUNC_PROTO]        )
+10   [NONE]              =
+10   [NONE]              host_getparam
+10   [NONE]              ;
+10   [NONE]              
+12   [COMMENT_WHOLE]     // function w/o brace
+12   [NONE]              
+13   [NONE]              main
+13   [FUNC_DEF]          (
+13   [FUNC_DEF]          )
+13   [NONE]              
+14   [FUNC_DEF]          {
+14   [NONE]              
+14   [NONE]              printf
+14   [FUNC_CALL]         (
+14   [NONE]              "hello\n"
+14   [FUNC_CALL]         )
+14   [NONE]              ;
+14   [NONE]              
+14   [FUNC_DEF]          }
+14   [NONE]              
+15   [NONE]              foo
+15   [FUNC_DEF]          (
+15   [FUNC_DEF]          )
+15   [NONE]              
+15   [FUNC_DEF]          {
+15   [NONE]              
+15   [NONE]              bar
+15   [FUNC_CALL]         (
+15   [FUNC_CALL]         )
+15   [NONE]              ;
+15   [NONE]              
+15   [FUNC_DEF]          }
+15   [NONE]              
+17   [NONE]              stock
+17   [NONE]              ts_is_waiting
+17   [FUNC_DEF]          (
+17   [NONE]              id
+17   [FUNC_DEF]          )
+17   [NONE]              
+17   [FUNC_DEF]          {
+17   [NONE]              
+17   [NONE]              return
+17   [RETURN]            (
+17   [NONE]              ts_get_message
+17   [FUNC_CALL]         (
+17   [NONE]              id
+17   [FUNC_CALL]         )
+17   [NONE]              ==
+17   [NONE]              TSMSG_WAITING
+17   [RETURN]            )
+17   [NONE]              ;
+17   [NONE]              
+17   [FUNC_DEF]          }
+17   [NONE]              
+19   [COMMENT_WHOLE]     // regular old functions
+19   [NONE]              
+20   [NONE]              baz
+20   [FUNC_DEF]          (
+20   [FUNC_DEF]          )
+20   [NONE]              
+20   [FUNC_DEF]          {
+20   [NONE]              
+21   [NONE]              do_something
+21   [FUNC_CALL]         (
+21   [FUNC_CALL]         )
+21   [NONE]              ;
+21   [NONE]              
+22   [FUNC_DEF]          }
+22   [NONE]              

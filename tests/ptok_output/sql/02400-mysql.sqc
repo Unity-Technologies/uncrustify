@@ -1,0 +1,227 @@
+Line [Parent]            Text
+1    [PP_INCLUDE]        #
+1    [NONE]              include
+1    [NONE]              <stdlib.h>
+1    [NONE]              
+2    [PP_INCLUDE]        #
+2    [NONE]              include
+2    [NONE]              <stdio.h>
+2    [NONE]              
+4    [COMMENT_WHOLE]     /*----------------------------------------------------------------*/
+4    [NONE]              
+5    [NONE]              EXEC
+5    [SQL_EXEC]          SQL
+5    [SQL_EXEC]          INCLUDE
+5    [SQL_EXEC]          SQLCA
+5    [SQL_EXEC]          ;
+5    [NONE]              
+6    [NONE]              short
+6    [NONE]              sqlcode
+6    [NONE]              ;
+6    [NONE]              
+8    [NONE]              EXEC
+8    [SQL_BEGIN]         SQL
+8    [SQL_BEGIN]         BEGIN
+8    [SQL_BEGIN]         DECLARE
+8    [SQL_BEGIN]         SECTION
+8    [SQL_BEGIN]         ;
+8    [NONE]              
+9    [NONE]              int
+9    [NONE]              host_a
+9    [NONE]              ;
+9    [NONE]              
+10   [NONE]              double
+10   [NONE]              host_b
+10   [NONE]              ;
+10   [NONE]              
+11   [NONE]              char
+11   [NONE]              host_c
+11   [NONE]              ;
+11   [NONE]              
+12   [NONE]              EXEC
+12   [SQL_END]           SQL
+12   [SQL_END]           END
+12   [SQL_END]           DECLARE
+12   [SQL_END]           SECTION
+12   [SQL_END]           ;
+12   [NONE]              
+14   [NONE]              EXEC
+14   [SQL_EXEC]          SQL
+14   [SQL_EXEC]          DECLARE
+14   [SQL_EXEC]          csr1
+14   [SQL_EXEC]          CURSOR
+14   [SQL_EXEC]          FOR
+14   [SQL_EXEC]          
+15   [SQL_EXEC]          SELECT
+15   [SQL_EXEC]          a
+15   [SQL_EXEC]          ,
+15   [SQL_EXEC]          b
+15   [SQL_EXEC]          ,
+15   [SQL_EXEC]          c
+15   [SQL_EXEC]          
+16   [SQL_EXEC]          FROM
+16   [SQL_EXEC]          table1
+16   [SQL_EXEC]          
+17   [SQL_EXEC]          WHERE
+17   [SQL_EXEC]          x
+17   [SQL_EXEC]          =
+17   [SQL_EXEC]          :
+17   [SQL_EXEC]          hostvar1
+17   [SQL_EXEC]          ;
+17   [NONE]              
+19   [COMMENT_WHOLE]     /* dollar sign notation */
+19   [NONE]              
+20   [NONE]              $
+20   [SQL_EXEC]          DECLARE
+20   [SQL_EXEC]          cursorName
+20   [SQL_EXEC]          CURSOR
+20   [SQL_EXEC]          for
+20   [SQL_EXEC]          
+21   [SQL_EXEC]          SELECT
+21   [SQL_EXEC]          
+22   [SQL_EXEC]          a
+22   [SQL_EXEC]          ,
+22   [SQL_EXEC]          
+23   [SQL_EXEC]          b
+23   [SQL_EXEC]          
+24   [SQL_EXEC]          INTO
+24   [SQL_EXEC]          
+25   [SQL_EXEC]          $struct
+25   [SQL_EXEC]          ->
+25   [SQL_EXEC]          a
+25   [SQL_EXEC]          ,
+25   [SQL_EXEC]          
+26   [SQL_EXEC]          $struct
+26   [SQL_EXEC]          ->
+26   [SQL_EXEC]          b
+26   [SQL_EXEC]          
+27   [SQL_EXEC]          FROM
+27   [SQL_EXEC]          table
+27   [SQL_EXEC]          ;
+27   [NONE]              
+29   [COMMENT_WHOLE]     /*----------------------------------------------------------------*/
+29   [NONE]              
+30   [FUNC_DEF]          void
+30   [NONE]              main
+30   [FUNC_DEF]          (
+30   [NONE]              void
+30   [FUNC_DEF]          )
+30   [NONE]              
+31   [FUNC_DEF]          {
+31   [NONE]              
+32   [NONE]              hostvar1
+32   [NONE]              =
+32   [NONE]              42
+32   [NONE]              ;
+32   [NONE]              
+34   [NONE]              EXEC
+34   [SQL_EXEC]          SQL
+34   [SQL_EXEC]          OPEN
+34   [SQL_EXEC]          csr1
+34   [SQL_EXEC]          ;
+34   [NONE]              
+35   [NONE]              if
+35   [IF]                (
+35   [NONE]              sqlcode
+35   [NONE]              <
+35   [NONE]              0
+35   [IF]                )
+35   [NONE]              
+35   [IF]                {
+35   [NONE]              
+36   [NONE]              exit
+36   [FUNC_CALL]         (
+36   [NONE]              0
+36   [FUNC_CALL]         )
+36   [NONE]              ;
+36   [NONE]              
+36   [IF]                }
+36   [NONE]              
+38   [NONE]              while
+38   [WHILE]             (
+38   [NONE]              rc
+38   [NONE]              >=
+38   [NONE]              0
+38   [NONE]              &&
+38   [NONE]              rc
+38   [NONE]              !=
+38   [NONE]              100
+38   [WHILE]             )
+38   [NONE]              
+39   [WHILE]             {
+39   [NONE]              
+40   [NONE]              EXEC
+40   [SQL_EXEC]          SQL
+40   [SQL_EXEC]          FETCH
+40   [SQL_EXEC]          csr1
+40   [SQL_EXEC]          INTO
+40   [SQL_EXEC]          :
+40   [SQL_EXEC]          host_a
+40   [SQL_EXEC]          ,
+40   [SQL_EXEC]          :
+40   [SQL_EXEC]          host_b
+40   [SQL_EXEC]          ,
+40   [SQL_EXEC]          :
+40   [SQL_EXEC]          host_c
+40   [SQL_EXEC]          ;
+40   [NONE]              
+41   [NONE]              printf
+41   [FUNC_CALL]         (
+41   [NONE]              "Fetch %d, %lf, %s\n"
+41   [NONE]              ,
+41   [NONE]              host_a
+41   [NONE]              ,
+41   [NONE]              host_b
+41   [NONE]              ,
+41   [NONE]              host_c
+41   [FUNC_CALL]         )
+41   [NONE]              ;
+41   [NONE]              
+42   [WHILE]             }
+42   [NONE]              
+44   [NONE]              EXEC
+44   [SQL_EXEC]          SQL
+44   [SQL_EXEC]          CLOSE
+44   [SQL_EXEC]          csr1
+44   [SQL_EXEC]          ;
+44   [NONE]              
+45   [FUNC_DEF]          }
+45   [NONE]              
+47   [FUNC_DEF]          void
+47   [NONE]              foo
+47   [FUNC_DEF]          (
+47   [NONE]              void
+47   [FUNC_DEF]          )
+47   [NONE]              
+48   [FUNC_DEF]          {
+48   [NONE]              
+49   [NONE]              strcpy
+49   [FUNC_CALL]         (
+49   [NONE]              demoquery1
+49   [NONE]              ,
+49   [NONE]              "some SQL statement"
+49   [FUNC_CALL]         )
+49   [NONE]              ;
+49   [NONE]              
+50   [NONE]              EXEC
+50   [SQL_EXEC]          SQL
+50   [SQL_EXEC]          prepare
+50   [SQL_EXEC]          demo3id
+50   [SQL_EXEC]          from
+50   [SQL_EXEC]          :
+50   [SQL_EXEC]          demoquery1
+50   [SQL_EXEC]          ;
+50   [NONE]              
+51   [COMMENT_WHOLE]     /* a comment */
+51   [NONE]              
+52   [NONE]              EXEC
+52   [SQL_EXEC]          SQL
+52   [SQL_EXEC]          declare
+52   [SQL_EXEC]          demo3cursor
+52   [SQL_EXEC]          cursor
+52   [SQL_EXEC]          for
+52   [SQL_EXEC]          demo3id
+52   [SQL_EXEC]          ;
+52   [NONE]              
+53   [FUNC_DEF]          }
+53   [NONE]              

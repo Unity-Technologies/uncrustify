@@ -1,0 +1,82 @@
+Line [Parent]            Text
+1    [COMMENT_WHOLE]     // note that this only happens with positive int literals. if i use a float with a decimal, or 'c' or "abc" or whatever, or even `(-5)`, it's ok.
+1    [NONE]              
+2    [NONE]              5
+2    [NONE]              .
+2    [NONE]              Clamp
+2    [FUNC_CALL]         (
+2    [NONE]              2
+2    [NONE]              ,
+2    [NONE]              10
+2    [FUNC_CALL]         )
+2    [NONE]              .
+2    [NONE]              ShouldBe
+2    [FUNC_CALL]         (
+2    [NONE]              5
+2    [FUNC_CALL]         )
+2    [NONE]              ;
+2    [NONE]              
+3    [NONE]              5
+3    [NONE]              .
+3    [NONE]              Clamp
+3    [FUNC_CALL]         (
+3    [NONE]              -
+3    [NONE]              5
+3    [NONE]              ,
+3    [NONE]              10
+3    [FUNC_CALL]         )
+3    [NONE]              .
+3    [NONE]              ShouldBe
+3    [FUNC_CALL]         (
+3    [NONE]              5
+3    [FUNC_CALL]         )
+3    [NONE]              ;
+3    [NONE]              
+4    [NONE]              5
+4    [NONE]              .
+4    [NONE]              Clamp
+4    [FUNC_CALL]         (
+4    [NONE]              "a"
+4    [NONE]              ,
+4    [NONE]              10
+4    [FUNC_CALL]         )
+4    [NONE]              .
+4    [NONE]              ShouldBe
+4    [FUNC_CALL]         (
+4    [NONE]              5
+4    [FUNC_CALL]         )
+4    [NONE]              ;
+4    [NONE]              
+6    [NONE]              "4"
+6    [NONE]              .
+6    [NONE]              Clamp
+6    [FUNC_CALL]         (
+6    [NONE]              2
+6    [NONE]              ,
+6    [NONE]              10
+6    [FUNC_CALL]         )
+6    [NONE]              .
+6    [NONE]              ShouldBe
+6    [FUNC_CALL]         (
+6    [NONE]              5
+6    [FUNC_CALL]         )
+6    [NONE]              ;
+6    [NONE]              
+7    [NONE]              (
+7    [NONE]              -
+7    [NONE]              5
+7    [NONE]              )
+7    [NONE]              .
+7    [NONE]              Clamp
+7    [FUNC_CALL]         (
+7    [NONE]              2
+7    [NONE]              ,
+7    [NONE]              10
+7    [FUNC_CALL]         )
+7    [NONE]              .
+7    [NONE]              ShouldBe
+7    [FUNC_CALL]         (
+7    [NONE]              5
+7    [FUNC_CALL]         )
+7    [NONE]              ;
+7    [NONE]              

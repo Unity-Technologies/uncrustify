@@ -1,0 +1,31 @@
+Line [Parent]            Text
+1    [NONE]              Utils
+1    [NONE]              .
+1    [NONE]              Curve
+1    [NONE]              attribute
+1    [NONE]              =
+1    [NONE]              (
+1    [NONE]              Utils
+1    [NONE]              .
+1    [NONE]              Curve
+1    [NONE]              )
+1    [NONE]              base
+1    [NONE]              .
+1    [NONE]              attribute
+1    [NONE]              ;
+1    [NONE]              
+2    [NONE]              Utils
+2    [NONE]              .
+2    [NONE]              Curve
+2    [NONE]              attribute
+2    [NONE]              =
+2    [NONE]              (
+2    [NONE]              Utils
+2    [NONE]              .
+2    [NONE]              Curve
+2    [NONE]              )
+2    [NONE]              base
+2    [NONE]              .
+2    [NONE]              attribute
+2    [NONE]              ;
+2    [NONE]              

@@ -1,0 +1,15 @@
+Line [Parent]            Text
+1    [NONE]              A
+1    [NONE]              a
+1    [NONE]              =
+1    [BRACED_INIT_LIST]    {
+1    [NONE]              this
+1    [NONE]              ->
+1    [NONE]              r
+1    [NONE]              *
+1    [NONE]              cos
+1    [FUNC_CALL]         (
+1    [NONE]              b
+1    [FUNC_CALL]         )
+1    [BRACED_INIT_LIST]    }
+1    [NONE]              ;

@@ -1,0 +1,82 @@
+Line [Token]             Text
+1    [COMMENT_CPP]       // note that this only happens with positive int literals. if i use a float with a decimal, or 'c' or "abc" or whatever, or even `(-5)`, it's ok.
+1    [NEWLINE]           
+2    [NUMBER]            5
+2    [MEMBER]            .
+2    [FUNC_CALL]         Clamp
+2    [FPAREN_OPEN]       (
+2    [NUMBER]            2
+2    [COMMA]             ,
+2    [NUMBER]            10
+2    [FPAREN_CLOSE]      )
+2    [MEMBER]            .
+2    [FUNC_CALL]         ShouldBe
+2    [FPAREN_OPEN]       (
+2    [NUMBER]            5
+2    [FPAREN_CLOSE]      )
+2    [SEMICOLON]         ;
+2    [NEWLINE]           
+3    [NUMBER]            5
+3    [MEMBER]            .
+3    [FUNC_CALL]         Clamp
+3    [FPAREN_OPEN]       (
+3    [NEG]               -
+3    [NUMBER]            5
+3    [COMMA]             ,
+3    [NUMBER]            10
+3    [FPAREN_CLOSE]      )
+3    [MEMBER]            .
+3    [FUNC_CALL]         ShouldBe
+3    [FPAREN_OPEN]       (
+3    [NUMBER]            5
+3    [FPAREN_CLOSE]      )
+3    [SEMICOLON]         ;
+3    [NEWLINE]           
+4    [NUMBER]            5
+4    [MEMBER]            .
+4    [FUNC_CALL]         Clamp
+4    [FPAREN_OPEN]       (
+4    [STRING]            "a"
+4    [COMMA]             ,
+4    [NUMBER]            10
+4    [FPAREN_CLOSE]      )
+4    [MEMBER]            .
+4    [FUNC_CALL]         ShouldBe
+4    [FPAREN_OPEN]       (
+4    [NUMBER]            5
+4    [FPAREN_CLOSE]      )
+4    [SEMICOLON]         ;
+4    [NEWLINE]           
+6    [STRING]            "4"
+6    [MEMBER]            .
+6    [FUNC_CALL]         Clamp
+6    [FPAREN_OPEN]       (
+6    [NUMBER]            2
+6    [COMMA]             ,
+6    [NUMBER]            10
+6    [FPAREN_CLOSE]      )
+6    [MEMBER]            .
+6    [FUNC_CALL]         ShouldBe
+6    [FPAREN_OPEN]       (
+6    [NUMBER]            5
+6    [FPAREN_CLOSE]      )
+6    [SEMICOLON]         ;
+6    [NEWLINE]           
+7    [PAREN_OPEN]        (
+7    [NEG]               -
+7    [NUMBER]            5
+7    [PAREN_CLOSE]       )
+7    [MEMBER]            .
+7    [FUNC_CALL]         Clamp
+7    [FPAREN_OPEN]       (
+7    [NUMBER]            2
+7    [COMMA]             ,
+7    [NUMBER]            10
+7    [FPAREN_CLOSE]      )
+7    [MEMBER]            .
+7    [FUNC_CALL]         ShouldBe
+7    [FPAREN_OPEN]       (
+7    [NUMBER]            5
+7    [FPAREN_CLOSE]      )
+7    [SEMICOLON]         ;
+7    [NEWLINE]           

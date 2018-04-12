@@ -1,0 +1,20 @@
+Line [Token]             Text
+1    [TYPE]              boost
+1    [DC_MEMBER]         ::
+1    [TYPE]              iostreams
+1    [DC_MEMBER]         ::
+1    [TYPE]              mapped_file_source
+1    [FUNC_CTOR_VAR]     pdf
+1    [FPAREN_OPEN]       (
+1    [PAREN_OPEN]        (
+1    [TYPE]              LPSTR
+1    [PAREN_CLOSE]       )
+1    [TYPE]              ATL
+1    [DC_MEMBER]         ::
+1    [FUNC_CALL]         CW2A
+1    [FPAREN_OPEN]       (
+1    [WORD]              sTemp
+1    [FPAREN_CLOSE]      )
+1    [FPAREN_CLOSE]      )
+1    [SEMICOLON]         ;
+1    [NEWLINE]           

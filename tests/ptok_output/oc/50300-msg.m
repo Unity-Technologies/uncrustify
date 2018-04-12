@@ -1,0 +1,41 @@
+Line [Parent]            Text
+1    [OC_MSG]            [
+1    [NONE]              obj
+1    [NONE]              doSomething
+1    [NONE]              :
+1    [NONE]              0
+1    [NONE]              withArgs
+1    [OC_MSG_NAME]       :
+1    [NONE]              @""
+1    [OC_MSG]            ]
+1    [OC_MSG]            ;
+1    [NONE]              
+2    [OC_MSG]            [
+2    [NONE]              @""
+2    [NONE]              doSomething
+2    [NONE]              :
+2    [NONE]              0
+2    [NONE]              withArgs
+2    [OC_MSG_NAME]       :
+2    [NONE]              @""
+2    [OC_MSG]            ]
+2    [OC_MSG]            ;
+2    [NONE]              
+3    [NONE]              NSString
+3    [NONE]              *
+3    [NONE]              result
+3    [NONE]              =
+3    [C_CAST]            (
+3    [C_CAST]            id
+3    [C_CAST]            )
+3    [OC_MSG]            [
+3    [NONE]              obj
+3    [NONE]              arg
+3    [NONE]              :
+3    [NONE]              param
+3    [NONE]              value
+3    [OC_MSG_NAME]       :
+3    [NONE]              3
+3    [OC_MSG]            ]
+3    [OC_MSG]            ;
+3    [NONE]              

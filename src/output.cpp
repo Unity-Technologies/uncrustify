@@ -444,6 +444,70 @@ void output_parsed(FILE *pfile)
 } // output_parsed
 
 
+void token_output_parsed(FILE *pfile)
+{
+   fprintf(pfile, "Line [Token]             Text");
+   for (chunk_t *pc = chunk_get_head(); pc != nullptr; pc = chunk_get_next(pc))
+   {
+      char        *outputMessage;
+      std::string token = "[";
+      token.append(get_token_name(pc->type));
+      token.append("]");
+      outputMessage = make_message("\n%-4zu %-16s    ",
+                                   pc->orig_line, token.c_str()
+                                   );
+      fprintf(pfile, "%s", outputMessage);
+      free(outputMessage);
+
+      if (pc->type != CT_NEWLINE && (pc->len() != 0))
+      {
+         if (pc->type != CT_NL_CONT)
+         {
+            fprintf(pfile, "%s", pc->text());
+         }
+         else
+         {
+            fprintf(pfile, "\\");
+         }
+      }
+   }
+   fflush(pfile);
+} // token_output_parsed
+
+
+void parent_token_output_parsed(FILE *pfile)
+{
+   fprintf(pfile, "Line [Parent]            Text");
+   for (chunk_t *pc = chunk_get_head(); pc != nullptr; pc = chunk_get_next(pc))
+   {
+      char        *outputMessage;
+      //char
+      std::string token = "[";
+      token.append(get_token_name(pc->parent_type));
+      token.append("]");
+      outputMessage = make_message("\n%-4zu %-16s    ",
+                                   pc->orig_line, token.c_str()
+                                   );
+
+      fprintf(pfile, "%s", outputMessage);
+      free(outputMessage);
+
+      if (pc->type != CT_NEWLINE && (pc->len() != 0))
+      {
+         if (pc->type != CT_NL_CONT)
+         {
+            fprintf(pfile, "%s", pc->text());
+         }
+         else
+         {
+            fprintf(pfile, "\\");
+         }
+      }
+   }
+   fflush(pfile);
+} // parent token_output_parsed
+
+
 void output_text(FILE *pfile)
 {
    cpd.fout        = pfile;

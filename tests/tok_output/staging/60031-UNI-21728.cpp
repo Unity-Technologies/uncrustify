@@ -1,0 +1,22 @@
+Line [Token]             Text
+1    [FRIEND]            friend
+1    [TYPE]              std
+1    [DC_MEMBER]         ::
+1    [TYPE]              ostream
+1    [BYREF]             &
+1    [OPERATOR]          operator
+1    [FUNC_PROTO]        <<
+1    [FPAREN_OPEN]       (
+1    [TYPE]              std
+1    [DC_MEMBER]         ::
+1    [TYPE]              ostream
+1    [BYREF]             &
+1    [WORD]              os
+1    [COMMA]             ,
+1    [QUALIFIER]         const
+1    [TYPE]              ScriptingObjectPtr
+1    [BYREF]             &
+1    [WORD]              o
+1    [FPAREN_CLOSE]      )
+1    [SEMICOLON]         ;
+1    [NEWLINE]           

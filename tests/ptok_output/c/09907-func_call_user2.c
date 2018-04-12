@@ -1,0 +1,153 @@
+Line [Parent]            Text
+1    [PP_INCLUDE]        #
+1    [NONE]              include
+1    [NONE]              <stdio.h>
+1    [NONE]              
+3    [PP_DEFINE]         #
+3    [NONE]              define
+3    [NONE]              CMD_CHECK
+3    [MACRO_FUNC]        (
+3    [NONE]              expr
+3    [MACRO_FUNC]        )
+3    [NONE]              do
+3    [DO]                {
+3    [NONE]              {
+3    [NONE]              expr
+3    [NONE]              ;
+3    [NONE]              }
+3    [NONE]              CMDAssert
+3    [FUNC_CALL]         (
+3    [FUNC_CALL]         )
+3    [NONE]              ;
+3    [DO]                }
+3    [NONE]              while
+3    [WHILE_OF_DO]       (
+3    [NONE]              0
+3    [WHILE_OF_DO]       )
+3    [NONE]              
+4    [PP_DEFINE]         #
+4    [NONE]              define
+4    [NONE]              INTERNAL
+4    [MACRO_FUNC]        (
+4    [NONE]              expr
+4    [MACRO_FUNC]        )
+4    [NONE]              do
+4    [DO]                {
+4    [NONE]              internalUse
+4    [NONE]              =
+4    [NONE]              1
+4    [NONE]              ;
+4    [NONE]              {
+4    [NONE]              expr
+4    [NONE]              ;
+4    [NONE]              }
+4    [NONE]              internalUse
+4    [NONE]              =
+4    [NONE]              0
+4    [NONE]              ;
+4    [DO]                }
+4    [NONE]              while
+4    [WHILE_OF_DO]       (
+4    [NONE]              0
+4    [WHILE_OF_DO]       )
+4    [NONE]              
+6    [FUNC_DEF]          int
+6    [NONE]              func
+6    [FUNC_DEF]          (
+6    [NONE]              n
+6    [FUNC_DEF]          )
+6    [FUNC_DEF]          {
+6    [NONE]              
+7    [NONE]              CMD_CHECK
+7    [FUNC_CALL_USER]    (
+7    [NONE]              fflush
+7    [FUNC_CALL]         (
+7    [NONE]              stdout
+7    [FUNC_CALL]         )
+7    [NONE]              ;
+7    [FUNC_CALL_USER]    )
+7    [NONE]              ;
+7    [NONE]              
+8    [NONE]              CMD_CHECK
+8    [FUNC_CALL_USER]    (
+8    [NONE]              fflush
+8    [FUNC_CALL]         (
+8    [NONE]              stdout
+8    [FUNC_CALL]         )
+8    [FUNC_CALL_USER]    )
+8    [NONE]              ;
+8    [NONE]              
+9    [NONE]              CMD_CHECK
+9    [FUNC_CALL_USER]    (
+9    [NONE]              fflush
+9    [FUNC_CALL]         (
+9    [NONE]              stdout
+9    [FUNC_CALL]         )
+9    [FUNC_CALL_USER]    )
+9    [NONE]              ;
+9    [NONE]              
+10   [NONE]              CMD_CHECK
+10   [FUNC_CALL_USER]    (
+10   [NONE]              fflush
+10   [FUNC_CALL]         (
+10   [NONE]              stdout
+10   [FUNC_CALL]         )
+10   [FUNC_CALL_USER]    )
+10   [NONE]              ;
+10   [NONE]              
+11   [NONE]              CMD_CHECK
+11   [FUNC_CALL_USER]    (
+11   [NONE]              fflush
+11   [FUNC_CALL]         (
+11   [NONE]              stdout
+11   [FUNC_CALL]         )
+11   [FUNC_CALL_USER]    )
+11   [NONE]              ;
+11   [NONE]              
+12   [NONE]              CMD_CHECK
+12   [FUNC_CALL_USER]    (
+12   [NONE]              fflush
+12   [FUNC_CALL]         (
+12   [NONE]              stdout
+12   [FUNC_CALL]         )
+12   [NONE]              ;
+12   [FUNC_CALL_USER]    )
+12   [NONE]              ;
+12   [NONE]              
+13   [NONE]              CMD_CHECK
+13   [FUNC_CALL_USER]    (
+13   [NONE]              fflush
+13   [FUNC_CALL]         (
+13   [NONE]              stdout
+13   [FUNC_CALL]         )
+13   [NONE]              ;
+13   [FUNC_CALL_USER]    )
+13   [NONE]              ;
+13   [NONE]              
+14   [NONE]              CMD_CHECK
+14   [FUNC_CALL_USER]    (
+14   [NONE]              INTERNAL
+14   [FUNC_CALL_USER]    (
+14   [NONE]              fflush
+14   [FUNC_CALL]         (
+14   [NONE]              stdout
+14   [FUNC_CALL]         )
+14   [FUNC_CALL_USER]    )
+14   [FUNC_CALL_USER]    )
+14   [NONE]              ;
+14   [NONE]              
+15   [NONE]              CMD_CHECK
+15   [FUNC_CALL_USER]    (
+15   [NONE]              INTERNAL
+15   [FUNC_CALL_USER]    (
+15   [NONE]              fflush
+15   [FUNC_CALL]         (
+15   [NONE]              stdout
+15   [FUNC_CALL]         )
+15   [FUNC_CALL_USER]    )
+15   [NONE]              ;
+15   [FUNC_CALL_USER]    )
+15   [NONE]              ;
+15   [NONE]              
+16   [FUNC_DEF]          }
+16   [NONE]              

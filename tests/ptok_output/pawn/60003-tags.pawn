@@ -1,0 +1,405 @@
+Line [Parent]            Text
+1    [NONE]              
+2    [NONE]              enum
+2    [ENUM]              token
+2    [NONE]              
+3    [ENUM]              {
+3    [NONE]              
+4    [NONE]              t_type
+4    [NONE]              ,
+4    [NONE]              
+5    [NONE]              Rational
+5    [NONE]              :
+5    [NONE]              t_value
+5    [NONE]              ,
+5    [NONE]              
+6    [NONE]              t_word
+6    [NONE]              [
+6    [NONE]              20
+6    [NONE]              ]
+6    [NONE]              ,
+6    [NONE]              
+7    [ENUM]              }
+7    [NONE]              
+10   [NONE]              new
+10   [NONE]              bool
+10   [NONE]              :
+10   [NONE]              flag
+10   [NONE]              =
+10   [NONE]              true
+10   [NONE]              ;
+10   [COMMENT_END]       /* "flag" can only hold "true" or "false" */
+10   [NONE]              
+11   [NONE]              const
+11   [NONE]              error
+11   [NONE]              :
+11   [NONE]              success
+11   [NONE]              =
+11   [NONE]              0
+11   [NONE]              ;
+11   [NONE]              
+12   [NONE]              const
+12   [NONE]              error
+12   [NONE]              :
+12   [NONE]              fatal
+12   [NONE]              =
+12   [NONE]              1
+12   [NONE]              ;
+12   [NONE]              
+13   [NONE]              const
+13   [NONE]              error
+13   [NONE]              :
+13   [NONE]              nonfatal
+13   [NONE]              =
+13   [NONE]              2
+13   [NONE]              ;
+13   [NONE]              
+14   [NONE]              error
+14   [NONE]              :
+14   [NONE]              errno
+14   [NONE]              =
+14   [NONE]              fatal
+14   [NONE]              ;
+14   [NONE]              
+16   [NONE]              native
+16   [NONE]              printf
+16   [FUNC_PROTO]        (
+16   [NONE]              const
+16   [NONE]              format
+16   [NONE]              []
+16   [NONE]              ,
+16   [NONE]              {
+16   [NONE]              Float
+16   [NONE]              ,
+16   [NONE]              _
+16   [NONE]              }
+16   [NONE]              :
+16   [NONE]              ...
+16   [FUNC_PROTO]        )
+16   [FUNC_PROTO]        ;
+16   [NONE]              
+18   [NONE]              new
+18   [NONE]              Float
+18   [NONE]              :
+18   [NONE]              chance_to_avoid
+18   [NONE]              =
+18   [NONE]              (
+18   [NONE]              p_resists
+18   [NONE]              [
+18   [NONE]              id
+18   [NONE]              ]
+18   [NONE]              [
+18   [NONE]              RESISTIDX_FIRE
+18   [NONE]              ]
+18   [NONE]              >=
+18   [NONE]              RESIST_MAX_VALUE
+18   [NONE]              )
+18   [NONE]              ?
+18   [NONE]              
+19   [NONE]              1.00
+19   [NONE]              :
+19   [NONE]              (
+19   [NONE]              float
+19   [NONE]              (
+19   [NONE]              p_resists
+19   [NONE]              [
+19   [NONE]              id
+19   [NONE]              ]
+19   [NONE]              [
+19   [NONE]              RESISTIDX_FIRE
+19   [NONE]              ]
+19   [NONE]              )
+19   [NONE]              /
+19   [NONE]              float
+19   [NONE]              (
+19   [NONE]              RESIST_MAX_VALUE
+19   [NONE]              )
+19   [NONE]              )
+19   [NONE]              ;
+19   [NONE]              
+21   [NONE]              xplevel_lev
+21   [NONE]              [
+21   [NONE]              j
+21   [NONE]              ]
+21   [NONE]              =
+21   [NONE]              XP_PER_LEVEL_BASE_LT
+21   [NONE]              +
+21   [NONE]              (
+21   [NONE]              (
+21   [NONE]              j
+21   [NONE]              -
+21   [NONE]              10
+21   [NONE]              )
+21   [NONE]              *
+21   [NONE]              XP_PER_LEVEL_LT
+21   [NONE]              )
+21   [NONE]              +
+21   [NONE]              
+22   [NONE]              floatround
+22   [NONE]              (
+22   [NONE]              float
+22   [NONE]              (
+22   [NONE]              j
+22   [NONE]              /
+22   [NONE]              20
+22   [NONE]              )
+22   [NONE]              *
+22   [NONE]              XP_PER_LEVEL_LT
+22   [NONE]              )
+22   [NONE]              ;
+22   [NONE]              
+25   [NONE]              main
+25   [FUNC_DEF]          (
+25   [FUNC_DEF]          )
+25   [NONE]              
+25   [FUNC_DEF]          {
+25   [NONE]              
+26   [NONE]              new
+26   [NONE]              Float
+26   [NONE]              :
+26   [NONE]              xpos
+26   [NONE]              ;
+26   [NONE]              
+27   [NONE]              new
+27   [NONE]              Float
+27   [NONE]              :
+27   [NONE]              ypos
+27   [NONE]              ;
+27   [NONE]              
+29   [NONE]              new
+29   [NONE]              apple
+29   [NONE]              :
+29   [NONE]              elstar
+29   [NONE]              ;
+29   [COMMENT_END]       /* variable "elstar" with tag "apple" */
+29   [NONE]              
+30   [NONE]              new
+30   [NONE]              orange
+30   [NONE]              :
+30   [NONE]              valencia
+30   [NONE]              ;
+30   [COMMENT_END]       /* variable "valencia" with tag "orange" */
+30   [NONE]              
+31   [NONE]              new
+31   [NONE]              x
+31   [NONE]              ;
+31   [COMMENT_END]       /* untagged variable "x" */
+31   [NONE]              
+32   [NONE]              elstar
+32   [NONE]              =
+32   [NONE]              valencia
+32   [NONE]              ;
+32   [COMMENT_END]       /* tag mismatch */
+32   [NONE]              
+33   [NONE]              elstar
+33   [NONE]              =
+33   [NONE]              x
+33   [NONE]              ;
+33   [COMMENT_END]       /* tag mismatch */
+33   [NONE]              
+34   [NONE]              x
+34   [NONE]              =
+34   [NONE]              valencia
+34   [NONE]              ;
+34   [COMMENT_END]       /* ok */
+34   [NONE]              
+36   [NONE]              new
+36   [NONE]              Float
+36   [NONE]              :
+36   [NONE]              chance_to_avoid
+36   [NONE]              =
+36   [NONE]              (
+36   [NONE]              p_resists
+36   [NONE]              [
+36   [NONE]              id
+36   [NONE]              ]
+36   [NONE]              [
+36   [NONE]              RESISTIDX_FIRE
+36   [NONE]              ]
+36   [NONE]              >=
+36   [NONE]              RESIST_MAX_VALUE
+36   [NONE]              )
+36   [NONE]              ?
+36   [NONE]              
+37   [NONE]              1.00
+37   [NONE]              :
+37   [NONE]              (
+37   [NONE]              float
+37   [FUNC_CALL]         (
+37   [NONE]              p_resists
+37   [NONE]              [
+37   [NONE]              id
+37   [NONE]              ]
+37   [NONE]              [
+37   [NONE]              RESISTIDX_FIRE
+37   [NONE]              ]
+37   [FUNC_CALL]         )
+37   [NONE]              /
+37   [NONE]              float
+37   [FUNC_CALL]         (
+37   [NONE]              RESIST_MAX_VALUE
+37   [FUNC_CALL]         )
+37   [NONE]              )
+37   [NONE]              ;
+37   [NONE]              
+39   [NONE]              xplevel_lev
+39   [NONE]              [
+39   [NONE]              j
+39   [NONE]              ]
+39   [NONE]              =
+39   [NONE]              XP_PER_LEVEL_BASE_LT
+39   [NONE]              +
+39   [NONE]              (
+39   [NONE]              (
+39   [NONE]              j
+39   [NONE]              -
+39   [NONE]              10
+39   [NONE]              )
+39   [NONE]              *
+39   [NONE]              XP_PER_LEVEL_LT
+39   [NONE]              )
+39   [NONE]              +
+39   [NONE]              
+40   [NONE]              floatround
+40   [FUNC_CALL]         (
+40   [NONE]              float
+40   [FUNC_CALL]         (
+40   [NONE]              j
+40   [NONE]              /
+40   [NONE]              20
+40   [FUNC_CALL]         )
+40   [NONE]              *
+40   [NONE]              XP_PER_LEVEL_LT
+40   [FUNC_CALL]         )
+40   [NONE]              ;
+40   [NONE]              
+42   [NONE]              if
+42   [IF]                (
+42   [NONE]              apple
+42   [NONE]              :
+42   [NONE]              valencia
+42   [NONE]              <
+42   [NONE]              elstar
+42   [IF]                )
+42   [IF]                {
+42   [NONE]              
+43   [NONE]              valencia
+43   [NONE]              =
+43   [NONE]              orange
+43   [NONE]              :
+43   [NONE]              elstar
+43   [NONE]              ;
+43   [NONE]              
+43   [IF]                }
+43   [NONE]              
+45   [NONE]              some_label
+45   [NONE]              :
+45   [COMMENT_END]       // target for a goto
+45   [NONE]              
+46   [PP_PRAGMA]         #
+46   [NONE]              pragma
+46   [NONE]              rational Float
+46   [NONE]              
+48   [NONE]              new
+48   [NONE]              Float
+48   [NONE]              :
+48   [NONE]              limit
+48   [NONE]              =
+48   [NONE]              -
+48   [NONE]              5.0
+48   [NONE]              ;
+48   [NONE]              
+49   [NONE]              new
+49   [NONE]              Float
+49   [NONE]              :
+49   [NONE]              value
+49   [NONE]              =
+49   [NONE]              -
+49   [NONE]              1.0
+49   [NONE]              ;
+49   [NONE]              
+50   [NONE]              if
+50   [IF]                (
+50   [NONE]              value
+50   [NONE]              <
+50   [NONE]              limit
+50   [IF]                )
+50   [IF]                {
+50   [NONE]              
+51   [NONE]              printf
+51   [FUNC_CALL]         (
+51   [NONE]              "Value %f below limit %f\n"
+51   [NONE]              ,
+51   [NONE]              _
+51   [NONE]              :
+51   [NONE]              value
+51   [NONE]              ,
+51   [NONE]              _
+51   [NONE]              :
+51   [NONE]              limit
+51   [FUNC_CALL]         )
+51   [NONE]              ;
+51   [NONE]              
+51   [IF]                }
+52   [NONE]              else
+52   [ELSE]              {
+52   [NONE]              
+53   [NONE]              printf
+53   [FUNC_CALL]         (
+53   [NONE]              "Value above limit\n"
+53   [FUNC_CALL]         )
+53   [NONE]              ;
+53   [NONE]              
+53   [ELSE]              }
+53   [NONE]              
+54   [NONE]              goto
+54   [NONE]              some_label
+54   [NONE]              ;
+54   [NONE]              
+55   [FUNC_DEF]          }
+55   [NONE]              
+57   [NONE]              foo
+57   [FUNC_DEF]          (
+57   [FUNC_DEF]          )
+57   [NONE]              
+58   [FUNC_DEF]          {
+58   [NONE]              
+58   [NONE]              if
+58   [IF]                (
+58   [NONE]              ape
+58   [IF]                )
+58   [IF]                {
+58   [NONE]              
+59   [NONE]              dofunc
+59   [FUNC_CALL]         (
+59   [NONE]              1
+59   [FUNC_CALL]         )
+59   [NONE]              ;
+59   [NONE]              
+59   [IF]                }
+60   [NONE]              else
+60   [NONE]              if
+60   [ELSEIF]            (
+60   [NONE]              monkey
+60   [ELSEIF]            )
+60   [ELSEIF]            {
+60   [NONE]              
+61   [NONE]              dofunc
+61   [FUNC_CALL]         (
+61   [NONE]              2
+61   [FUNC_CALL]         )
+61   [NONE]              ;
+61   [NONE]              
+61   [ELSEIF]            }
+62   [NONE]              else
+62   [ELSE]              {
+62   [NONE]              
+63   [NONE]              dofunc
+63   [FUNC_CALL]         (
+63   [NONE]              3
+63   [FUNC_CALL]         )
+63   [NONE]              ;
+63   [NONE]              
+63   [ELSE]              }
+63   [NONE]              
+63   [FUNC_DEF]          }

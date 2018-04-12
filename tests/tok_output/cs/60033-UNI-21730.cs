@@ -1,0 +1,66 @@
+Line [Token]             Text
+1    [QUALIFIER]         private
+1    [TYPE]              void
+1    [FUNC_DEF]          Foo
+1    [FPAREN_OPEN]       (
+1    [FPAREN_CLOSE]      )
+1    [NEWLINE]           
+2    [BRACE_OPEN]        {
+2    [NEWLINE]           
+3    [TYPE]              Action
+3    [ANGLE_OPEN]        <
+3    [TYPE]              UnityPlayerBaseStartInfo
+3    [COMMA]             ,
+3    [TYPE]              GraphicsTestRunConfiguration
+3    [COMMA]             ,
+3    [TYPE]              Action
+3    [ANGLE_OPEN]        <
+3    [TYPE]              string
+3    [COMMA]             ,
+3    [TYPE]              Bitmap
+3    [COMMA]             ,
+3    [TYPE]              long
+3    [ANGLE_CLOSE]       >
+3    [COMMA]             ,
+3    [TYPE]              RenderingBackend
+3    [COMMA]             ,
+3    [TYPE]              DX11FeatureLevel
+3    [PTR_TYPE]          ?
+3    [COMMA]             ,
+3    [TYPE]              string
+3    [ANGLE_CLOSE]       >
+3    [WORD]              playerRunnerImageCallback
+3    [NEWLINE]           
+4    [ASSIGN]            =
+4    [PAREN_OPEN]        (
+4    [WORD]              playerStartInfo
+4    [COMMA]             ,
+4    [WORD]              description
+4    [COMMA]             ,
+4    [WORD]              incomingScreenshotCallback
+4    [COMMA]             ,
+4    [WORD]              configuration
+4    [COMMA]             ,
+4    [WORD]              dx11Featurelevel
+4    [COMMA]             ,
+4    [WORD]              graphicsDriverType
+4    [PAREN_CLOSE]       )
+4    [LAMBDA]            =>
+4    [FUNC_CALL]         incomingScreenshotCallback
+4    [FPAREN_OPEN]       (
+4    [WORD]              filename
+4    [COMMA]             ,
+4    [NEW]               new
+4    [FUNC_CALL]         Bitmap
+4    [FPAREN_OPEN]       (
+4    [NUMBER]            1
+4    [COMMA]             ,
+4    [NUMBER]            1
+4    [FPAREN_CLOSE]      )
+4    [COMMA]             ,
+4    [NUMBER]            42
+4    [FPAREN_CLOSE]      )
+4    [SEMICOLON]         ;
+4    [NEWLINE]           
+5    [BRACE_CLOSE]       }
+5    [NEWLINE]           

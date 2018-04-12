@@ -1,0 +1,24 @@
+Line [Token]             Text
+1    [FRIEND]            friend
+1    [TYPE]              void
+1    [DC_MEMBER]         ::
+1    [TYPE]              test
+1    [DC_MEMBER]         ::
+1    [FUNC_PROTO]        swap
+1    [ANGLE_OPEN]        <
+1    [ANGLE_CLOSE]       >
+1    [FPAREN_OPEN]       (
+1    [TYPE]              future
+1    [ANGLE_OPEN]        <
+1    [TYPE]              T
+1    [ANGLE_CLOSE]       >
+1    [BYREF]             &
+1    [COMMA]             ,
+1    [TYPE]              future
+1    [ANGLE_OPEN]        <
+1    [TYPE]              T
+1    [ANGLE_CLOSE]       >
+1    [BYREF]             &
+1    [FPAREN_CLOSE]      )
+1    [SEMICOLON]         ;
+1    [NEWLINE]           

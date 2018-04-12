@@ -1,0 +1,41 @@
+Line [Parent]            Text
+1    [NONE]              
+2    [PP_DEFINE]         #
+2    [NONE]              define
+2    [NONE]              MACRO
+2    [MACRO_FUNC]        (
+2    [NONE]              templ_type
+2    [MACRO_FUNC]        )
+2    [NONE]              template
+2    [TEMPLATE]          <
+2    [NONE]              typename
+2    [NONE]              T
+2    [TEMPLATE]          >
+2    [TEMPLATE]          class
+2    [CLASS]             Abc
+2    [TEMPLATE]          <
+2    [NONE]              templ_type
+2    [TEMPLATE]          <
+2    [NONE]              T
+2    [TEMPLATE]          >
+2    [TEMPLATE]          >
+2    [CLASS]             {
+2    [CLASS]             }
+2    [NONE]              
+4    [NONE]              template
+4    [TEMPLATE]          <
+4    [NONE]              typename
+4    [NONE]              T
+4    [TEMPLATE]          >
+4    [TEMPLATE]          class
+4    [CLASS]             Foo
+4    [TEMPLATE]          <
+4    [NONE]              Bar
+4    [TEMPLATE]          <
+4    [NONE]              T
+4    [TEMPLATE]          >
+4    [TEMPLATE]          >
+4    [CLASS]             {
+4    [CLASS]             }
+4    [CLASS]             ;
+4    [NONE]              

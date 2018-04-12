@@ -1,0 +1,100 @@
+Line [Parent]            Text
+1    [PP_INCLUDE]        #
+1    [NONE]              import
+1    [NONE]              <Foundation/Foundation.h>
+1    [NONE]              
+3    [NONE]              extern
+3    [EXTERN]            "C"
+3    [FUNC_PROTO]        void
+3    [NONE]              function1
+3    [FUNC_PROTO]        (
+3    [NONE]              void
+3    [NONE]              *
+3    [NONE]              self
+3    [NONE]              ,
+3    [NONE]              uint32_t
+3    [NONE]              *
+3    [NONE]              arg2
+3    [NONE]              ,
+3    [NONE]              uint32_t
+3    [NONE]              *
+3    [NONE]              arg3
+3    [FUNC_PROTO]        )
+3    [FUNC_PROTO]        ;
+3    [NONE]              
+5    [NONE]              MACRO1
+5    [FUNC_PROTO]        (
+5    [NONE]              void
+5    [NONE]              ,
+5    [NONE]              function2
+5    [NONE]              ,
+5    [NONE]              type1
+5    [NONE]              arg1
+5    [NONE]              ,
+5    [NONE]              type2
+5    [NONE]              arg2
+5    [NONE]              ,
+5    [NONE]              const
+5    [NONE]              type1
+5    [NONE]              *
+5    [NONE]              arg3
+5    [FUNC_PROTO]        )
+5    [FUNC_DEF]          ;
+5    [NONE]              
+7    [NONE]              MACRO2
+7    [FUNC_DEF]          (
+7    [NONE]              status_t
+7    [NONE]              ,
+7    [NONE]              function3
+7    [NONE]              ,
+7    [NONE]              
+8    [NONE]              void
+8    [NONE]              *
+8    [NONE]              arg1
+8    [NONE]              ,
+8    [NONE]              
+9    [NONE]              const
+9    [NONE]              sp
+9    [TEMPLATE]          <
+9    [NONE]              IFoo
+9    [TEMPLATE]          >
+9    [NONE]              &
+9    [NONE]              arg2
+9    [FUNC_DEF]          )
+9    [FUNC_DEF]          {
+9    [NONE]              
+10   [FUNC_DEF]          }
+10   [NONE]              
+12   [NONE]              MACRO2
+12   [FUNC_DEF]          (
+12   [NONE]              type4
+12   [NONE]              ,
+12   [NONE]              function4
+12   [NONE]              ,
+12   [NONE]              const
+12   [NONE]              void
+12   [NONE]              *
+12   [NONE]              *
+12   [NONE]              arg1
+12   [NONE]              ,
+12   [NONE]              type1
+12   [NONE]              arg2
+12   [NONE]              ,
+12   [NONE]              const
+12   [NONE]              type3
+12   [NONE]              *
+12   [NONE]              arg3
+12   [NONE]              ,
+12   [NONE]              type4
+12   [NONE]              arg4
+12   [NONE]              ,
+12   [NONE]              type4
+12   [NONE]              arg5
+12   [NONE]              ,
+12   [NONE]              bool
+12   [NONE]              arg6
+12   [FUNC_DEF]          )
+12   [FUNC_DEF]          {
+12   [NONE]              
+13   [FUNC_DEF]          }
+13   [NONE]              

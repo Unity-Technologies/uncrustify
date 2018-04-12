@@ -1,0 +1,479 @@
+Line [Parent]            Text
+1    [NONE]              
+2    [NONE]              enum
+2    [ENUM]              rect
+2    [ENUM]              {
+2    [NONE]              left
+2    [NONE]              ,
+2    [NONE]              top
+2    [NONE]              ,
+2    [NONE]              right
+2    [NONE]              ,
+2    [NONE]              bottom
+2    [ENUM]              }
+2    [NONE]              
+4    [NONE]              enum
+4    [ENUM]              boot
+4    [ENUM]              (
+4    [NONE]              <<=
+4    [NONE]              1
+4    [ENUM]              )
+4    [ENUM]              {
+4    [NONE]              a
+4    [NONE]              =
+4    [NONE]              1
+4    [NONE]              ,
+4    [NONE]              b
+4    [NONE]              ,
+4    [NONE]              c
+4    [NONE]              ,
+4    [NONE]              d
+4    [ENUM]              }
+4    [NONE]              
+6    [NONE]              enum
+6    [ENUM]              booty
+6    [ENUM]              (
+6    [NONE]              <<=
+6    [NONE]              1
+6    [ENUM]              )
+6    [NONE]              
+7    [ENUM]              {
+7    [NONE]              
+8    [NONE]              a
+8    [NONE]              =
+8    [NONE]              1
+8    [NONE]              ,
+8    [NONE]              b
+8    [NONE]              ,
+8    [NONE]              c
+8    [NONE]              ,
+8    [NONE]              d
+8    [NONE]              
+9    [ENUM]              }
+9    [NONE]              
+11   [NONE]              forward
+11   [NONE]              addvector
+11   [FUNC_PROTO]        (
+11   [NONE]              a
+11   [NONE]              []
+11   [NONE]              ,
+11   [NONE]              const
+11   [NONE]              b
+11   [NONE]              []
+11   [NONE]              ,
+11   [NONE]              size
+11   [FUNC_PROTO]        )
+11   [NONE]              ;
+11   [NONE]              
+13   [NONE]              enum
+13   [ENUM]              message
+13   [ENUM]              {
+13   [NONE]              
+14   [NONE]              text
+14   [NONE]              [
+14   [NONE]              40
+14   [NONE]              char
+14   [NONE]              ]
+14   [NONE]              ,
+14   [NONE]              
+15   [NONE]              priority
+15   [NONE]              
+16   [ENUM]              }
+16   [NONE]              
+18   [NONE]              enum
+18   [ENUM]              token
+18   [NONE]              
+19   [ENUM]              {
+19   [NONE]              
+20   [NONE]              t_type
+20   [NONE]              ,
+20   [NONE]              
+21   [NONE]              Rational
+21   [NONE]              :
+21   [NONE]              t_value
+21   [NONE]              ,
+21   [NONE]              
+22   [NONE]              t_word
+22   [NONE]              [
+22   [NONE]              20
+22   [NONE]              ]
+22   [NONE]              ,
+22   [NONE]              
+23   [ENUM]              }
+23   [NONE]              
+25   [NONE]              new
+25   [NONE]              bool
+25   [NONE]              :
+25   [NONE]              flag
+25   [NONE]              =
+25   [NONE]              true
+25   [NONE]              ;
+25   [NONE]              
+27   [NONE]              increment
+27   [FUNC_DEF]          (
+27   [NONE]              &
+27   [NONE]              value
+27   [NONE]              ,
+27   [NONE]              incr
+27   [NONE]              =
+27   [NONE]              1
+27   [FUNC_DEF]          )
+27   [NONE]              
+27   [FUNC_DEF]          {
+27   [NONE]              
+27   [NONE]              value
+27   [NONE]              +=
+27   [NONE]              incr
+27   [NONE]              ;
+27   [NONE]              
+27   [FUNC_DEF]          }
+27   [NONE]              
+29   [NONE]              new
+29   [NONE]              msg
+29   [NONE]              [
+29   [NONE]              message
+29   [NONE]              ]
+29   [NONE]              =
+29   [ASSIGN]            {
+29   [NONE]              !"My Text"
+29   [NONE]              ,
+29   [NONE]              1
+29   [ASSIGN]            }
+29   [NONE]              ;
+29   [NONE]              
+30   [NONE]              main
+30   [FUNC_DEF]          (
+30   [FUNC_DEF]          )
+30   [NONE]              
+30   [FUNC_DEF]          {
+30   [NONE]              
+31   [NONE]              new
+31   [NONE]              my_rect
+31   [NONE]              [
+31   [NONE]              rect
+31   [NONE]              ]
+31   [NONE]              ;
+31   [NONE]              
+33   [NONE]              my_rect
+33   [NONE]              [
+33   [NONE]              left
+33   [NONE]              ]
+33   [NONE]              =
+33   [NONE]              10
+33   [NONE]              ;
+33   [NONE]              
+34   [NONE]              my_rect
+34   [NONE]              [
+34   [NONE]              right
+34   [NONE]              ]
+34   [NONE]              =
+34   [NONE]              100
+34   [NONE]              ;
+34   [NONE]              
+35   [NONE]              my_rect
+35   [NONE]              [
+35   [NONE]              top
+35   [NONE]              ]
+35   [NONE]              =
+35   [NONE]              10
+35   [NONE]              ;
+35   [NONE]              
+36   [NONE]              my_rect
+36   [NONE]              [
+36   [NONE]              bottom
+36   [NONE]              ]
+36   [NONE]              =
+36   [NONE]              100
+36   [NONE]              ;
+36   [NONE]              
+38   [NONE]              for
+38   [FOR]               (
+38   [NONE]              new
+38   [NONE]              i
+38   [NONE]              =
+38   [NONE]              0
+38   [FOR]               ;
+38   [NONE]              rect
+38   [NONE]              :
+38   [NONE]              i
+38   [NONE]              <
+38   [NONE]              rect
+38   [FOR]               ;
+38   [NONE]              i
+38   [NONE]              ++
+38   [FOR]               )
+38   [FOR]               {
+38   [NONE]              
+39   [NONE]              my_rect
+39   [NONE]              [
+39   [NONE]              rect
+39   [NONE]              :
+39   [NONE]              i
+39   [NONE]              ]
+39   [NONE]              *=
+39   [NONE]              2
+39   [NONE]              ;
+39   [NONE]              
+39   [FOR]               }
+39   [NONE]              
+41   [NONE]              new
+41   [NONE]              vect
+41   [NONE]              [
+41   [NONE]              3
+41   [NONE]              ]
+41   [NONE]              =
+41   [ASSIGN]            {
+41   [NONE]              1
+41   [NONE]              ,
+41   [NONE]              2
+41   [NONE]              ,
+41   [NONE]              3
+41   [ASSIGN]            }
+41   [NONE]              ;
+41   [NONE]              
+42   [NONE]              addvector
+42   [FUNC_CALL]         (
+42   [NONE]              vect
+42   [NONE]              ,
+42   [NONE]              {
+42   [NONE]              5
+42   [NONE]              ,
+42   [NONE]              5
+42   [NONE]              ,
+42   [NONE]              5
+42   [NONE]              }
+42   [NONE]              ,
+42   [NONE]              3
+42   [FUNC_CALL]         )
+42   [NONE]              ;
+42   [NONE]              
+44   [NONE]              new
+44   [NONE]              Float
+44   [NONE]              :
+44   [NONE]              xpos
+44   [NONE]              ;
+44   [NONE]              
+45   [NONE]              new
+45   [NONE]              Float
+45   [NONE]              :
+45   [NONE]              ypos
+45   [NONE]              ;
+45   [NONE]              
+47   [NONE]              new
+47   [NONE]              a
+47   [NONE]              =
+47   [NONE]              5
+47   [NONE]              ;
+47   [NONE]              
+48   [NONE]              increment
+48   [FUNC_CALL]         (
+48   [NONE]              a
+48   [FUNC_CALL]         )
+48   [NONE]              ;
+48   [NONE]              
+49   [NONE]              increment
+49   [FUNC_CALL]         (
+49   [NONE]              a
+49   [NONE]              ,
+49   [NONE]              _
+49   [FUNC_CALL]         )
+49   [NONE]              ;
+49   [NONE]              
+50   [NONE]              increment
+50   [FUNC_CALL]         (
+50   [NONE]              a
+50   [NONE]              ,
+50   [NONE]              1
+50   [FUNC_CALL]         )
+50   [NONE]              ;
+50   [NONE]              
+51   [FUNC_DEF]          }
+51   [NONE]              
+53   [NONE]              sum
+53   [FUNC_DEF]          (
+53   [NONE]              a
+53   [NONE]              ,
+53   [NONE]              b
+53   [FUNC_DEF]          )
+53   [NONE]              
+54   [FUNC_DEF]          {
+54   [NONE]              
+54   [NONE]              return
+54   [NONE]              a
+54   [NONE]              +
+54   [NONE]              b
+54   [NONE]              ;
+54   [NONE]              
+54   [FUNC_DEF]          }
+54   [NONE]              
+56   [NONE]              power
+56   [FUNC_DEF]          (
+56   [NONE]              x
+56   [NONE]              ,
+56   [NONE]              y
+56   [FUNC_DEF]          )
+56   [NONE]              
+57   [FUNC_DEF]          {
+57   [NONE]              
+58   [COMMENT_WHOLE]     /* returns x raised to the power of y */
+58   [NONE]              
+59   [NONE]              assert
+59   [NONE]              y
+59   [NONE]              >=
+59   [NONE]              0
+59   [NONE]              ;
+59   [NONE]              
+60   [NONE]              new
+60   [NONE]              r
+60   [NONE]              =
+60   [NONE]              1
+60   [NONE]              ;
+60   [NONE]              
+61   [NONE]              for
+61   [FOR]               (
+61   [NONE]              new
+61   [NONE]              i
+61   [NONE]              =
+61   [NONE]              0
+61   [FOR]               ;
+61   [NONE]              i
+61   [NONE]              <
+61   [NONE]              y
+61   [FOR]               ;
+61   [NONE]              i
+61   [NONE]              ++
+61   [FOR]               )
+61   [FOR]               {
+61   [NONE]              
+62   [NONE]              r
+62   [NONE]              *=
+62   [NONE]              x
+62   [NONE]              ;
+62   [NONE]              
+62   [FOR]               }
+62   [NONE]              
+63   [NONE]              return
+63   [NONE]              r
+63   [NONE]              ;
+63   [NONE]              
+64   [FUNC_DEF]          }
+64   [NONE]              
+66   [NONE]              addvector
+66   [FUNC_DEF]          (
+66   [NONE]              a
+66   [NONE]              []
+66   [NONE]              ,
+66   [NONE]              const
+66   [NONE]              b
+66   [NONE]              []
+66   [NONE]              ,
+66   [NONE]              size
+66   [FUNC_DEF]          )
+66   [NONE]              
+67   [FUNC_DEF]          {
+67   [NONE]              
+68   [NONE]              for
+68   [FOR]               (
+68   [NONE]              new
+68   [NONE]              i
+68   [NONE]              =
+68   [NONE]              0
+68   [FOR]               ;
+68   [NONE]              i
+68   [NONE]              <
+68   [NONE]              size
+68   [FOR]               ;
+68   [NONE]              i
+68   [NONE]              ++
+68   [FOR]               )
+68   [FOR]               {
+68   [NONE]              
+69   [NONE]              a
+69   [NONE]              [
+69   [NONE]              i
+69   [NONE]              ]
+69   [NONE]              +=
+69   [NONE]              b
+69   [NONE]              [
+69   [NONE]              i
+69   [NONE]              ]
+69   [NONE]              ;
+69   [NONE]              
+69   [FOR]               }
+69   [NONE]              
+70   [FUNC_DEF]          }
+70   [NONE]              
+72   [NONE]              stock
+72   [NONE]              remove_filepath
+72   [FUNC_DEF]          (
+72   [NONE]              szFilePath
+72   [NONE]              []
+72   [NONE]              ,
+72   [NONE]              szFile
+72   [NONE]              []
+72   [NONE]              ,
+72   [NONE]              pMax
+72   [FUNC_DEF]          )
+72   [NONE]              
+73   [FUNC_DEF]          {
+73   [NONE]              
+74   [NONE]              new
+74   [NONE]              len
+74   [NONE]              =
+74   [NONE]              strlen
+74   [FUNC_CALL]         (
+74   [NONE]              szFilePath
+74   [FUNC_CALL]         )
+74   [NONE]              ;
+74   [NONE]              
+76   [NONE]              while
+76   [WHILE]             (
+76   [NONE]              (
+76   [NONE]              --
+76   [NONE]              len
+76   [NONE]              >=
+76   [NONE]              0
+76   [NONE]              )
+76   [NONE]              &&
+76   [NONE]              (
+76   [NONE]              szFilePath
+76   [NONE]              [
+76   [NONE]              len
+76   [NONE]              ]
+76   [NONE]              !=
+76   [NONE]              '/'
+76   [NONE]              )
+76   [NONE]              &&
+76   [NONE]              
+77   [NONE]              (
+77   [NONE]              szFilePath
+77   [NONE]              [
+77   [NONE]              len
+77   [NONE]              ]
+77   [NONE]              !=
+77   [NONE]              '\''
+77   [NONE]              )
+77   [WHILE]             )
+77   [WHILE]             {
+77   [WHILE]             }
+77   [NONE]              
+79   [NONE]              copy
+79   [FUNC_CALL]         (
+79   [NONE]              szFile
+79   [NONE]              ,
+79   [NONE]              pMax
+79   [NONE]              ,
+79   [NONE]              szFilePath
+79   [NONE]              [
+79   [NONE]              len
+79   [NONE]              +
+79   [NONE]              1
+79   [NONE]              ]
+79   [FUNC_CALL]         )
+79   [NONE]              ;
+79   [NONE]              
+81   [NONE]              return
+81   [NONE]              ;
+81   [NONE]              
+82   [FUNC_DEF]          }
+82   [NONE]              

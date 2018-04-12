@@ -1,0 +1,20 @@
+Line [Token]             Text
+1    [TYPE]              inline
+1    [TYPE]              double
+1    [FUNC_DEF]          GetAudioBitrateForQuality
+1    [FPAREN_OPEN]       (
+1    [TYPE]              double
+1    [WORD]              f
+1    [FPAREN_CLOSE]      )
+1    [BRACE_OPEN]        {
+1    [RETURN]            return
+1    [NUMBER]            56000
+1    [ARITH]             +
+1    [NUMBER]            200000
+1    [ARITH]             *
+1    [PAREN_OPEN]        (
+1    [WORD]              f
+1    [PAREN_CLOSE]       )
+1    [SEMICOLON]         ;
+1    [BRACE_CLOSE]       }
+1    [NEWLINE]           

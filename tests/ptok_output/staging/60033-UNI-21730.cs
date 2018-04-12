@@ -1,0 +1,66 @@
+Line [Parent]            Text
+1    [FUNC_DEF]          private
+1    [FUNC_DEF]          void
+1    [NONE]              Foo
+1    [FUNC_DEF]          (
+1    [FUNC_DEF]          )
+1    [NONE]              
+2    [FUNC_DEF]          {
+2    [NONE]              
+3    [NONE]              Action
+3    [TEMPLATE]          <
+3    [NONE]              UnityPlayerBaseStartInfo
+3    [NONE]              ,
+3    [NONE]              GraphicsTestRunConfiguration
+3    [NONE]              ,
+3    [NONE]              Action
+3    [TEMPLATE]          <
+3    [NONE]              string
+3    [NONE]              ,
+3    [NONE]              Bitmap
+3    [NONE]              ,
+3    [NONE]              long
+3    [TEMPLATE]          >
+3    [NONE]              ,
+3    [NONE]              RenderingBackend
+3    [NONE]              ,
+3    [NONE]              DX11FeatureLevel
+3    [NONE]              ?
+3    [NONE]              ,
+3    [NONE]              string
+3    [TEMPLATE]          >
+3    [NONE]              playerRunnerImageCallback
+3    [NONE]              
+4    [NONE]              =
+4    [NONE]              (
+4    [NONE]              playerStartInfo
+4    [NONE]              ,
+4    [NONE]              description
+4    [NONE]              ,
+4    [NONE]              incomingScreenshotCallback
+4    [NONE]              ,
+4    [NONE]              configuration
+4    [NONE]              ,
+4    [NONE]              dx11Featurelevel
+4    [NONE]              ,
+4    [NONE]              graphicsDriverType
+4    [NONE]              )
+4    [NONE]              =>
+4    [NONE]              incomingScreenshotCallback
+4    [FUNC_CALL]         (
+4    [NONE]              filename
+4    [NONE]              ,
+4    [NONE]              new
+4    [NONE]              Bitmap
+4    [FUNC_CALL]         (
+4    [NONE]              1
+4    [NONE]              ,
+4    [NONE]              1
+4    [FUNC_CALL]         )
+4    [NONE]              ,
+4    [NONE]              42
+4    [FUNC_CALL]         )
+4    [NONE]              ;
+4    [NONE]              
+5    [FUNC_DEF]          }
+5    [NONE]              

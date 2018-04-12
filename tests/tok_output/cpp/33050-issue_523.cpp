@@ -1,0 +1,41 @@
+Line [Token]             Text
+1    [NEWLINE]           
+2    [PREPROC]           #
+2    [PP_DEFINE]         define
+2    [MACRO_FUNC]        MACRO
+2    [FPAREN_OPEN]       (
+2    [WORD]              templ_type
+2    [FPAREN_CLOSE]      )
+2    [TEMPLATE]          template
+2    [ANGLE_OPEN]        <
+2    [TYPENAME]          typename
+2    [TYPE]              T
+2    [ANGLE_CLOSE]       >
+2    [CLASS]             class
+2    [TYPE]              Abc
+2    [ANGLE_OPEN]        <
+2    [TYPE]              templ_type
+2    [ANGLE_OPEN]        <
+2    [TYPE]              T
+2    [ANGLE_CLOSE]       >
+2    [ANGLE_CLOSE]       >
+2    [BRACE_OPEN]        {
+2    [BRACE_CLOSE]       }
+2    [NEWLINE]           
+4    [TEMPLATE]          template
+4    [ANGLE_OPEN]        <
+4    [TYPENAME]          typename
+4    [TYPE]              T
+4    [ANGLE_CLOSE]       >
+4    [CLASS]             class
+4    [TYPE]              Foo
+4    [ANGLE_OPEN]        <
+4    [TYPE]              Bar
+4    [ANGLE_OPEN]        <
+4    [TYPE]              T
+4    [ANGLE_CLOSE]       >
+4    [ANGLE_CLOSE]       >
+4    [BRACE_OPEN]        {
+4    [BRACE_CLOSE]       }
+4    [SEMICOLON]         ;
+4    [NEWLINE]           
