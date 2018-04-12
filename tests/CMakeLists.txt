@@ -21,7 +21,7 @@ function(add_uncrustify_test name lang config rerun_config input result result_2
   )
 endfunction()
 # Add languages to output_test_lang to do output comparison on those languages
-set(output_test_lang vala)
+set(output_test_lang c-sharp c cpp d java pawn objective-c vala ecma imported regression)
 
 # Add languages to token_test_lang to do token comparison on those languages
 set(token_test_lang)
