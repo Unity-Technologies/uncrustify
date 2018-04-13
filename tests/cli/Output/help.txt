@@ -21,6 +21,8 @@ Basic Options:
  -f FILE      : Process the single file FILE (output to stdout, use with -o).
  -o FILE      : Redirect stdout to FILE.
  -F FILE      : Read files to process from FILE, one filename per line (- is stdin).
+ --token FILE : Redirect tokens to FILE.
+ --parent FILE: Redirect parent tokens to FILE.
  --check      : Do not output the new text, instead verify that nothing changes when
                 the file(s) are processed.
                 The status of every file is printed to stderr.
