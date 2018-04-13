@@ -101,4 +101,3 @@ build/
 .cproject
 .project
 .settings
-src/uncrustify.cpp
