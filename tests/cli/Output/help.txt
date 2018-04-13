@@ -1,5 +1,5 @@
 Usage:
-uncrustify.exe [options] [files ...]
+uncrustify [options] [files ...]
 
 If no input files are specified, the input is read from stdin
 If reading from stdin, you should specify the language using -l
