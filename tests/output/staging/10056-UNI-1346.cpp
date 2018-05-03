@@ -13,12 +13,12 @@ class Class
 {
 public:
     ///@{ Doxygen group 1
-    virtual void*  Foo();
-    virtual void*  Bar();
+    virtual void* Foo();
+    virtual void* Bar();
     ///@}
 
     //@{ Doxygen group 2
-    virtual void*  Foo();
-    virtual void*  Bar();
+    virtual void* Foo();
+    virtual void* Bar();
     //@}
 }
