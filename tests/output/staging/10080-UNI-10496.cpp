@@ -6,6 +6,4 @@ auto x = ::GlobalFunc();
 friend void ::testing::PrintDebugInformationForFakesInUse();
 
 template<class TransferFunction>
-void ::DateTime::Transfer(TransferFunction & transfer)
-{
-}
+void ::DateTime::Transfer(TransferFunction & transfer) {}

@@ -5,15 +5,9 @@
 
 namespace Unity
 {
-    public static void foo1()
-    {
-    }
+    public static void foo1() {}
 
-    public static void foo2()
-    {
-    }
+    public static void foo2() {}
 
-    public static void foo3()
-    {
-    }
+    public static void foo3() {}
 } // namespace Unity

@@ -4,8 +4,5 @@ void foo() { if (foo) bar(); bar(); }
 
 class Foo
 {
-    void foo()
-    {
-        if (bar) { bar() } else i++;
-    }
+    void foo() {if (bar) { bar() } else i++;}
 };

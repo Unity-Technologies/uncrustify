@@ -10,7 +10,5 @@ class Foo
     [TestCase("tag1 ;", new string[] {"tag1"})]
     [TestCase("", new string[0])]
     [TestCase(";", new string[0])]
-    public void SetFlags_iOS(string flags,  string[] expected)
-    {
-    }
+    public void SetFlags_iOS(string flags,  string[] expected) {}
 }

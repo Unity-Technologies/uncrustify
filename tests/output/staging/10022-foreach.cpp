@@ -1,4 +1,1 @@
-void foo()
-{
-    for_each(it.begin(), it.end(), func);
-}
+void foo() {for_each(it.begin(), it.end(), func);}

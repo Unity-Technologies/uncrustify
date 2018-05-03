@@ -1782,28 +1782,36 @@ static void newlines_brace_pair(chunk_t *br_open)
 
    // fix 1247 oneliner function support - converts 4,3,2  liners to oneliner
 
-   if (  br_open->parent_type == CT_FUNC_DEF
+   if (  br_open->type == CT_BRACE_OPEN
+      && br_open->parent_type == CT_FUNC_DEF
       && cpd.settings[UO_nl_create_func_def_one_liner].b)
    {
       chunk_t *br_close = chunk_skip_to_match(br_open, scope_e::ALL);
+      chunk_t *tmp;
 
-      chunk_t *tmp = chunk_get_prev_ncnl(br_open);
+      tmp = chunk_get_prev_nnl(br_close);
 
-      if (((br_close->orig_line - br_open->orig_line) <= 2) && chunk_is_paren_close(tmp))
+      if (!chunk_is_comment(tmp))
       {
-         while (  tmp != nullptr
-               && (tmp = chunk_get_next(tmp)) != nullptr
-               && !chunk_is_closing_brace(tmp)
-               && (chunk_get_next(tmp) != nullptr))
-         {
-            if (chunk_is_newline(tmp))
-            {
-               tmp = chunk_get_prev(tmp);
-               newline_iarf_pair(tmp, chunk_get_next_ncnl(tmp), AV_REMOVE);
-            }
+         tmp = chunk_get_prev_ncnl(br_open);
 
-            chunk_flags_set(br_open, PCF_ONE_LINER);
-            chunk_flags_set(br_close, PCF_ONE_LINER);
+         if (((br_close->orig_line - br_open->orig_line) <= 2) && chunk_is_paren_close(tmp))
+         {
+            while (  tmp != nullptr
+                  && (tmp = chunk_get_next(tmp)) != nullptr
+                  && (tmp != br_close)
+                  && (chunk_get_next(tmp) != nullptr))
+            {
+               if (chunk_is_newline(tmp))
+               {
+                  tmp = chunk_get_prev(tmp);
+                  chunk_t *tmp2 = chunk_get_next_ncnl(tmp);
+                  newline_iarf_pair(tmp, tmp2, AV_REMOVE);
+               }
+
+               chunk_flags_set(br_open, PCF_ONE_LINER);
+               chunk_flags_set(br_close, PCF_ONE_LINER);
+            }
          }
       }
    }

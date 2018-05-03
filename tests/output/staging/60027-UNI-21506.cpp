@@ -3,9 +3,7 @@ struct bar
     void (Namespace::*method)(Class& param);
 };
 
-void Class::Foo(void (*callback)(const Class& entry))
-{
-}
+void Class::Foo(void (*callback)(const Class& entry)) {}
 
 void foo()
 {
