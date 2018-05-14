@@ -5,8 +5,5 @@ UNIT_TEST_SUITE(CollabTracker)
         CHECK(CollabTracker::IsAssetsPath(kTestAssetPath2));
     }
 
-    TEST_FIXTURE(Fixture, IsPathTracked_WhenNotAssetsPath_Returns_False)
-    {
-        CHECK(!CollabTracker::IsPathTracked(kTestNotAssetPath));
-    }
+    TEST_FIXTURE(Fixture, IsPathTracked_WhenNotAssetsPath_Returns_False) {CHECK(!CollabTracker::IsPathTracked(kTestNotAssetPath));}
 }
