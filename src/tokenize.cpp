@@ -1766,6 +1766,11 @@ static bool parse_next(tok_ctx &ctx, chunk_t &pc)
       while (ctx.more())
       {
          size_t ch = ctx.peek();
+         if (last == '\\' && ch == ' ')
+         {
+            ctx.get();
+            continue;
+         }
 
          if ((ch == '\n') || (ch == '\r'))
          {
