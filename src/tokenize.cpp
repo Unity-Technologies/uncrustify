@@ -1766,6 +1766,8 @@ static bool parse_next(tok_ctx &ctx, chunk_t &pc)
       while (ctx.more())
       {
          size_t ch = ctx.peek();
+         // Fix for issue #1752
+         // Ignoring extra spaces after ' \ ' for preproc body continuations
          if (last == '\\' && ch == ' ')
          {
             ctx.get();
