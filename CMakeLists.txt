@@ -121,7 +121,7 @@ endif()
 #
 
 # FIXME: the version number should be automatically integrated
-set(CURRENT_VERSION "Uncrustify-0.66_f")
+set(CURRENT_VERSION "Uncrustify-0.67_f")
 
 option(NoGitVersionString "Do not use make_version.py and git to build a version string" OFF)
 if(NOT NoGitVersionString)
@@ -165,6 +165,17 @@ add_custom_command(
     -P "${PROJECT_SOURCE_DIR}/cmake/GenerateTokenNames.cmake"
   MAIN_DEPENDENCY src/token_enum.h
   COMMENT "Generating token_names.h"
+)
+
+#
+# Generate punctuator_table.h
+#
+add_custom_command(
+  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/punctuator_table.h"
+  COMMAND ${CMAKE_COMMAND}
+    -P "${PROJECT_SOURCE_DIR}/cmake/GeneratePunctuatorTable.cmake"
+  MAIN_DEPENDENCY src/symbols_table.h
+  COMMENT "Generating punctuator_table.h"
 )
 
 #
@@ -230,6 +241,7 @@ add_executable(uncrustify
   src/ParseFrame.h
   src/prototypes.h
   src/punctuators.h
+  src/symbols_table.h
   src/token_enum.h
   src/uncrustify_types.h
   src/unc_ctype.h
