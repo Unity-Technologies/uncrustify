@@ -1,4 +1,3 @@
-# Uncrustify-0.67_f
 newlines                        = crlf
 # option(s) with 'not default' value: 1
 #
