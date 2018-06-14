@@ -41,8 +41,8 @@
 10036 staging/Uncrustify.Cpp.cfg staging/inttypes.h.mm
 10038 staging/614_multiple-passes.cfg staging/614_multiple-passes.cs
 10039 staging/615_nested_usings.cfg staging/615_nested-usings.cs
-10043 staging/nl-brace.cfg staging/nl-brace.cs
 10042 staging/ifoneliner.cfg staging/indent-bad.mm
+10043 staging/Uncrustify.CSharp.cfg staging/nl-brace.cs
 10044 staging/Uncrustify.CSharp.cfg staging/ifcomment.cs
 10045 staging/UNI-1288.cfg staging/UNI-1288.cs
 10046 staging/Uncrustify.Cpp.cfg    staging/UNI-1333.mm
@@ -94,7 +94,7 @@
 60002 staging/Uncrustify.Cpp.cfg    staging/UNI-16283.cpp
 60003 staging/Uncrustify.Cpp.cfg    staging/UNI-1288.cpp
 60004 staging/UNI-Delegate.cfg      staging/UNI-2684.cs
-60005 staging/UNI-Delegate.cfg      staging/UNI-2685.cs
+60005 staging/Uncrustify.CSharp.cfg	staging/UNI-2685.cs
 60006 staging/UNI-2049.cfg          staging/UNI-2049.cpp
 60007 staging/Uncrustify.CSharp.cfg staging/UNI-3083.cs
 60008 staging/Uncrustify.JamCS.cfg  staging/UNI-17253.cs
@@ -143,6 +143,7 @@
 60055 staging/Uncrustify.Common-Cpp.cfg staging/UNI-29935.cpp
 60056 staging/Uncrustify.Common-Cpp.cfg staging/UNI-29935.cpp
 60057 staging/Uncrustify.Cpp.cfg staging/UNI-crash.cpp
+60058 staging/Uncrustify.Common-Cpp.cfg staging/UNI-10566.cpp
+60062 staging/Uncrustify.Common-Cpp.cfg staging/UNI-2048.cpp
 60063 staging/Uncrustify.Cpp.cfg staging/UNI-47842.cpp
 60064 staging/Uncrustify.CSharp.cfg staging/UNI-47842.cs
-60062 staging/Uncrustify.Common-Cpp.cfg staging/UNI-2048.cpp
