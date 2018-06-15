@@ -38,94 +38,94 @@ int fun_name()
         return false;
     UnityPlayer::AppCallbacks::Instance->InvokeOnUIThread(ref new UnityPlayer::AppCallbackItem(
         [container, uri, stream, controlMode, scalingMode, completedEvent, &success] {
-        auto mediaElement = ref new Xaml::Controls::MediaElement();
-        container->Children->Append(mediaElement);
-        if (uri != nullptr)
-            mediaElement->Source = ref new Windows::Foundation::Uri(uri);
-        else
-            mediaElement->SetSource(stream, ref new Platform::String(L"video/mp4"));
-        bool subscribeToKeyEvents = false;
-        switch (controlMode)
-        {
-            case kMovieControlFull:
-            case kMovieControlMinimal:
-                mediaElement->AreTransportControlsEnabled = true;
-                // MediaPlayer doesn't have a stop button, so at least allow to stop the video using key buttons
-                subscribeToKeyEvents = true;
-                break;
-            case kMovieControlCancelOnInput:
-                {
+            auto mediaElement = ref new Xaml::Controls::MediaElement();
+            container->Children->Append(mediaElement);
+            if (uri != nullptr)
+                mediaElement->Source = ref new Windows::Foundation::Uri(uri);
+            else
+                mediaElement->SetSource(stream, ref new Platform::String(L"video/mp4"));
+            bool subscribeToKeyEvents = false;
+            switch (controlMode)
+            {
+                case kMovieControlFull:
+                case kMovieControlMinimal:
+                    mediaElement->AreTransportControlsEnabled = true;
+                    // MediaPlayer doesn't have a stop button, so at least allow to stop the video using key buttons
                     subscribeToKeyEvents = true;
-                    mediaElement->DoubleTapped += ref new Xaml::Input::DoubleTappedEventHandler(
-                        [completedEvent, &success](Platform::Object^ sender, Xaml::Input::DoubleTappedRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
-                    auto pointerHandler = ref new Xaml::Input::PointerEventHandler(
-                        [completedEvent, &success](Platform::Object^ sender, Xaml::Input::PointerRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
-                    mediaElement->PointerPressed += pointerHandler;
-                    mediaElement->PointerWheelChanged += pointerHandler;
-                    mediaElement->RightTapped += ref new Xaml::Input::RightTappedEventHandler(
-                        [completedEvent, &success](Platform::Object^ sender, Xaml::Input::RightTappedRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
-                    mediaElement->Tapped += ref new Xaml::Input::TappedEventHandler(
-                        [completedEvent, &success](Platform::Object^ sender, Xaml::Input::TappedRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
-                }
-            // continue
-            case kMovieControlHidden:
-                mediaElement->AreTransportControlsEnabled = false;
-                break;
-        }
-        // Case 803250: Because there's no Stop button in MediaPlayer provide user with means to stop the video
-        if (subscribeToKeyEvents)
-        {
-            // Note: We can't subscribe to MediaElement::KeyDown, because MediaElement is not a focusable element, so the event will never be received
-            //       Interestingly on C# side there's no MediaElement::KeyDown
-            s_KeyDownEvtToken = UnityPlayer::AppCallbacks::Instance->GetCoreWindow()->KeyDown +=
-                ref new MediaPlayer::TypedEventHandler<MediaPlayer::CoreWindow^, MediaPlayer::KeyEventArgs^>([mediaElement, completedEvent, &success](MediaPlayer::CoreWindow^, MediaPlayer::KeyEventArgs^ args)
+                    break;
+                case kMovieControlCancelOnInput:
+                    {
+                        subscribeToKeyEvents = true;
+                        mediaElement->DoubleTapped += ref new Xaml::Input::DoubleTappedEventHandler(
+                            [completedEvent, &success](Platform::Object^ sender, Xaml::Input::DoubleTappedRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
+                        auto pointerHandler = ref new Xaml::Input::PointerEventHandler(
+                            [completedEvent, &success](Platform::Object^ sender, Xaml::Input::PointerRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
+                        mediaElement->PointerPressed += pointerHandler;
+                        mediaElement->PointerWheelChanged += pointerHandler;
+                        mediaElement->RightTapped += ref new Xaml::Input::RightTappedEventHandler(
+                            [completedEvent, &success](Platform::Object^ sender, Xaml::Input::RightTappedRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
+                        mediaElement->Tapped += ref new Xaml::Input::TappedEventHandler(
+                            [completedEvent, &success](Platform::Object^ sender, Xaml::Input::TappedRoutedEventArgs^) { CancelPlayback(sender, completedEvent, success); });
+                    }
+                // continue
+                case kMovieControlHidden:
+                    mediaElement->AreTransportControlsEnabled = false;
+                    break;
+            }
+            // Case 803250: Because there's no Stop button in MediaPlayer provide user with means to stop the video
+            if (subscribeToKeyEvents)
             {
-                if (args->VirtualKey == MediaPlayer::VirtualKey::Escape)
-                {
-                    CancelPlayback(mediaElement, completedEvent, success);
-                    args->Handled = true;
-                }
-                else
-                {
-                    args->Handled = false;
-                }
-            });
+                // Note: We can't subscribe to MediaElement::KeyDown, because MediaElement is not a focusable element, so the event will never be received
+                //       Interestingly on C# side there's no MediaElement::KeyDown
+                s_KeyDownEvtToken = UnityPlayer::AppCallbacks::Instance->GetCoreWindow()->KeyDown +=
+                    ref new MediaPlayer::TypedEventHandler<MediaPlayer::CoreWindow^, MediaPlayer::KeyEventArgs^>([mediaElement, completedEvent, &success](MediaPlayer::CoreWindow^, MediaPlayer::KeyEventArgs^ args)
+                    {
+                        if (args->VirtualKey == MediaPlayer::VirtualKey::Escape)
+                        {
+                            CancelPlayback(mediaElement, completedEvent, success);
+                            args->Handled = true;
+                        }
+                        else
+                        {
+                            args->Handled = false;
+                        }
+                    });
 
-            s_HardwareBackButtonPressedToken = MediaPlayer::SystemNavigationManager::GetForCurrentView()->BackRequested +=
-                ref new MediaPlayer::EventHandler<MediaPlayer::BackRequestedEventArgs^>([mediaElement, completedEvent, &success](Platform::Object^ sender, MediaPlayer::BackRequestedEventArgs^ args)
+                s_HardwareBackButtonPressedToken = MediaPlayer::SystemNavigationManager::GetForCurrentView()->BackRequested +=
+                    ref new MediaPlayer::EventHandler<MediaPlayer::BackRequestedEventArgs^>([mediaElement, completedEvent, &success](Platform::Object^ sender, MediaPlayer::BackRequestedEventArgs^ args)
+                    {
+                        CancelPlayback(mediaElement, completedEvent, success);
+                        args->Handled = true;
+                    });
+            }
+
+
+            switch (scalingMode)
             {
-                CancelPlayback(mediaElement, completedEvent, success);
-                args->Handled = true;
+                case kMovieScalingNone:
+                    mediaElement->Stretch = Xaml::Media::Stretch::None;
+                    break;
+                case kMovieScalingAspectFit:
+                    mediaElement->Stretch = Xaml::Media::Stretch::Uniform;
+                    break;
+                case kMovieScalingAspectFill:
+                    mediaElement->Stretch = Xaml::Media::Stretch::UniformToFill;
+                    break;
+                case kMovieScalingFill:
+                    mediaElement->Stretch = Xaml::Media::Stretch::Fill;
+                    break;
+            }
+            mediaElement->IsFullWindow = true;
+            mediaElement->MediaEnded += ref new Xaml::RoutedEventHandler([completedEvent, &success] (Platform::Object^ sender, Xaml::RoutedEventArgs^ args) {
+                success = true;
+                MoviePlaybackEnded(sender, completedEvent);
             });
-        }
-
-
-        switch (scalingMode)
-        {
-            case kMovieScalingNone:
-                mediaElement->Stretch = Xaml::Media::Stretch::None;
-                break;
-            case kMovieScalingAspectFit:
-                mediaElement->Stretch = Xaml::Media::Stretch::Uniform;
-                break;
-            case kMovieScalingAspectFill:
-                mediaElement->Stretch = Xaml::Media::Stretch::UniformToFill;
-                break;
-            case kMovieScalingFill:
-                mediaElement->Stretch = Xaml::Media::Stretch::Fill;
-                break;
-        }
-        mediaElement->IsFullWindow = true;
-        mediaElement->MediaEnded += ref new Xaml::RoutedEventHandler([completedEvent, &success] (Platform::Object^ sender, Xaml::RoutedEventArgs^ args) {
-            success = true;
-            MoviePlaybackEnded(sender, completedEvent);
-        });
-        mediaElement->MediaFailed += ref new Xaml::ExceptionRoutedEventHandler([completedEvent, &success] (Platform::Object^ sender, Xaml::ExceptionRoutedEventArgs^) {
-            success = false;
-            MoviePlaybackEnded(sender, completedEvent);
-        });
-        mediaElement->Play();
-    }), false);
+            mediaElement->MediaFailed += ref new Xaml::ExceptionRoutedEventHandler([completedEvent, &success] (Platform::Object^ sender, Xaml::ExceptionRoutedEventArgs^) {
+                success = false;
+                MoviePlaybackEnded(sender, completedEvent);
+            });
+            mediaElement->Play();
+        }), false);
 
     WaitForSingleObjectEx(completedEvent, INFINITE, TRUE);
     return success;
@@ -137,30 +137,30 @@ int func_name()
     (*s_Tiles)[tileId] = newTile;
     UnityPlayer::AppCallbacks::Instance->InvokeOnUIThread(
         ref new UnityPlayer::AppCallbackItem([newTile, tile, CreateSecondaryTile]
-    {
-        try
         {
-            CreateSecondaryTile(tile)->Completed = ref new MTiles::AsyncOperationCompletedHandler<bool>(
-                [newTile, tile](MTiles::IAsyncOperation<bool>^ op, Windows::Foundation::AsyncStatus status)
+            try
             {
-                if (status == Windows::Foundation::AsyncStatus::Completed && op->GetResults())
-                {
-                    newTile->SetTileUpdaters(MTiles::TileUpdateManager::CreateTileUpdaterForSecondaryTile(tile->TileId),
-                        MTiles::BadgeUpdateManager::CreateBadgeUpdaterForSecondaryTile(tile->TileId));
-                }
-                else
-                {
-                    Mutex::AutoLock lock(s_Mutex);
-                    s_Tiles->erase(newTile->GetId());
-                }
-            });
-        }
-        catch (...)
-        {
-            Mutex::AutoLock lock(s_Mutex);
-            s_Tiles->erase(newTile->GetId());
-        }
-    }), false);
+                CreateSecondaryTile(tile)->Completed = ref new MTiles::AsyncOperationCompletedHandler<bool>(
+                    [newTile, tile](MTiles::IAsyncOperation<bool>^ op, Windows::Foundation::AsyncStatus status)
+                    {
+                        if (status == Windows::Foundation::AsyncStatus::Completed && op->GetResults())
+                        {
+                            newTile->SetTileUpdaters(MTiles::TileUpdateManager::CreateTileUpdaterForSecondaryTile(tile->TileId),
+                                MTiles::BadgeUpdateManager::CreateBadgeUpdaterForSecondaryTile(tile->TileId));
+                        }
+                        else
+                        {
+                            Mutex::AutoLock lock(s_Mutex);
+                            s_Tiles->erase(newTile->GetId());
+                        }
+                    });
+            }
+            catch (...)
+            {
+                Mutex::AutoLock lock(s_Mutex);
+                s_Tiles->erase(newTile->GetId());
+            }
+        }), false);
 
     return newTile;
 }
