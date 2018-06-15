@@ -9,7 +9,7 @@
 A source code beautifier for C, C++, C#, ObjectiveC, D, Java, Pawn and VALA
 
 ## Features
-* highly configurable - __608 configurable options as of version 0.66
+* highly configurable - 642 configurable options as of version 0.67
 - <details><summary>add/remove spaces</summary>
 
   - `sp_before_sparen`: _Add or remove space before '(' of 'if', 'for', 'switch', 'while', etc._
@@ -62,6 +62,8 @@ That should give you a pretty good idea of what Uncrustify can do.
 Pre compiled binaries for Windows can be downloaded [here](https://sourceforge.net/projects/uncrustify/files/uncrustify/).
 
 ## Build
+[Python](https://www.python.org/) is an "interpreted high-level programming language for general-purpose programming", for this project it is needed to extend the capabilities of CMake.
+
 [CMake](https://cmake.org/) is a tool that generates build systems
 (Makefiles, Visual Studio project files, Xcode project files and others).
 
@@ -181,7 +183,7 @@ The codebase has to be formatted by the options set up in
 cause TravisCI build failures.
 
 The Command line interface (CLI) output is tested by the
-`test_cli_options.sh` script. It is located inside of `tests/cli/` and operates
+`test_cli_options.py` script. It is located inside of `tests/cli/` and operates
 on the subdirectories of that folder.
 
 If a PR is altering the CLI output, files inside those directories might

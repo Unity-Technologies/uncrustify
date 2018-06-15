@@ -10,10 +10,10 @@
 
 		- Copy the EXE from ```\build\debug``` to ```\build\```  folder when you build in debug mode
 
-		- Then run ```\tests\cli\test_cli_options.sh using Git-Bash``` which will generate results folder in ``CLI`` folder ```\tests\cli\``` 
+		- Then run ```\tests\cli\test_cli_options.py using Git-Bash``` which will generate results folder in ``CLI`` folder ```\tests\cli\``` 
 			Note:- You need to add ```CMAKE_BUILD_TYPE:STRING=Release``` in \build\CMakeCache.txt file .
 
-	- Then compare Results ```\tests\cli\results``` and Output folder ```\tests\cli\Output```
+	- Then compare results ```\tests\cli\results``` and output folder ```\tests\cli\output```
 
 	- Merge results to output 
 
