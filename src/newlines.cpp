@@ -3761,6 +3761,7 @@ void newlines_squeeze_ifdef(void)
 } // newlines_squeeze_ifdef
 
 
+// NOTE: Implementation reference https://gist.github.com/hschlichter/f685804da0faa24109fc617d06b23c9c
 void newlines_squeeze_paren_close(void)
 {
    LOG_FUNC_ENTRY();
