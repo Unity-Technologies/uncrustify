@@ -20,7 +20,6 @@
 #include "lang_pawn.h"
 #include "keywords.h"
 #include "logger.h"
-#include "helper_for_print.h"
 #include "indent.h"
 #include "language_tools.h"
 
@@ -28,6 +27,7 @@
 #include <iostream>
 #include "frame_list.h"
 
+using namespace uncrustify;
 
 using std::invalid_argument;
 using std::string;
@@ -88,7 +88,7 @@ static void parse_cleanup(ParseFrame &frm, chunk_t *pc);
  * - checks for if after else
  * - checks for while after do
  * - checks for open brace in BRACE2 and BRACE_DO stages, inserts open VBRACE
- * - checks for open paren in PAREN1 and PAREN2 stages, complains
+ * - checks for open paren in PAREN1 and BRACE2 stages, complains
  *
  * @param frm  The parse frame
  * @param pc   The current chunk
@@ -552,6 +552,10 @@ static void parse_cleanup(ParseFrame &frm, chunk_t *pc)
             {
                parent = CT_ASSIGN;
             }
+            else if (chunk_is_token(prev, CT_RETURN) && language_is_set(LANG_CPP))
+            {
+               parent = CT_RETURN;
+            }
             // Carry through CT_ENUM parent in NS_ENUM (type, name) {
             else if (  chunk_is_token(prev, CT_FPAREN_CLOSE)
                     && language_is_set(LANG_OC)
@@ -693,7 +697,7 @@ static void parse_cleanup(ParseFrame &frm, chunk_t *pc)
          // fatal error
          cerr << "Unmatched BRACE_CLOSE\nat orig_line="
               << pc->orig_line << ", orig_col=" << pc->orig_col << "\n";
-         if (!cpd.settings[UO_tok_split_gte].b)
+         if (!options::tok_split_gte())
          {
             cerr << "Try the option 'tok_split_gte = true'\n";
          }
@@ -741,7 +745,7 @@ static bool check_complex_statements(ParseFrame &frm, chunk_t *pc)
    if (frm.top().stage == brace_stage_e::ELSEIF)
    {
       if (  chunk_is_token(pc, CT_IF)
-         && (  !cpd.settings[UO_indent_else_if].b
+         && (  !options::indent_else_if()
             || !chunk_is_newline(chunk_get_prev_nc(pc))))
       {
          // Replace CT_ELSE with CT_IF
@@ -760,9 +764,19 @@ static bool check_complex_statements(ParseFrame &frm, chunk_t *pc)
    {
       if (chunk_is_token(pc, CT_CATCH) || chunk_is_token(pc, CT_FINALLY))
       {
-         // Replace CT_TRY with CT_CATCH on the stack & we are done
-         frm.top().type  = pc->type;
-         frm.top().stage = (chunk_is_token(pc, CT_CATCH)) ? brace_stage_e::CATCH_WHEN : brace_stage_e::BRACE2;
+         // Replace CT_TRY with CT_CATCH or CT_FINALLY on the stack & we are done
+         frm.top().type = pc->type;
+         if (language_is_set(LANG_CS))
+         {
+            frm.top().stage = (chunk_is_token(pc, CT_CATCH)) ? brace_stage_e::CATCH_WHEN : brace_stage_e::BRACE2;
+         }
+         else
+         {
+            // historically this used OP_PAREN1; however, to my knowledge the expression after a catch clause
+            // is only optional for C# which has been handled above; therefore, this should now always expect
+            // a parenthetical expression after the catch keyword and brace after the finally keyword
+            frm.top().stage = (chunk_is_token(pc, CT_CATCH)) ? brace_stage_e::PAREN1 : brace_stage_e::BRACE2;
+         }
          print_stack(LBCSSWAP, "=Swap   ", frm);
 
          return(true);
@@ -837,7 +851,7 @@ static bool check_complex_statements(ParseFrame &frm, chunk_t *pc)
          && chunk_is_token(pc, CT_USING_STMT)
          && tmp != NULL
          && tmp->parent_type == CT_USING_STMT
-         && (!cpd.settings[UO_indent_using_block].b))
+         && (!options::indent_using_block()))
       {
          // don't indent the using block
       }

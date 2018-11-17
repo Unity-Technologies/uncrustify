@@ -22,8 +22,10 @@
 #include "language_tools.h"
 #include "punctuators.h"
 
+#define LE_COUNT(x)    cpd.le_counts[static_cast<size_t>(LE_ ## x)]
 
 using namespace std;
+using namespace uncrustify;
 
 
 struct tok_info
@@ -104,7 +106,7 @@ struct tok_ctx
          switch (ch)
          {
          case '\t':
-            c.col = calc_next_tab_column(c.col, cpd.settings[UO_input_tab_size].u);
+            c.col = calc_next_tab_column(c.col, options::input_tab_size());
             break;
 
          case '\n':
@@ -143,8 +145,8 @@ struct tok_ctx
 
 
    const deque<int> &data;
-   tok_info          c; //! current
-   tok_info          s; //! saved
+   tok_info         c; //! current
+   tok_info         s; //! saved
 };
 
 
@@ -578,17 +580,17 @@ static bool parse_comment(tok_ctx &ctx, chunk_t &pc)
             {
                if (ctx.peek() == '\n')
                {
-                  cpd.le_counts[LE_CRLF]++;
+                  ++LE_COUNT(CRLF);
                   pc.str.append(ctx.get());  // store the '\n'
                }
                else
                {
-                  cpd.le_counts[LE_CR]++;
+                  ++LE_COUNT(CR);
                }
             }
             else
             {
-               cpd.le_counts[LE_LF]++;
+               ++LE_COUNT(LF);
             }
          }
       }
@@ -632,17 +634,17 @@ static bool parse_comment(tok_ctx &ctx, chunk_t &pc)
             {
                if (ctx.peek() == '\n')
                {
-                  cpd.le_counts[LE_CRLF]++;
+                  ++LE_COUNT(CRLF);
                   pc.str.append(ctx.get());  // store the '\n'
                }
                else
                {
-                  cpd.le_counts[LE_CR]++;
+                  ++LE_COUNT(CR);
                }
             }
             else
             {
-               cpd.le_counts[LE_LF]++;
+               ++LE_COUNT(LF);
             }
          }
       }
@@ -650,29 +652,21 @@ static bool parse_comment(tok_ctx &ctx, chunk_t &pc)
 
    if (cpd.unc_off)
    {
-      const char *ontext = cpd.settings[UO_enable_processing_cmt].str;
-      if (ontext == nullptr || ontext[0] == '\0')
+      const auto &ontext = options::enable_processing_cmt();
+      if (!ontext.empty() && pc.str.find(ontext.c_str()) >= 0)
       {
-         ontext = UNCRUSTIFY_ON_TEXT;
-      }
-
-      if (pc.str.find(ontext) >= 0)
-      {
-         LOG_FMT(LBCTRL, "Found '%s' on line %zu\n", ontext, pc.orig_line);
+         LOG_FMT(LBCTRL, "Found '%s' on line %zu\n",
+                 ontext.c_str(), pc.orig_line);
          cpd.unc_off = false;
       }
    }
    else
    {
-      const char *offtext = cpd.settings[UO_disable_processing_cmt].str;
-      if (offtext == nullptr || !offtext[0])
+      const auto &offtext = options::disable_processing_cmt();
+      if (!offtext.empty() && pc.str.find(offtext.c_str()) >= 0)
       {
-         offtext = UNCRUSTIFY_OFF_TEXT;
-      }
-
-      if (pc.str.find(offtext) >= 0)
-      {
-         LOG_FMT(LBCTRL, "Found '%s' on line %zu\n", offtext, pc.orig_line);
+         LOG_FMT(LBCTRL, "Found '%s' on line %zu\n",
+                 offtext.c_str(), pc.orig_line);
          cpd.unc_off = true;
          // Issue #842
          cpd.unc_off_used = true;
@@ -1031,9 +1025,9 @@ static bool parse_number(tok_ctx &ctx, chunk_t &pc)
 
 static bool parse_string(tok_ctx &ctx, chunk_t &pc, size_t quote_idx, bool allow_escape)
 {
-   size_t escape_char        = cpd.settings[UO_string_escape_char].u;
-   size_t escape_char2       = cpd.settings[UO_string_escape_char2].u;
-   bool   should_escape_tabs = (  cpd.settings[UO_string_replace_tab_chars].b
+   size_t escape_char        = options::string_escape_char();
+   size_t escape_char2       = options::string_escape_char2();
+   bool   should_escape_tabs = (  options::string_replace_tab_chars()
                                && language_is_set(LANG_ALLC));
 
    pc.str.clear();
@@ -1185,7 +1179,7 @@ static bool parse_cs_string(tok_ctx &ctx, chunk_t &pc)
    std::stack<CsStringParseState> parseState; // each entry is a nested string
    parseState.push(CsStringParseState(stringType));
 
-   bool should_escape_tabs = cpd.settings[UO_string_replace_tab_chars].b;
+   bool should_escape_tabs = options::string_replace_tab_chars();
 
    while (ctx.more())
    {
@@ -1245,14 +1239,16 @@ static bool parse_cs_string(tok_ctx &ctx, chunk_t &pc)
             {
                cpd.warned_unable_string_replace_tab_chars = true;
 
-               log_sev_t warnlevel = (log_sev_t)cpd.settings[UO_warn_level_tabs_found_in_verbatim_string_literals].n;
+               log_sev_t warnlevel = (log_sev_t)options::warn_level_tabs_found_in_verbatim_string_literals();
 
                /*
                 * a tab char can't be replaced with \\t because escapes don't
                 * work in here-strings. best we can do is warn.
                 */
-               LOG_FMT(warnlevel, "%s:%zu Detected non-replaceable tab char in literal string\n",
-                       cpd.filename.c_str(), pc.orig_line);
+               LOG_FMT(warnlevel, "%s(%d): %s: orig_line is %zu, orig_col is %zu, Detected non-replaceable tab char in literal string\n",
+                       __func__, __LINE__, cpd.filename.c_str(), pc.orig_line, pc.orig_col);
+               LOG_FMT(warnlevel, "%s(%d): Warning is given if doing tab-to-\\t replacement and we have found one in a C# verbatim string literal.\n",
+                       __func__, __LINE__);
                if (warnlevel < LWARN)
                {
                   cpd.error_count++;
@@ -1474,7 +1470,7 @@ static bool parse_word(tok_ctx &ctx, chunk_t &pc, bool skipcheck)
       else
       {
          pc.type = CT_MACRO;
-         if (cpd.settings[UO_pp_ignore_define_body].b)
+         if (options::pp_ignore_define_body())
          {
             /*
              * We are setting the PP_IGNORE preproc state because the following
@@ -1514,6 +1510,84 @@ static bool parse_word(tok_ctx &ctx, chunk_t &pc, bool skipcheck)
 } // parse_word
 
 
+static size_t parse_attribute_specifier_sequence(tok_ctx &ctx)
+{
+   size_t nested = 0;
+   size_t offset = 0;
+   size_t parens = 0;
+   auto   ch1    = ctx.peek(offset++);
+
+   while (ch1)
+   {
+      auto ch2 = ctx.peek(offset++);
+      while (ch2 == ' ' || ch2 == '\n' || ch2 == '\r' || ch2 == '\t')
+      {
+         ch2 = ctx.peek(offset++);
+      }
+      if (nested == 0 && ch2 != '[')
+      {
+         break;
+      }
+      if (ch1 == '(')
+      {
+         ++parens;
+         ch1 = ch2;
+         continue;
+      }
+      if (ch1 == ')')
+      {
+         if (parens == 0)
+         {
+            break;
+         }
+         --parens;
+         ch1 = ch2;
+         continue;
+      }
+      if (ch1 != '[' && ch1 != ']')
+      {
+         ch1 = ch2;
+         continue;
+      }
+      if (ch2 != ch1)
+      {
+         if (parens == 0)
+         {
+            break;
+         }
+         ch1 = ch2;
+         continue;
+      }
+      if (ch1 == '[')
+      {
+         if (nested != 0 && parens == 0)
+         {
+            break;
+         }
+         ++nested;
+      }
+      else if (--nested == 0)
+      {
+         return(offset);
+      }
+      ch1 = ctx.peek(offset++);
+   }
+   return(0);
+} // parse_attribute_specifier_sequence
+
+
+static bool extract_attribute_specifier_sequence(tok_ctx &ctx, chunk_t &pc, size_t length)
+{
+   pc.str.clear();
+   while (length--)
+   {
+      pc.str.append(ctx.get());
+   }
+   pc.type = CT_ATTRIBUTE;
+   return(true);
+} // extract_attribute_specifier_sequence
+
+
 static bool parse_whitespace(tok_ctx &ctx, chunk_t &pc)
 {
    size_t nl_count = 0;
@@ -1529,12 +1603,12 @@ static bool parse_whitespace(tok_ctx &ctx, chunk_t &pc)
          if (ctx.expect('\n'))
          {
             // CRLF ending
-            cpd.le_counts[LE_CRLF]++;
+            ++LE_COUNT(CRLF);
          }
          else
          {
             // CR ending
-            cpd.le_counts[LE_CR]++;
+            ++LE_COUNT(CR);
          }
          nl_count++;
          pc.orig_prev_sp = 0;
@@ -1542,13 +1616,13 @@ static bool parse_whitespace(tok_ctx &ctx, chunk_t &pc)
 
       case '\n':
          // LF ending
-         cpd.le_counts[LE_LF]++;
+         ++LE_COUNT(LF);
          nl_count++;
          pc.orig_prev_sp = 0;
          break;
 
       case '\t':
-         pc.orig_prev_sp += calc_next_tab_column(cpd.column, cpd.settings[UO_input_tab_size].u) - cpd.column;
+         pc.orig_prev_sp += calc_next_tab_column(cpd.column, options::input_tab_size()) - cpd.column;
          break;
 
       case ' ':
@@ -1683,12 +1757,8 @@ static bool parse_ignored(tok_ctx &ctx, chunk_t &pc)
       return(false);
    }
    // Note that we aren't actually making sure this is in a comment, yet
-   const char *ontext = cpd.settings[UO_enable_processing_cmt].str;
-   if (ontext == nullptr || ontext[0] == '\0')
-   {
-      ontext = UNCRUSTIFY_ON_TEXT;
-   }
-   if (pc.str.find(ontext) < 0)
+   const auto &ontext = options::enable_processing_cmt();
+   if (!ontext.empty() && pc.str.find(ontext.c_str()) < 0)
    {
       pc.type = CT_IGNORED;
       return(true);
@@ -2020,6 +2090,16 @@ static bool parse_next(tok_ctx &ctx, chunk_t &pc)
       return(true);
    }
 
+   // Check for C++11/14/17/20 attribute specifier sequences
+   if (language_is_set(LANG_CPP) && ctx.peek() == '[')
+   {
+      if (auto length = parse_attribute_specifier_sequence(ctx))
+      {
+         extract_attribute_specifier_sequence(ctx, pc, length);
+         return(true);
+      }
+   }
+
    // see if we have a punctuator
    char punc_txt[7];
    punc_txt[0] = ctx.peek();
@@ -2218,7 +2298,7 @@ void tokenize(const deque<int> &data, chunk_t *ref)
          }
          else if (cpd.in_preproc == CT_PP_IGNORE)
          {
-            // ASSERT(cpd.settings[UO_pp_ignore_define_body].b);
+            // ASSERT(options::pp_ignore_define_body());
             if (pc->type != CT_NL_CONT && pc->type != CT_COMMENT_CPP)
             {
                set_chunk_type(pc, CT_PP_IGNORE);
@@ -2241,7 +2321,7 @@ void tokenize(const deque<int> &data, chunk_t *ref)
          }
          else if (  cpd.in_preproc == CT_PP_DEFINE
                  && chunk_is_token(pc, CT_PAREN_CLOSE)
-                 && cpd.settings[UO_pp_ignore_define_body].b)
+                 && options::pp_ignore_define_body())
          {
             // When we have a PAREN_CLOSE in a PP_DEFINE we should be terminating a MACRO_FUNC
             // arguments list. Therefore we can enter the PP_IGNORE state and ignore next chunks.
@@ -2277,19 +2357,19 @@ void tokenize(const deque<int> &data, chunk_t *ref)
    }
 
    // Set the cpd.newline string for this file
-   if (  cpd.settings[UO_newlines].le == LE_LF
-      || (  cpd.settings[UO_newlines].le == LE_AUTO
-         && (cpd.le_counts[LE_LF] >= cpd.le_counts[LE_CRLF])
-         && (cpd.le_counts[LE_LF] >= cpd.le_counts[LE_CR])))
+   if (  options::newlines() == LE_LF
+      || (  options::newlines() == LE_AUTO
+         && (LE_COUNT(LF) >= LE_COUNT(CRLF))
+         && (LE_COUNT(LF) >= LE_COUNT(CR))))
    {
       // LF line ends
       cpd.newline = "\n";
       LOG_FMT(LLINEENDS, "Using LF line endings\n");
    }
-   else if (  cpd.settings[UO_newlines].le == LE_CRLF
-           || (  cpd.settings[UO_newlines].le == LE_AUTO
-              && (cpd.le_counts[LE_CRLF] >= cpd.le_counts[LE_LF])
-              && (cpd.le_counts[LE_CRLF] >= cpd.le_counts[LE_CR])))
+   else if (  options::newlines() == LE_CRLF
+           || (  options::newlines() == LE_AUTO
+              && (LE_COUNT(CRLF) >= LE_COUNT(LF))
+              && (LE_COUNT(CRLF) >= LE_COUNT(CR))))
    {
       // CRLF line ends
       cpd.newline = "\r\n";

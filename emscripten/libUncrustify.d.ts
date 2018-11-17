@@ -372,6 +372,7 @@ declare namespace LibUncrustify
         UO_nl_cpp_lambda_leave_one_liners : EmscriptenEnumTypeObject;
         UO_nl_if_leave_one_liners : EmscriptenEnumTypeObject;
         UO_nl_while_leave_one_liners : EmscriptenEnumTypeObject;
+        UO_nl_for_leave_one_liners : EmscriptenEnumTypeObject;
         UO_nl_oc_msg_leave_one_liner : EmscriptenEnumTypeObject;
         UO_nl_oc_block_brace : EmscriptenEnumTypeObject;
         UO_nl_oc_interface_brace : EmscriptenEnumTypeObject;
@@ -575,6 +576,8 @@ declare namespace LibUncrustify
         UO_align_func_params_thresh : EmscriptenEnumTypeObject;
         UO_align_func_params_gap : EmscriptenEnumTypeObject;
         UO_align_same_func_call_params : EmscriptenEnumTypeObject;
+        UO_align_same_func_call_params_span : EmscriptenEnumTypeObject;
+        UO_align_same_func_call_params_thresh : EmscriptenEnumTypeObject;
         UO_align_var_def_span : EmscriptenEnumTypeObject;
         UO_align_var_def_star_style : EmscriptenEnumTypeObject;
         UO_align_var_def_amp_style : EmscriptenEnumTypeObject;

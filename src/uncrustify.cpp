@@ -9,40 +9,47 @@
 #define DEFINE_PCF_NAMES
 #define DEFINE_CHAR_TABLE
 
-#include "uncrustify_version.h"
-#include "uncrustify_types.h"
-#include "char_table.h"
-#include "chunk_list.h"
+#include "uncrustify.h"
+
 #include "align.h"
 #include "args.h"
+#include "backup.h"
 #include "brace_cleanup.h"
 #include "braces.h"
-#include "backup.h"
+#include "char_table.h"
+#include "chunk_list.h"
 #include "combine.h"
 #include "compat.h"
 #include "detect.h"
-#include "defines.h"
+#include "enum_cleanup.h"
 #include "indent.h"
 #include "keywords.h"
-#include "logger.h"
-#include "log_levels.h"
 #include "lang_pawn.h"
+#include "language_tools.h"
+#include "log_levels.h"
+#include "logger.h"
 #include "md5.h"
 #include "newlines.h"
 #include "options.h"
 #include "output.h"
 #include "parens.h"
 #include "prototypes.h"
-#include "space.h"
 #include "semicolons.h"
 #include "sorting.h"
+#include "space.h"
+#include "token_names.h"
 #include "tokenize.h"
 #include "tokenize_cleanup.h"
-#include "token_names.h"
-#include "uncrustify.h"
+#include "unc_ctype.h"
+#include "uncrustify_types.h"
+#include "uncrustify_version.h"
 #include "unicode.h"
 #include "universalindentgui.h"
 #include "width.h"
+
+#include <deque>
+#include <map>
+#include <vector>
 
 #include <cstdio>
 #include <cstdlib>
@@ -52,21 +59,35 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include "unc_ctype.h"
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
 #ifdef HAVE_STRINGS_H
 #include <strings.h>    // provides strcasecmp()
 #endif
-#include <vector>
-#include <deque>
 #ifdef HAVE_UTIME_H
 #include <time.h>
 #endif
 
 
+// VS throws an error if an attribute newer than the requested standard level
+// is used; everyone else just ignores it (or warns) like they are supposed to
+
+#if __cplusplus >= 201703L
+#define NODISCARD    [[nodiscard]]
+#elif defined (__has_cpp_attribute)
+#if __has_cpp_attribute(nodiscard)
+#define NODISCARD    [[nodiscard]]
+#else
+#define NODISCARD
+#endif
+#else
+#define NODISCARD
+#endif
+
+
 using namespace std;
+using namespace uncrustify;
 
 
 // Global data
@@ -154,7 +175,7 @@ static int load_mem_file(const char *filename, file_mem &fm);
  * @retval true   file was loaded successfully
  * @retval false  file could not be loaded
  */
-static int load_mem_file_config(const char *filename, file_mem &fm);
+static int load_mem_file_config(const std::string &filename, file_mem &fm);
 
 
 //! print uncrustify version number and terminate
@@ -195,19 +216,20 @@ int path_dirname_len(const char *filename)
 }
 
 
-void usage_exit(const char *msg, const char *argv0, int code)
+void usage_error(const char *msg)
 {
    if (msg != nullptr)
    {
       fprintf(stderr, "%s\n", msg);
       log_flush(true);
    }
-   if (code != EXIT_SUCCESS || argv0 == nullptr)
-   {
-      fprintf(stderr, "Try running with -h for usage information\n");
-      log_flush(true);
-      exit(code);
-   }
+   fprintf(stderr, "Try running with -h for usage information\n");
+   log_flush(true);
+}
+
+
+void usage(const char *argv0)
+{
    fprintf(stdout,
            "Usage:\n"
            "%s [options] [files ...]\n"
@@ -283,13 +305,12 @@ void usage_exit(const char *msg, const char *argv0, int code)
            "      processing of parts of the source file (these can be overridden with\n"
            "      enable_processing_cmt and disable_processing_cmt).\n"
            "\n"
-           "There are currently %d options and minimal documentation.\n"
+           "There are currently %zd options and minimal documentation.\n"
            "Try UniversalIndentGUI and good luck.\n"
            "\n"
            ,
-           path_basename(argv0), UO_option_count);
-   exit(code);
-} // usage_exit
+           path_basename(argv0), get_option_count());
+} // usage
 
 
 static void version_exit(void)
@@ -299,7 +320,7 @@ static void version_exit(void)
 }
 
 
-static void redir_stdout(const char *output_file)
+NODISCARD static int redir_stdout(const char *output_file)
 {
    FILE *my_stdout = stdout;  // Reopen stdout
 
@@ -311,10 +332,12 @@ static void redir_stdout(const char *output_file)
          LOG_FMT(LERR, "Unable to open %s for write: %s (%d)\n",
                  output_file, strerror(errno), errno);
          cpd.error_count++;
-         usage_exit(nullptr, nullptr, EX_IOERR);
+         usage_error();
+         return(EX_IOERR);
       }
       LOG_FMT(LNOTE, "Redirecting output to %s\n", output_file);
    }
+   return(EXIT_SUCCESS);
 }
 
 // Currently, the crash handler is only supported while building under MSVC
@@ -380,10 +403,14 @@ int main(int argc, char *argv[])
    // check keyword sort
    assert(keywords_are_sorted());
 
+   // Build options map
+   register_options();
+
    // If ran without options show the usage info and exit */
    if (argc == 1)
    {
-      usage_exit(nullptr, argv[0], EXIT_SUCCESS);
+      usage(argv[0]);
+      return(EXIT_SUCCESS);
    }
 
 #ifdef DEBUG
@@ -391,8 +418,8 @@ int main(int argc, char *argv[])
 #define MAXLENGTHOFTHENAME    19
    // maxLengthOfTheName must be consider at the format line at the file
    // output.cpp, line 427: fprintf(pfile, "# Line              Tag                Parent...
-   // and              431: ... make_message("%s# %3zu>%19.19s[%19.19s] ...
-   // here                                              xx xx   xx xx
+   // and              430: ... fprintf(pfile, "%s# %3zu>%19.19s[%19.19s] ...
+   // here                                                xx xx   xx xx
    for (size_t token = 0; token < ARRAY_SIZE(token_names); token++)
    {
       size_t lengthOfTheName = strlen(token_names[token]);
@@ -411,9 +438,6 @@ int main(int argc, char *argv[])
    assert(ARRAY_SIZE(token_names) == CT_TOKEN_COUNT_);
 #endif // DEBUG
 
-   // Build options map
-   register_options();
-
    Args arg(argc, argv);
    if (arg.Present("--version") || arg.Present("-v"))
    {
@@ -424,12 +448,13 @@ int main(int argc, char *argv[])
       || arg.Present("--usage")
       || arg.Present("-?"))
    {
-      usage_exit(nullptr, argv[0], EXIT_SUCCESS);
+      usage(argv[0]);
+      return(EXIT_SUCCESS);
    }
 
    if (arg.Present("--show-config"))
    {
-      print_options(stdout);
+      save_option_file(stdout, true);
       return(EXIT_SUCCESS);
    }
 
@@ -513,9 +538,6 @@ int main(int argc, char *argv[])
       log_show_sev(true);
    }
 
-   // Load the config file
-   set_option_defaults();
-
    // Load type files
    size_t idx = 0;
    while ((p_arg = arg.Params("-t", idx)) != nullptr)
@@ -528,24 +550,6 @@ int main(int argc, char *argv[])
    while ((p_arg = arg.Params("--type", idx)) != nullptr)
    {
       add_keyword(p_arg, CT_TYPE);
-   }
-
-   // Load define files
-   idx = 0;
-   while ((p_arg = arg.Params("-d", idx)) != nullptr)
-   {
-      int return_code = load_define_file(p_arg);
-      if (return_code != EX_OK)
-      {
-         return(return_code);
-      }
-   }
-
-   // add defines
-   idx = 0;
-   while ((p_arg = arg.Params("--define", idx)) != nullptr)
-   {
-      add_define(p_arg, nullptr);
    }
 
    // Check for a language override
@@ -617,7 +621,8 @@ int main(int argc, char *argv[])
          || suffix
          || cpd.if_changed))
    {
-      usage_exit("Cannot use --check with output options.", argv[0], EX_NOUSER);
+      usage_error("Cannot use --check with output options.");
+      return(EX_NOUSER);
    }
 
    if (!cpd.do_check)
@@ -626,11 +631,13 @@ int main(int argc, char *argv[])
       {
          if (prefix != nullptr || suffix != nullptr)
          {
-            usage_exit("Cannot use --replace with --prefix or --suffix", argv[0], EX_NOINPUT);
+            usage_error("Cannot use --replace with --prefix or --suffix");
+            return(EX_NOINPUT);
          }
          if (source_file != nullptr || output_file != nullptr)
          {
-            usage_exit("Cannot use --replace or --no-backup with -f or -o", argv[0], EX_NOINPUT);
+            usage_error("Cannot use --replace or --no-backup with -f or -o");
+            return(EX_NOINPUT);
          }
       }
       else
@@ -650,15 +657,16 @@ int main(int argc, char *argv[])
    if (!cfg_file.empty())
    {
       cpd.filename = cfg_file;
-      if (load_option_file(cpd.filename.c_str()) < 0)
+      if (!load_option_file(cpd.filename.c_str()))
       {
-         usage_exit("Unable to load the config file", argv[0], EX_IOERR);
+         usage_error("Unable to load the config file");
+         return(EX_IOERR);
       }
       // test if all options are compatible to each other
-      if (cpd.settings[UO_nl_max].u > 0)
+      if (options::nl_max() > 0)
       {
          // test if one/some option(s) is/are not too big for that
-         if (cpd.settings[UO_nl_func_var_def_blk].u >= cpd.settings[UO_nl_max].u)
+         if (options::nl_func_var_def_blk() >= options::nl_max())
          {
             fprintf(stderr, "The option 'nl_func_var_def_blk' is too big against the option 'nl_max'\n");
             log_flush(true);
@@ -693,7 +701,14 @@ int main(int argc, char *argv[])
          && value != nullptr
          && strtok(nullptr, "=") == nullptr)   // end of argument reached
       {
-         if (set_option_value(option, value) == -1)
+         if (auto *opt = uncrustify::find_option(option))
+         {
+            if (!opt->read(value))
+            {
+               return(EXIT_FAILURE);
+            }
+         }
+         else
          {
             fprintf(stderr, "Unknown option '%s' to override.\n", buffer);
             log_flush(true);
@@ -703,7 +718,8 @@ int main(int argc, char *argv[])
       else
       {
          // TODO: consider using defines like EX_USAGE from sysexits.h
-         usage_exit("Error while parsing --set", argv[0], EX_USAGE);
+         usage_error("Error while parsing --set");
+         return(EX_USAGE);
       }
    }
 
@@ -758,7 +774,10 @@ int main(int argc, char *argv[])
       detect_options();
       uncrustify_end();
 
-      redir_stdout(output_file);
+      if (auto error = redir_stdout(output_file))
+      {
+         return(error);
+      }
       save_option_file(stdout, update_config_wd);
       return(EXIT_SUCCESS);
    }
@@ -766,7 +785,10 @@ int main(int argc, char *argv[])
    if (update_config || update_config_wd)
    {
       // TODO: complain if file-processing related options are present
-      redir_stdout(output_file);
+      if (auto error = redir_stdout(output_file))
+      {
+         return(error);
+      }
       save_option_file(stdout, update_config_wd);
       return(EXIT_SUCCESS);
    }
@@ -777,8 +799,8 @@ int main(int argc, char *argv[])
     */
    if (cfg_file.empty())
    {
-      usage_exit("Specify the config file with '-c file' or set UNCRUSTIFY_CONFIG",
-                 argv[0], EX_IOERR);
+      usage_error("Specify the config file with '-c file' or set UNCRUSTIFY_CONFIG");
+      return(EX_IOERR);
    }
 
    // Done parsing args
@@ -792,14 +814,14 @@ int main(int argc, char *argv[])
    {
       if (source_file != nullptr)
       {
-         usage_exit("Cannot specify both the single file option and a multi-file option.",
-                    argv[0], EX_NOUSER);
+         usage_error("Cannot specify both the single file option and a multi-file option.");
+         return(EX_NOUSER);
       }
 
       if (output_file != nullptr)
       {
-         usage_exit("Cannot specify -o with a multi-file option.",
-                    argv[0], EX_NOHOST);
+         usage_error("Cannot specify -o with a multi-file option.");
+         return(EX_NOHOST);
       }
    }
 
@@ -830,7 +852,10 @@ int main(int argc, char *argv[])
 
       if (!cpd.do_check)
       {
-         redir_stdout(output_file);
+         if (auto error = redir_stdout(output_file))
+         {
+            return(error);
+         }
       }
 
       file_mem fm;
@@ -890,7 +915,6 @@ int main(int argc, char *argv[])
    }
 
    clear_keyword_file();
-   clear_defines();
 
    if (cpd.error_count != 0)
    {
@@ -1101,21 +1125,21 @@ static int load_mem_file(const char *filename, file_mem &fm)
 } // load_mem_file
 
 
-static int load_mem_file_config(const char *filename, file_mem &fm)
+static int load_mem_file_config(const std::string &filename, file_mem &fm)
 {
    int  retval;
    char buf[1024];
 
    snprintf(buf, sizeof(buf), "%.*s%s",
-            path_dirname_len(cpd.filename.c_str()), cpd.filename.c_str(), filename);
+            path_dirname_len(cpd.filename.c_str()), cpd.filename.c_str(), filename.c_str());
 
    retval = load_mem_file(buf, fm);
    if (retval < 0)
    {
-      retval = load_mem_file(filename, fm);
+      retval = load_mem_file(filename.c_str(), fm);
       if (retval < 0)
       {
-         LOG_FMT(LERR, "Failed to load (%s) or (%s)\n", buf, filename);
+         LOG_FMT(LERR, "Failed to load (%s) or (%s)\n", buf, filename.c_str());
          cpd.error_count++;
       }
    }
@@ -1127,35 +1151,30 @@ int load_header_files()
 {
    int retval = 0;
 
-   if (  cpd.settings[UO_cmt_insert_file_header].str != nullptr // option holds a string
-      && cpd.settings[UO_cmt_insert_file_header].str[0] != 0)   // that is not empty
+   if (!options::cmt_insert_file_header().empty())
    {
       // try to load the file referred to by the options string
-      retval |= load_mem_file_config(cpd.settings[UO_cmt_insert_file_header].str,
+      retval |= load_mem_file_config(options::cmt_insert_file_header(),
                                      cpd.file_hdr);
    }
-   if (  (cpd.settings[UO_cmt_insert_file_footer].str != nullptr)
-      && (cpd.settings[UO_cmt_insert_file_footer].str[0] != 0))
+   if (!options::cmt_insert_file_footer().empty())
    {
-      retval |= load_mem_file_config(cpd.settings[UO_cmt_insert_file_footer].str,
+      retval |= load_mem_file_config(options::cmt_insert_file_footer(),
                                      cpd.file_ftr);
    }
-   if (  (cpd.settings[UO_cmt_insert_func_header].str != nullptr)
-      && (cpd.settings[UO_cmt_insert_func_header].str[0] != 0))
+   if (!options::cmt_insert_func_header().empty())
    {
-      retval |= load_mem_file_config(cpd.settings[UO_cmt_insert_func_header].str,
+      retval |= load_mem_file_config(options::cmt_insert_func_header(),
                                      cpd.func_hdr);
    }
-   if (  (cpd.settings[UO_cmt_insert_class_header].str != nullptr)
-      && (cpd.settings[UO_cmt_insert_class_header].str[0] != 0))
+   if (!options::cmt_insert_class_header().empty())
    {
-      retval |= load_mem_file_config(cpd.settings[UO_cmt_insert_class_header].str,
+      retval |= load_mem_file_config(options::cmt_insert_class_header(),
                                      cpd.class_hdr);
    }
-   if (  (cpd.settings[UO_cmt_insert_oc_msg_header].str != nullptr)
-      && (cpd.settings[UO_cmt_insert_oc_msg_header].str[0] != 0))
+   if (!options::cmt_insert_oc_msg_header().empty())
    {
-      retval |= load_mem_file_config(cpd.settings[UO_cmt_insert_oc_msg_header].str,
+      retval |= load_mem_file_config(options::cmt_insert_oc_msg_header(),
                                      cpd.oc_msg_hdr);
    }
    return(retval);
@@ -1506,7 +1525,7 @@ static void add_func_header(c_token_t type, file_mem &fm)
          continue;
       }
       if (  (pc->flags & PCF_IN_CLASS)
-         && !cpd.settings[UO_cmt_insert_before_inlines].b)
+         && !options::cmt_insert_before_inlines())
       {
          continue;
       }
@@ -1584,7 +1603,7 @@ static void add_func_header(c_token_t type, file_mem &fm)
             {
                tmp = chunk_get_prev_nnl(tmp);
                if (  chunk_is_comment(tmp)
-                  && !cpd.settings[UO_cmt_insert_before_preproc].b)
+                  && !options::cmt_insert_before_preproc())
                {
                   break;
                }
@@ -1665,7 +1684,7 @@ static void add_msg_header(c_token_t type, file_mem &fm)
             {
                tmp = chunk_get_prev_nnl(tmp);
                if (  chunk_is_comment(tmp)
-                  && !cpd.settings[UO_cmt_insert_before_preproc].b)
+                  && !options::cmt_insert_before_preproc())
                {
                   break;
                }
@@ -1757,6 +1776,8 @@ static void uncrustify_start(const deque<int> &data)
 
    // Look at all colons ':' and mark labels, :? sequences, etc.
    combine_labels();
+
+   enum_cleanup();
 } // uncrustify_start
 
 
@@ -1768,32 +1789,32 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
    // Save off the encoding and whether a BOM is required
    cpd.bom = fm.bom;
    cpd.enc = fm.enc;
-   if (  cpd.settings[UO_utf8_force].b
-      || ((cpd.enc == char_encoding_e::e_BYTE) && cpd.settings[UO_utf8_byte].b))
+   if (  options::utf8_force()
+      || ((cpd.enc == char_encoding_e::e_BYTE) && options::utf8_byte()))
    {
       cpd.enc = char_encoding_e::e_UTF8;
    }
-   argval_t av;
+   iarf_e av;
    switch (cpd.enc)
    {
    case char_encoding_e::e_UTF8:
-      av = cpd.settings[UO_utf8_bom].a;
+      av = options::utf8_bom();
       break;
 
    case char_encoding_e::e_UTF16_LE:
    case char_encoding_e::e_UTF16_BE:
-      av = AV_FORCE;
+      av = IARF_FORCE;
       break;
 
    default:
-      av = AV_IGNORE;
+      av = IARF_IGNORE;
       break;
    }
-   if (av == AV_REMOVE)
+   if (av == IARF_REMOVE)
    {
       cpd.bom = false;
    }
-   else if (av != AV_IGNORE)
+   else if (av != IARF_IGNORE)
    {
       cpd.bom = true;
    }
@@ -1834,7 +1855,7 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
       if (!cpd.func_hdr.data.empty())
       {
          add_func_header(CT_FUNC_DEF, cpd.func_hdr);
-         if (cpd.settings[UO_cmt_insert_before_ctor_dtor].b)
+         if (options::cmt_insert_before_ctor_dtor())
          {
             add_func_header(CT_FUNC_CLASS_DEF, cpd.func_hdr);
          }
@@ -1851,13 +1872,13 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
       do_braces();  // Change virtual braces into real braces...
 
       // Scrub extra semicolons
-      if (cpd.settings[UO_mod_remove_extra_semicolon].b)
+      if (options::mod_remove_extra_semicolon())
       {
          remove_extra_semicolons();
       }
 
       // Remove unnecessary returns
-      if (cpd.settings[UO_mod_remove_empty_return].b)
+      if (options::mod_remove_empty_return())
       {
          remove_extra_returns();
       }
@@ -1869,7 +1890,7 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
       bool first = true;
       int  old_changes;
 
-      if (cpd.settings[UO_nl_remove_extra_newlines].u == 2)
+      if (options::nl_remove_extra_newlines() == 2)
       {
          newlines_remove_newlines();
       }
@@ -1883,48 +1904,48 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
          annotations_newlines();
          newlines_cleanup_dup();
          newlines_cleanup_braces(first);
-         if (cpd.settings[UO_nl_after_multiline_comment].b)
+         if (options::nl_after_multiline_comment())
          {
             newline_after_multiline_comment();
          }
-         if (cpd.settings[UO_nl_after_label_colon].b)
+         if (options::nl_after_label_colon())
          {
             newline_after_label_colon();
          }
          newlines_insert_blank_lines();
-         if (cpd.settings[UO_pos_bool].tp != TP_IGNORE)
+         if (options::pos_bool() != TP_IGNORE)
          {
-            newlines_chunk_pos(CT_BOOL, cpd.settings[UO_pos_bool].tp);
+            newlines_chunk_pos(CT_BOOL, options::pos_bool());
          }
-         if (cpd.settings[UO_pos_compare].tp != TP_IGNORE)
+         if (options::pos_compare() != TP_IGNORE)
          {
-            newlines_chunk_pos(CT_COMPARE, cpd.settings[UO_pos_compare].tp);
+            newlines_chunk_pos(CT_COMPARE, options::pos_compare());
          }
-         if (cpd.settings[UO_pos_conditional].tp != TP_IGNORE)
+         if (options::pos_conditional() != TP_IGNORE)
          {
-            newlines_chunk_pos(CT_COND_COLON, cpd.settings[UO_pos_conditional].tp);
-            newlines_chunk_pos(CT_QUESTION, cpd.settings[UO_pos_conditional].tp);
+            newlines_chunk_pos(CT_COND_COLON, options::pos_conditional());
+            newlines_chunk_pos(CT_QUESTION, options::pos_conditional());
          }
-         if (cpd.settings[UO_pos_comma].tp != TP_IGNORE || cpd.settings[UO_pos_enum_comma].tp != TP_IGNORE)
+         if (options::pos_comma() != TP_IGNORE || options::pos_enum_comma() != TP_IGNORE)
          {
-            newlines_chunk_pos(CT_COMMA, cpd.settings[UO_pos_comma].tp);
+            newlines_chunk_pos(CT_COMMA, options::pos_comma());
          }
-         if (cpd.settings[UO_pos_assign].tp != TP_IGNORE)
+         if (options::pos_assign() != TP_IGNORE)
          {
-            newlines_chunk_pos(CT_ASSIGN, cpd.settings[UO_pos_assign].tp);
+            newlines_chunk_pos(CT_ASSIGN, options::pos_assign());
          }
-         if (cpd.settings[UO_pos_arith].tp != TP_IGNORE)
+         if (options::pos_arith() != TP_IGNORE)
          {
-            newlines_chunk_pos(CT_ARITH, cpd.settings[UO_pos_arith].tp);
-            newlines_chunk_pos(CT_CARET, cpd.settings[UO_pos_arith].tp);
+            newlines_chunk_pos(CT_ARITH, options::pos_arith());
+            newlines_chunk_pos(CT_CARET, options::pos_arith());
          }
          newlines_class_colon_pos(CT_CLASS_COLON);
          newlines_class_colon_pos(CT_CONSTR_COLON);
-         if (cpd.settings[UO_nl_squeeze_ifdef].b)
+         if (options::nl_squeeze_ifdef())
          {
             newlines_squeeze_ifdef();
          }
-         if (cpd.settings[UO_nl_squeeze_paren_close].b)
+         if (options::nl_squeeze_paren_close())
          {
             newlines_squeeze_paren_close();
          }
@@ -1938,21 +1959,21 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
       mark_comments();
 
       // Add balanced spaces around nested params
-      if (cpd.settings[UO_sp_balance_nested_parens].b)
+      if (options::sp_balance_nested_parens())
       {
          space_text_balance_nested_parens();
       }
 
       // Scrub certain added semicolons
-      if ((cpd.lang_flags & LANG_PAWN) && cpd.settings[UO_mod_pawn_semicolon].b)
+      if (language_is_set(LANG_PAWN) && options::mod_pawn_semicolon())
       {
          pawn_scrub_vsemi();
       }
 
       // Sort imports/using/include
-      if (  cpd.settings[UO_mod_sort_import].b
-         || cpd.settings[UO_mod_sort_include].b
-         || cpd.settings[UO_mod_sort_using].b)
+      if (  options::mod_sort_import()
+         || options::mod_sort_include()
+         || options::mod_sort_using())
       {
          sort_imports();
       }
@@ -1961,7 +1982,7 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
       space_text();
 
       // Do any aligning of preprocessors
-      if (cpd.settings[UO_align_pp_define_span].u > 0)
+      if (options::align_pp_define_span() > 0)
       {
          align_preprocessor();
       }
@@ -1971,17 +1992,17 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
       indent_text();
 
       // Insert trailing comments after certain close braces
-      if (  (cpd.settings[UO_mod_add_long_switch_closebrace_comment].u > 0)
-         || (cpd.settings[UO_mod_add_long_function_closebrace_comment].u > 0)
-         || (cpd.settings[UO_mod_add_long_class_closebrace_comment].u > 0)
-         || (cpd.settings[UO_mod_add_long_namespace_closebrace_comment].u > 0))
+      if (  (options::mod_add_long_switch_closebrace_comment() > 0)
+         || (options::mod_add_long_function_closebrace_comment() > 0)
+         || (options::mod_add_long_class_closebrace_comment() > 0)
+         || (options::mod_add_long_namespace_closebrace_comment() > 0))
       {
          add_long_closebrace_comment();
       }
 
       // Insert trailing comments after certain preprocessor conditional blocks
-      if (  (cpd.settings[UO_mod_add_long_ifdef_else_comment].u > 0)
-         || (cpd.settings[UO_mod_add_long_ifdef_endif_comment].u > 0))
+      if (  (options::mod_add_long_ifdef_else_comment() > 0)
+         || (options::mod_add_long_ifdef_endif_comment() > 0))
       {
          add_long_preprocessor_conditional_block_comment();
       }
@@ -1993,7 +2014,7 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
          align_all();
          indent_text();
          old_changes = cpd.changes;
-         if (cpd.settings[UO_code_width].u > 0)
+         if (options::code_width() > 0)
          {
             LOG_FMT(LNEWLINE, "%s(%d): Code_width loop start: %d\n",
                     __func__, __LINE__, cpd.changes);
@@ -2010,7 +2031,7 @@ void uncrustify_file(const file_mem &fm, FILE *pfout,
 
       // And finally, align the backslash newline stuff
       align_right_comments();
-      if (cpd.settings[UO_align_nl_cont].b)
+      if (options::align_nl_cont())
       {
          align_backslash_newline();
       }

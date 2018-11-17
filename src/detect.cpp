@@ -6,14 +6,19 @@
  * @license GPL v2+
  */
 #include "detect.h"
+
 #include "uncrustify_types.h"
 #include "chunk_list.h"
 #include "ChunkStack.h"
 #include "prototypes.h"
+
+#include "unc_ctype.h"
+
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include "unc_ctype.h"
+
+using namespace uncrustify;
 
 
 //! Detect spacing options
@@ -23,24 +28,17 @@ static void detect_space_options(void);
 class sp_votes
 {
 protected:
-   size_t   m_add;
-   size_t   m_remove;
-   size_t   m_force;
-   argval_t *m_av;
+   size_t         m_add    = 0;
+   size_t         m_remove = 0;
+   size_t         m_force  = 0;
+   Option<iarf_e> &m_option;
 
 public:
-   sp_votes(argval_t &av)
-   {
-      m_add    = 0;
-      m_remove = 0;
-      m_force  = 0;
-      m_av     = &av;
-   }
-
+   sp_votes(Option<iarf_e> &opt)
+      : m_option(opt) {}
 
    //! Figure out the result of the vote and maybe update *m_av
    ~sp_votes();
-
 
    void vote(chunk_t *first, chunk_t *second);
 };
@@ -85,11 +83,11 @@ sp_votes::~sp_votes()
 
    if (m_remove == 0)
    {
-      *m_av = (m_force > m_add) ? AV_FORCE : AV_ADD;
+      m_option = (m_force > m_add) ? IARF_FORCE : IARF_ADD;
    }
    else if (m_force == 0 && m_add == 0)
    {
-      *m_av = AV_REMOVE;
+      m_option = IARF_REMOVE;
    }
    else
    {
@@ -99,7 +97,7 @@ sp_votes::~sp_votes()
 
 
 // generates "vote_sp_xxx" variable name from uncrustify option name "UO_xxx"
-#define SP_VOTE_VAR(x)    sp_votes vote_ ## x(cpd.settings[UO_ ## x].a)
+#define SP_VOTE_VAR(x)    sp_votes vote_ ## x(options::x)
 
 
 static void detect_space_options(void)

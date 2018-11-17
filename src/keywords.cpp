@@ -138,8 +138,8 @@ static chunk_tag_t keywords[] =
    { "__thread",                        CT_QUALIFIER,        LANG_C                                                                      },
    { "__traits",                        CT_QUALIFIER,        LANG_D                                                                      },
    { "__try",                           CT_TRY,              LANG_C                                                                      },
-   { "__typeof",                        CT_SIZEOF,           LANG_C                                                                      },
-   { "__typeof__",                      CT_SIZEOF,           LANG_C                                                                      },
+   { "__typeof",                        CT_DECLTYPE,         LANG_C                                                                      },
+   { "__typeof__",                      CT_DECLTYPE,         LANG_C                                                                      },
    { "__unsafe_unretained",             CT_QUALIFIER,        LANG_OC                                                                     },
    { "__unused",                        CT_ATTRIBUTE,        LANG_C                                                                      },
    { "__volatile__",                    CT_QUALIFIER,        LANG_C                                                                      },
@@ -189,7 +189,7 @@ static chunk_tag_t keywords[] =
    { "dchar",                           CT_TYPE,             LANG_D                                                                      },
    { "debug",                           CT_DEBUG,            LANG_D                                                                      },
    { "debugger",                        CT_DEBUGGER,         LANG_ECMA                                                                   },
-   { "decltype",                        CT_SIZEOF,           LANG_CPP                                                                    },
+   { "decltype",                        CT_DECLTYPE,         LANG_CPP                                                                    },
    { "default",                         CT_DEFAULT,          LANG_ALL                                                                    }, // PAWN
    { "define",                          CT_PP_DEFINE,        LANG_ALL | FLAG_PP                                                          }, // PAWN
    { "defined",                         CT_DEFINED,          LANG_PAWN                                                                   }, // PAWN
@@ -332,7 +332,8 @@ static chunk_tag_t keywords[] =
    { "typedef",                         CT_TYPEDEF,          LANG_C | LANG_D                                                             },
    { "typeid",                          CT_SIZEOF,           LANG_CPP | LANG_D                                                           },
    { "typename",                        CT_TYPENAME,         LANG_CPP                                                                    },
-   { "typeof",                          CT_SIZEOF,           LANG_C | LANG_CS | LANG_D | LANG_VALA | LANG_ECMA                           },
+   { "typeof",                          CT_DECLTYPE,         LANG_C                                                                      },
+   { "typeof",                          CT_SIZEOF,           LANG_CS | LANG_D | LANG_VALA | LANG_ECMA                                    },
    { "ubyte",                           CT_TYPE,             LANG_D                                                                      },
    { "ucent",                           CT_TYPE,             LANG_D                                                                      },
    { "uint",                            CT_TYPE,             LANG_CS | LANG_VALA | LANG_D                                                },
@@ -414,6 +415,8 @@ bool keywords_are_sorted(void)
       {
          fprintf(stderr, "%s: bad sort order at idx %d, words '%s' and '%s'\n",
                  __func__, idx - 1, keywords[idx - 1].tag, keywords[idx].tag);
+         // coveralls will always complain.
+         // these lines are only needed for the developper.
          log_flush(true);
          cpd.error_count++;
          return(false);
@@ -424,43 +427,23 @@ bool keywords_are_sorted(void)
 }
 
 
-void add_keyword(const char *tag, c_token_t type)
+void add_keyword(const std::string &tag, c_token_t type)
 {
-   string ss = tag;
-
    // See if the keyword has already been added
-   dkwmap::iterator it = dkwm.find(ss);
+   dkwmap::iterator it = dkwm.find(tag);
 
    if (it != dkwm.end())
    {
-      LOG_FMT(LDYNKW, "%s: changed '%s' to %d\n", __func__, tag, type);
+      LOG_FMT(LDYNKW, "%s(%d): changed '%s' to '%s'\n",
+              __func__, __LINE__, tag.c_str(), get_token_name(type));
       (*it).second = type;
       return;
    }
 
    // Insert the keyword
-   dkwm.insert(dkwmap::value_type(ss, type));
-   LOG_FMT(LDYNKW, "%s: added '%s' as %d\n", __func__, tag, type);
-}
-
-
-void remove_keyword(const string &tag)
-{
-   if (tag.empty())
-   {
-      return;
-   }
-
-   // See if the keyword exists in the map
-   dkwmap::iterator it = dkwm.find(tag);
-   if (it == dkwm.end())
-   {
-      return;
-   }
-
-   // Remove the keyword
-   dkwm.erase(it);
-   LOG_FMT(LDYNKW, "%s: removed '%s'\n", __func__, tag.c_str());
+   dkwm.insert(dkwmap::value_type(tag, type));
+   LOG_FMT(LDYNKW, "%s(%d): added '%s' as '%s'\n",
+           __func__, __LINE__, tag.c_str(), get_token_name(type));
 }
 
 

@@ -10,16 +10,20 @@
 #include "prototypes.h"
 #include <regex>
 
+using namespace uncrustify;
 
-enum
-{
-   kIncludeCategoriesCount = UO_include_category_last - UO_include_category_first + 1,
+
+Option<std::string>  *include_category_options[] = {
+   &options::include_category_0,
+   &options::include_category_1,
+   &options::include_category_2,
 };
+constexpr static int kIncludeCategoriesCount = 3;
 
 
 struct include_category
 {
-   include_category(const char *pattern)
+   include_category(const std::string &pattern)
       : regex(pattern)
    {
    }
@@ -50,11 +54,10 @@ static void do_the_sort(chunk_t **chunks, size_t num_chunks);
 
 static void prepare_categories()
 {
-   for (int i = 0; i < kIncludeCategoriesCount; i++)
+   for (int i = 0; i < kIncludeCategoriesCount; ++i)
    {
-      const auto *cat_pattern = cpd.settings[UO_include_category_first + i].str;
-
-      if (cat_pattern != nullptr && cat_pattern[0] != '\0')
+      const auto &cat_pattern = (*include_category_options[i])();
+      if (!cat_pattern.empty())
       {
          include_categories[i] = new include_category(cat_pattern);
       }
@@ -268,21 +271,21 @@ void sort_imports(void)
       }
       else if (chunk_is_token(pc, CT_IMPORT))
       {
-         if (cpd.settings[UO_mod_sort_import].b)
+         if (options::mod_sort_import())
          {
             p_imp = chunk_get_next(pc);
          }
       }
       else if (chunk_is_token(pc, CT_USING))
       {
-         if (cpd.settings[UO_mod_sort_using].b)
+         if (options::mod_sort_using())
          {
             p_imp = chunk_get_next(pc);
          }
       }
       else if (chunk_is_token(pc, CT_PP_INCLUDE))
       {
-         if (cpd.settings[UO_mod_sort_include].b)
+         if (options::mod_sort_include())
          {
             p_imp  = chunk_get_next(pc);
             p_last = pc;

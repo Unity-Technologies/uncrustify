@@ -438,6 +438,7 @@ static void write_byte(int ch)
 static void write_utf8(int ch)
 {
    vector<UINT8> vv;
+
    vv.reserve(6);
 
    encode_utf8(ch, vv);
@@ -511,7 +512,10 @@ void write_bom(void)
       break;
 
    default:
+      // char_encoding_e::e_ASCII
+      // char_encoding_e::e_BYTE
       // do nothing
+      // Coveralls will complain
       break;
    }
 }

@@ -14,6 +14,7 @@
 
 #include "base_types.h"
 #include "options.h"
+#include "option_enum.h"
 #include "token_enum.h"    // c_token_t
 #include "log_levels.h"
 #include "logger.h"
@@ -64,12 +65,12 @@ class ParseFrame;
 enum class brace_stage_e : unsigned int
 {
    NONE,
-   PAREN1,      //! if/for/switch/while/synchronized
-   OP_PAREN1,   //! optional paren: catch () {
+   PAREN1,      //! expected paren after if/catch (C++)/for/switch/synchronized/while
+   OP_PAREN1,   //! optional paren after catch (C#)
    WOD_PAREN,   //! while of do parens
    WOD_SEMI,    //! semicolon after while of do
    BRACE_DO,    //! do
-   BRACE2,      //! if/else/for/switch/while
+   BRACE2,      //! if/catch/else/finally/for/switch/synchronized/while
    ELSE,        //! expecting 'else' after 'if'
    ELSEIF,      //! expecting 'if' after 'else'
    WHILE,       //! expecting 'while' after 'do'
@@ -414,7 +415,7 @@ struct cp_data_t
    UINT32                  frag_cols;
 
    // stuff to auto-detect line endings
-   UINT32                  le_counts[LE_AUTO];
+   UINT32                  le_counts[uncrustify::line_end_styles];
    unc_text                newline;
 
    bool                    consumed;
@@ -439,14 +440,10 @@ struct cp_data_t
 
    bool                    warned_unable_string_replace_tab_chars;
 
-   op_val_t                settings[UO_option_count]; //! array with all uncrustify option settings
-
    std::vector<ParseFrame> frames;
 //   size_t                  frame_count;
    int                     pp_level; // TODO: can this ever be -1?
 
-   // the default values for settings
-   op_val_t                defaults[UO_option_count];
    const char              *phase_name;
    const char              *dumped_file;
 };

@@ -22,6 +22,7 @@ include(CTest)
 #
 if(MSVC)
   add_definitions(/D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_WARNINGS /wd4267)
+  add_definitions(/utf-8)
 elseif(CMAKE_COMPILER_IS_GNUCXX)
   add_definitions(-std=gnu++0x)
   set(gcc_warning_flags
@@ -54,7 +55,11 @@ if(ENABLE_SANITIZER)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O1 -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
 endif()
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(
+  ${PROJECT_BINARY_DIR}/src
+  ${PROJECT_SOURCE_DIR}/src
+  ${PROJECT_BINARY_DIR}
+)
 
 #
 # Determine config
@@ -121,7 +126,7 @@ endif()
 #
 
 # FIXME: the version number should be automatically integrated
-set(CURRENT_VERSION "Uncrustify-0.67_f")
+set(CURRENT_VERSION "Uncrustify-0.68_f")
 
 find_package(PythonInterp REQUIRED)
 option(NoGitVersionString "Do not use make_version.py and git to build a version string" OFF)
@@ -166,22 +171,55 @@ add_custom_command(
   COMMENT "Generating token_names.h"
 )
 
-#
-# Generate punctuator_table.h
-#
-add_custom_command(
-  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/punctuator_table.h"
-  COMMAND ${PYTHON_EXECUTABLE}
-    "${PROJECT_SOURCE_DIR}/scripts/punc.py"
-    "${CMAKE_CURRENT_BINARY_DIR}/punctuator_table.h"
-  MAIN_DEPENDENCY src/symbols_table.h
-  COMMENT "Generating punctuator_table.h"
+# Set up commands for generated source files
+function(py_gen OUTPUT SCRIPT INPUT)
+  set(out "${PROJECT_BINARY_DIR}/src/${OUTPUT}")
+  set(deps "${PROJECT_SOURCE_DIR}/src/${INPUT}")
+  get_filename_component(outdir "${out}" DIRECTORY)
+  foreach(arg IN LISTS ARGN)
+    list(APPEND deps "${PROJECT_SOURCE_DIR}/src/${arg}")
+  endforeach()
+
+  add_custom_command(
+    OUTPUT "${out}"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${outdir}"
+    COMMAND ${PYTHON_EXECUTABLE}
+      "${PROJECT_SOURCE_DIR}/scripts/${SCRIPT}"
+      "${out}"
+      ${deps}
+    DEPENDS ${deps} "${PROJECT_SOURCE_DIR}/scripts/${SCRIPT}"
+    MAIN_DEPENDENCY src/${INPUT}
+    COMMENT "Generating ${OUTPUT}"
+  )
+endfunction()
+
+py_gen(punctuator_table.h
+  make_punctuator_table.py
+  symbols_table.h
+)
+
+py_gen(options.cpp
+  make_options.py
+  options.h
+  options.cpp.in
+)
+
+py_gen(option_enum.h
+  make_option_enum.py
+  option.h
+  option_enum.h.in
+)
+
+py_gen(option_enum.cpp
+  make_option_enum.py
+  option.h
+  option_enum.cpp.in
 )
 
 #
 # Uncrustify
 #
-add_executable(uncrustify
+set(uncrustify_sources
   src/align.cpp
   src/align_stack.cpp
   src/args.cpp
@@ -193,9 +231,8 @@ add_executable(uncrustify
   src/combine.cpp
   src/compat_posix.cpp
   src/compat_win32.cpp
-  src/defines.cpp
   src/detect.cpp
-  src/helper_for_print.cpp
+  src/enum_cleanup.cpp
   src/indent.cpp
   src/keywords.cpp
   src/lang_pawn.cpp
@@ -204,7 +241,7 @@ add_executable(uncrustify
   src/logmask.cpp
   src/md5.cpp
   src/newlines.cpp
-  src/options.cpp
+  src/option.cpp
   src/options_for_QT.cpp
   src/output.cpp
   src/parens.cpp
@@ -222,6 +259,9 @@ add_executable(uncrustify
   src/unicode.cpp
   src/universalindentgui.cpp
   src/width.cpp
+)
+
+set(uncrustify_headers
   src/align_stack.h
   src/args.h
   src/backup.h
@@ -229,13 +269,15 @@ add_executable(uncrustify
   src/char_table.h
   src/ChunkStack.h
   src/chunk_list.h
-  src/helper_for_print.h
+  src/enum_cleanup.h
+  src/enum_flags.h
   src/language_tools.h
   src/ListManager.h
   src/logger.h
   src/logmask.h
   src/log_levels.h
   src/md5.h
+  src/option.h
   src/options.h
   src/options_for_QT.h
   src/ParseFrame.h
@@ -247,7 +289,12 @@ add_executable(uncrustify
   src/unc_ctype.h
   src/unc_text.h
   src/unc_tools.h
+  ${PROJECT_BINARY_DIR}/src/options.cpp
+  ${PROJECT_BINARY_DIR}/src/option_enum.cpp
+  ${PROJECT_BINARY_DIR}/src/option_enum.h
 )
+
+add_executable(uncrustify ${uncrustify_sources} ${uncrustify_headers})
 
 if(CMAKE_VERSION VERSION_LESS 2.8.10)
   if(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
@@ -288,6 +335,22 @@ if(ENABLE_CODECOVERAGE)
     set(CODECOVERAGE_DEPENDS uncrustify)
     include(${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake)
 endif(ENABLE_CODECOVERAGE)
+
+#
+# Build command to run uncrustify on its own sources
+#
+add_custom_target(format-sources)
+foreach(source IN LISTS uncrustify_sources uncrustify_headers)
+  get_filename_component(source_name  ${source} NAME)
+  add_custom_target(format-${source_name}
+    COMMAND uncrustify
+      -c forUncrustifySources.cfg
+      -lCPP --no-backup ${source}
+    COMMENT "Formatting ${source}"
+    WORKING_DIRECTORY ${uncrustify_SOURCE_DIR}
+  )
+  add_dependencies(format-sources format-${source_name})
+endforeach()
 
 #
 # Package

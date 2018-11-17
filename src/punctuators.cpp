@@ -11,6 +11,7 @@
 
 
 using namespace std;
+using namespace uncrustify;
 
 
 /**
@@ -35,14 +36,13 @@ const chunk_tag_t *find_punctuator(const char *str, int lang_flags)
       return(nullptr);
    }
 
-   const auto binary_find =
-      [](const lookup_entry_t *first, const lookup_entry_t *last, const char &value)
-      {
-         const auto tmp = std::lower_bound(first, last, value,
-                                           lookup_entry_t::comperator());
+   const auto binary_find = [](const lookup_entry_t *first, const lookup_entry_t *last, const char &value)
+   {
+      const auto tmp = std::lower_bound(first, last, value,
+                                        lookup_entry_t::comperator());
 
-         return((value == tmp->ch) ? tmp : nullptr);
-      };
+      return((value == tmp->ch) ? tmp : nullptr);
+   };
 
    const chunk_tag_t *match  = nullptr;
    const auto        *parent = punc_table; //!< graph in table form, initially point at first entry
@@ -58,9 +58,9 @@ const chunk_tag_t *find_punctuator(const char *str, int lang_flags)
       }
 
       if (  parent->tag != nullptr
-         && (parent->tag->lang_flags & lang_flags) != 0   // punctuator lang and processing lang match
-         && (  (parent->tag->lang_flags & FLAG_DIG) == 0  // punctuator is not a di/tri-graph
-            || cpd.settings[UO_enable_digraphs].b))       // or di/tri-graph processing is enabled
+         && (parent->tag->lang_flags & lang_flags) != 0  // punctuator lang and processing lang match
+         && (  (parent->tag->lang_flags & FLAG_DIG) == 0 // punctuator is not a di/tri-graph
+            || options::enable_digraphs()))              // or di/tri-graph processing is enabled
       {
          match = parent->tag;
       }

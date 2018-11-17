@@ -111,6 +111,7 @@
 00162  indent_func_def_param.cfg            c/fcn_indent.c
 00163  indent_func_proto_param.cfg          c/fcn_indent.c
 00164  rdan.cfg                             c/fcn_indent_func_def_col1.c
+00165  sp_func_call_user_inside_fparen.cfg  c/sp_func_call_user_inside_fparen.c
 
 00170  empty.cfg                            c/beautifier-off.c
 00180  sf538.cfg                            c/lvalue.c
@@ -150,6 +151,11 @@
 00412  align_typedef_gap-3_span-5.cfg       c/align-typedef.c
 00413  align_typedef_func-1.cfg             c/align-typedef.c
 00414  align_typedef_func-2.cfg             c/align-typedef.c
+00415  align_stack.cfg                      c/align_stack.c
+00416  align_sf_call_thresh_416.cfg         c/align_sf_call_thresh_416.c
+00417  align_sf_call_thresh_417.cfg         c/align_sf_call_thresh_417.c
+00418  align_sf_call_span_418.cfg           c/align_sf_call_span_418.c
+00419  align_sf_call_span_419.cfg           c/align_sf_call_span_419.c
 
 00421  nl_ds_struct_enum_cmt-t.cfg          c/nl_ds_struct_enum.c
 00422  nl_ds_struct_enum-2.cfg              c/nl_ds_struct_enum.c
@@ -298,9 +304,9 @@
 
 # some embedded sql stuff
 
-02400  ben_091.cfg                          sql/mysql.sqc
-02401  ben_092.cfg                          sql/sta-select.sqc
-02402  issue_527.cfg                        sql/issue_527.sqc
+02400  ben_091.cfg                          sql/mysql.sqc                   C
+02401  ben_092.cfg                          sql/sta-select.sqc              C
+02402  issue_527.cfg                        sql/issue_527.sqc               C
 
 
 02410  pp_if_indent-0.cfg                   c/ifdef-indent.c
@@ -325,6 +331,9 @@
 02452  return-2.cfg                         c/nl_return_expr.c
 02453  return-3.cfg                         c/nl_return_expr.c
 02454  return-4.cfg                         c/nl_return_expr.c
+
+02455  mod_paren_on_return-a.cfg            c/macro-returns.c
+02456  mod_paren_on_return-r.cfg            c/macro-returns.c
 
 02460  freebsd.cfg                          c/freebsd.c
 

@@ -14,6 +14,7 @@
 #include <string>
 #include <deque>
 
+
 /**
  * Advances to the next tab stop.
  * Column 1 is the left-most column.
@@ -22,8 +23,7 @@
  * @param tabsize The tabsize
  * @return the next tabstop column
  */
-static_inline
-size_t calc_next_tab_column(size_t col, size_t tabsize)
+static inline size_t calc_next_tab_column(size_t col, size_t tabsize)
 {
    if (col == 0)
    {
@@ -48,10 +48,9 @@ size_t calc_next_tab_column(size_t col, size_t tabsize)
  * @param col  The current column
  * @return the next tabstop column
  */
-static_inline
-size_t next_tab_column(size_t col)
+static inline size_t next_tab_column(size_t col)
 {
-   return(calc_next_tab_column(col, cpd.settings[UO_output_tab_size].u));
+   return(calc_next_tab_column(col, uncrustify::options::output_tab_size()));
 }
 
 
@@ -61,15 +60,14 @@ size_t next_tab_column(size_t col)
  * @param col  The current column
  * @return the next tabstop column
  */
-static_inline
-size_t align_tab_column(size_t col)
+static inline size_t align_tab_column(size_t col)
 {
    //if (col <= 0)
    if (col == 0)
    {
       col = 1;
    }
-   if ((col % cpd.settings[UO_output_tab_size].u) != 1)
+   if ((col % uncrustify::options::output_tab_size()) != 1)
    {
       col = next_tab_column(col);
    }

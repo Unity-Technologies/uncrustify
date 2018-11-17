@@ -1020,6 +1020,9 @@ nl_if_leave_one_liners          { False, True }
 nl_while_leave_one_liners       { False, True }
   Don't split one-line while statements - 'while(a) b++;'.
 
+nl_for_leave_one_liners         { False, True }
+  Don't split one-line for statements - 'for(...) b++;'.
+
 nl_oc_msg_leave_one_liner       { False, True }
   Don't split one-line OC messages.
 
@@ -1706,6 +1709,12 @@ align_func_params_gap           Unsigned Number
 align_same_func_call_params     { False, True }
   Align parameters in single-line functions that have the same name.
   The function names must already be aligned with each other.
+
+align_same_func_call_params_span       Unsigned Number
+  The span for function call parameter alignment (0=don't align)
+
+align_same_func_call_params_thresh            Unsigned Number
+  The threshold for function call parameter alignment (0=no limit)
 
 align_var_def_span              Unsigned Number
   The span for aligning variable definitions (0=don't align)
