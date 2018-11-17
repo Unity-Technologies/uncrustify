@@ -1300,6 +1300,10 @@ indent_case_brace;
 extern Option<bool>
 indent_col1_comment;
 
+// Whether to indent multi string literal in first column.
+extern Option<bool>
+indent_col1_multi_string_literal;
+
 // How to indent goto labels.
 //
 // >0: Absolute column where 1 is the leftmost column
@@ -1818,6 +1822,10 @@ nl_namespace_brace;
 // Add or remove newline between 'template<>' and whatever follows.
 extern Option<iarf_e>
 nl_template_class;
+
+// Add newline between '>()' or '>' and '{'.
+extern Option<bool>
+nl_template_def;
 
 // Add or remove newline between 'class' and '{'.
 extern Option<iarf_e>
@@ -3135,6 +3143,10 @@ mod_sort_oc_property_setter_weight;
 extern Option<signed>
 mod_sort_oc_property_nullability_weight;
 
+// It will support extra characters after the include is closed. (ingore mode by default) and report an error
+extern Option<bool>
+mod_include_strict_parsing;
+
 //END
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3289,6 +3301,10 @@ indent_cpp_lambda_only_once;
 // See options_for_QT.cpp for details.
 extern Option<bool>
 use_options_overriding_for_qt_macros; // = true
+
+// If True, will report an error if non-ascii characters outside of strings or comments are found
+extern Option<bool>
+use_mod_strict_ascii;
 
 //END
 

@@ -2305,7 +2305,7 @@ void tokenize(const deque<int> &data, chunk_t *ref)
             }
          }
          else if (  cpd.in_preproc == CT_PP_DEFINE && pc->type == CT_PAREN_CLOSE
-                 && cpd.settings[UO_pp_ignore_define_body].b)
+                 && options::pp_ignore_define_body())
          {
             // When we have a PAREN_CLOSE in a PP_DEFINE we should be terminating a MACRO_FUNC
             // arguments list. Therefore we can enter the PP_IGNORE state and ignore next chunks.

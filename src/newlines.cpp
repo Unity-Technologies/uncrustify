@@ -3519,7 +3519,7 @@ void newlines_cleanup_braces(bool first)
                }
             }
             //Fixes 10043 regression
-            if (cpd.settings[UO_nl_template_def].b)
+            if (options::nl_template_def())
             {
                chunk_t *tmp = chunk_get_next_ncnl(pc);
                if (chunk_is_opening_brace(tmp) || chunk_is_paren_open(tmp))

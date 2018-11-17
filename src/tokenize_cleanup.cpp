@@ -153,7 +153,7 @@ void tokenize_cleanup(void)
     * Since [] is expected to be TSQUARE for the 'operator', we need to make
     * this change in the first pass.
     */
-   if (cpd.settings[UO_use_mod_strict_ASCII].b)
+   if (options::use_mod_strict_ascii())
    {
       bool hit = false;
       for (chunk_t *pc = chunk_get_head(); pc != nullptr; pc = chunk_get_next_ncnl(pc))
@@ -192,7 +192,7 @@ void tokenize_cleanup(void)
    chunk_t *pc;
    for (pc = chunk_get_head(); pc != nullptr; pc = chunk_get_next_ncnl(pc))
    {
-      if (  cpd.settings[UO_mod_include_strict_parsing].b
+      if (  options::mod_include_strict_parsing()
          && pc->type == CT_PREPROC_BODY
          && (  pc->prev != nullptr
             && pc->prev->type == CT_PP_INCLUDE))

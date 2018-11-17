@@ -842,7 +842,7 @@ static inline bool chunk_is_forin(chunk_t *pc)
  *
  * @return true  - the chunk is keyword
  */
-static_inline bool chunk_is_keyword(chunk_t *pc)
+static inline bool chunk_is_keyword(chunk_t *pc)
 {
    return(find_keyword_type(pc->text(), strlen(pc->text())) != CT_WORD);
 }

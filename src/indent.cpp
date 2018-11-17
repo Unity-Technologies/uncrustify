@@ -574,7 +574,7 @@ void indent_text(void)
       //  forces string literal to column-1 [Fix for 1246]
       if (  chunk_is_token(pc, CT_STRING_MULTI)
          && !language_is_set(LANG_OC)
-         && cpd.settings[UO_indent_col1_multi_string_literal].b)
+         && options::indent_col1_multi_string_literal())
       {
          string str = pc->text();
          if ((str[0] == '@') && (chunk_get_prev(pc)->type == CT_NEWLINE))
