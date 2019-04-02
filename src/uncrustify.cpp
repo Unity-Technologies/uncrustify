@@ -224,8 +224,8 @@ void usage_exit(const char *msg, const char *argv0, int code)
            "\n"
            "Errors are always dumped to stderr\n"
            "\n"
-           "The '-f' and '-o' options may not be used with '-F', '--replace' or '--no-backup'.\n"
-           "The '--prefix' and '--suffix' options may not be used with '--replace' or '--no-backup'.\n"
+           "The '-f' and '-o' options may not be used with '-F' or '--replace'.\n"
+           "The '--prefix' and '--suffix' options may not be used with '--replace'.\n"
            "\n"
            "Basic Options:\n"
            " -c CFG       : Use the config file CFG.\n"
@@ -240,7 +240,7 @@ void usage_exit(const char *msg, const char *argv0, int code)
            " --suffix SFX : Append SFX to the output filename. The default is '.uncrustify'\n"
            " --prefix PFX : Prepend PFX to the output filename path.\n"
            " --replace    : Replace source files (creates a backup).\n"
-           " --no-backup  : Replace files, no backup. Useful if files are under source control.\n"
+           " --no-backup  : Do not create backup and md5 files. Useful if files are under source control.\n"
            " --if-changed : Write to stdout (or create output FILE) only if a change was detected.\n"
 #ifdef HAVE_UTIME_H
            " --mtime      : Preserve mtime on replaced files.\n"
@@ -622,7 +622,7 @@ int main(int argc, char *argv[])
 
    if (!cpd.do_check)
    {
-      if (replace || no_backup)
+      if (replace)
       {
          if (prefix != nullptr || suffix != nullptr)
          {
@@ -630,7 +630,7 @@ int main(int argc, char *argv[])
          }
          if (source_file != nullptr || output_file != nullptr)
          {
-            usage_exit("Cannot use --replace or --no-backup with -f or -o", argv[0], EX_NOINPUT);
+            usage_exit("Cannot use --replace with -f or -o", argv[0], EX_NOINPUT);
          }
       }
       else
