@@ -58,6 +58,7 @@ static const chunk_tag_t symbols3[] =
    { "->*",      CT_MEMBER,       LANG_C | LANG_CPP | LANG_OC | LANG_D                         },
    { "%:@",      CT_POUND,        LANG_C | LANG_CPP | LANG_OC                                  },           // digraph  #@ MS extension
    { R"_(??=)_", CT_POUND,        LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph #
+   { R"_(??=)_", CT_COMPARE,      LANG_CS                                                      },           // propper cs operator
    { R"_(??()_", CT_SQUARE_OPEN,  LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph [
    { R"_(??))_", CT_SQUARE_CLOSE, LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph ]
    { R"_(??')_", CT_CARET,        LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph ^
