@@ -1,8 +1,10 @@
 #define concat0(a0,a1) a0 ??=??= a1 // trigraph ##
 #define concat1(a0,a1) a0 %:%: a1   // digraph ##
 
-
-#define STRINGIFY0(s) ??= s   // trigraph #
+// Trigraph ? ? = stopped working after introducing a fix for
+// a c#8 null-coalensing operator (https://github.com/Unity-Technologies/uncrustify/pull/160)
+// Since trigraphs are ancient, we've decided to ingore it
+#define STRINGIFY0(s) ??-s     // trigraph #
 #define STRINGIFY1(s) %: s    // digraph #
 
 #define msg0(x) printf("%c: %d\n", ??=@ x, x)  // trigraph #@
