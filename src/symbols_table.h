@@ -16,22 +16,6 @@
  *   NOTE: the tables below do not need to be sorted.
  */
 
-// 6-char symbols
-static const chunk_tag_t symbols6[] =
-{
-   { R"_(??(??))_", CT_TSQUARE, LANG_C | LANG_CPP | LANG_OC | FLAG_DIG }, // trigraph []
-   { R"_(??!??!)_", CT_BOOL,    LANG_C | LANG_CPP | LANG_OC | FLAG_DIG }, // trigraph ||
-   { R"_(??=??=)_", CT_PP,      LANG_C | LANG_CPP | LANG_OC | FLAG_DIG }, // trigraph ##
-};
-
-/* 5-char symbols */
-static const chunk_tag_t symbols5[] =
-{
-   { R"_(??!=)_", CT_ASSIGN, LANG_C | LANG_CPP | LANG_OC | FLAG_DIG }, // trigraph |=
-   { R"_(??'=)_", CT_ASSIGN, LANG_C | LANG_CPP | LANG_OC | FLAG_DIG }, // trigraph ^=
-   { R"_(??=@)_", CT_POUND,  LANG_C | LANG_CPP | LANG_OC | FLAG_DIG }, // trigraph #@ MS extension
-};
-
 /* 4-char symbols */
 static const chunk_tag_t symbols4[] =
 {
@@ -57,17 +41,8 @@ static const chunk_tag_t symbols3[] =
    { ">>>",      CT_ARITH,        LANG_D | LANG_JAVA | LANG_PAWN | LANG_ECMA                   },
    { "->*",      CT_MEMBER,       LANG_C | LANG_CPP | LANG_OC | LANG_D                         },
    { "%:@",      CT_POUND,        LANG_C | LANG_CPP | LANG_OC                                  },           // digraph  #@ MS extension
-   { R"_(??=)_", CT_POUND,        LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph #
    { R"_(??=)_", CT_COMPARE,      LANG_CS                                                      },           // propper cs operator
-   { R"_(??()_", CT_SQUARE_OPEN,  LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph [
-   { R"_(??))_", CT_SQUARE_CLOSE, LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph ]
-   { R"_(??')_", CT_CARET,        LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph ^
-   { R"_(??<)_", CT_BRACE_OPEN,   LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph {
-   { R"_(??>)_", CT_BRACE_CLOSE,  LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph }
-   { R"_(??-)_", CT_INV,          LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph ~
-   { R"_(??!)_", CT_ARITH,        LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       },           // trigraph |
 };
-// { R"_(??/)_", CT_UNKNOWN,      LANG_C | LANG_CPP | LANG_OC | FLAG_DIG                       }, // trigraph '\'
 
 // 2-char symbols
 static const chunk_tag_t symbols2[] =
